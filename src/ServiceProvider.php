@@ -31,15 +31,40 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'accessibility');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'accessibility');
 
-        $routeConfig = [
+        $this->publishes([
+            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/accessibility'),
+        ]);
+
+        // Escape case plugin is disabled
+        if (!$this->app['accessibility']->isEnabled())
+            return;
+
+        // Append routes for assets providing
+        $this->appendAssetsRoutes();
+
+        $kernel = $this->app[Kernel::class];
+        $kernel->pushMiddleware(InjectMenu::class);
+    }
+
+    /**
+     * Append Assets Routes To Application Router
+     */
+    protected function appendAssetsRoutes()
+    {
+        $router = $this->app['router'];
+
+        $config = [
             'namespace' => 'Oh4d\Accessibility\Http\Controllers',
             'prefix' => $this->app['config']->get('accessibility.route_prefix'),
             // 'domain' => $this->app['config']->get('accessibility.route_domain'),
             // 'middleware' => [DebugbarEnabled::class],
         ];
 
-        $kernel = $this->app[Kernel::class];
-        $kernel->pushMiddleware(InjectMenu::class);
+        $router->group($config, function($router) {
+            $router->get('assets/js', 'AssetsController@js');
+            $router->get('assets/css', 'AssetsController@css');
+        });
     }
 }

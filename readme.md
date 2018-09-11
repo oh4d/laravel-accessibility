@@ -26,3 +26,9 @@ If you don't use auto-discovery, add the ServiceProvider to the providers array 
 ```php
 Oh4d\Accessibility\ServiceProvider::class
 ```
+
+Copy the package config and translation files to your local with the publish command:
+
+```shell
+php artisan vendor:publish --provider="Oh4d\Accessibility\ServiceProvider"
+```

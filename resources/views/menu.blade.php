@@ -1,3 +1,3 @@
 <div class="">
-    Acc Menu
+    {{ __('accessibility::main.sideBar') }}
 </div>
