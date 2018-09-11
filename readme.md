@@ -11,6 +11,16 @@ Require this package with composer.
 composer require oh4d/laravel-accessibility
 ```
 
+Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
+
+The Accessibility will be enabled by default, to change that update your .env file.
+
+```text
+ACCESSIBILITY_ENABLED=true
+``` 
+
+### Laravel 5.5+:
+
 If you don't use auto-discovery, add the ServiceProvider to the providers array in config/app.php
 
 ```php
