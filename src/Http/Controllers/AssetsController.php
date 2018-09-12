@@ -2,16 +2,32 @@
 
 namespace Oh4d\Accessibility\Http\Controllers;
 
+use Illuminate\Http\Response;
+
 class AssetsController extends BaseController
 {
+    /**
+     * @return Response
+     */
     public function css()
     {
+        $assetService = $this->accessibility->getAssetService();
+        $content = $assetService->render('css');
 
+        $response = new Response($content, 200, ['Content-Type' => 'text/css']);
+        return $this->cacheResponse($response);
     }
 
+    /**
+     * @return Response
+     */
     public function js()
     {
+        $assetService = $this->accessibility->getAssetService();
+        $content = $assetService->render('js');
 
+        $response = new Response($content, 200, ['Content-Type' => 'text/javascript']);
+        return $this->cacheResponse($response);
     }
 
     public function icons()

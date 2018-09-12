@@ -1,0 +1,72 @@
+@font-face {
+  font-family: 'laravel-accessibility';
+  src:  url('fonts/laravel-accessibility.eot?ep306j');
+  src:  url('fonts/laravel-accessibility.eot?ep306j#iefix') format('embedded-opentype'),
+    url('fonts/laravel-accessibility.ttf?ep306j') format('truetype'),
+    url('fonts/laravel-accessibility.woff?ep306j') format('woff'),
+    url('fonts/laravel-accessibility.svg?ep306j#laravel-accessibility') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-accessibility:before {
+  content: "\E908";
+}
+.icon-alt_description:before {
+  content: "\E900";
+}
+.icon-brigth_contrast:before {
+  content: "\E901";
+}
+.icon-cursor_bb:before {
+  content: "\E902";
+}
+.icon-cursor_bw:before {
+  content: "\E903";
+}
+.icon-dark_contrast:before {
+  content: "\E904";
+}
+.icon-decrease_font_size:before {
+  content: "\E905";
+}
+.icon-font_family:before {
+  content: "\E906";
+}
+.icon-highlight_links:before {
+  content: "\E907";
+}
+.icon-highlight_titles:before {
+  content: "\E909";
+}
+.icon-increase_font_size:before {
+  content: "\E90A";
+}
+.icon-monochrome:before {
+  content: "\E90B";
+}
+.icon-zoom:before {
+  content: "\E90C";
+}
+.icon-cancel:before {
+  content: "\E90D";
+}
+.icon-info:before {
+  content: "\EA0C";
+}
+

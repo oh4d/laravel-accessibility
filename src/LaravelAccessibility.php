@@ -2,6 +2,7 @@
 
 namespace Oh4d\Accessibility;
 
+use Oh4d\Accessibility\Services\AssetService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,11 +23,22 @@ class LaravelAccessibility
     protected $enabled = null;
 
     /**
+     * @var AssetService
+     */
+    protected $assetService;
+
+    /**
+     * @var string
+     */
+    protected $basePath;
+
+    /**
      * @param Application $app
      */
     public function __construct($app = null)
     {
         $this->app = ($app) ?: app();
+        $this->basePath = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
 
         $this->registerBaseConfig();
     }
@@ -39,6 +51,20 @@ class LaravelAccessibility
     public function isEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Return Package Base Path
+     *
+     * @return bool|string
+     */
+    public function getBasePath($path = null)
+    {
+        if (!is_null($path)) {
+            $path = DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR);
+        }
+
+        return $this->basePath . $path;
     }
 
     /**
@@ -107,5 +133,19 @@ class LaravelAccessibility
         }
 
         return true;
+    }
+
+    /**
+     * Returns a Accessibility Assets Service
+     *
+     * @return AssetService
+     */
+    public function getAssetService()
+    {
+        if (is_null($this->assetService)) {
+            $this->assetService = new AssetService($this);
+        }
+
+        return $this->assetService;
     }
 }
