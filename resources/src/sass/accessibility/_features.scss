@@ -1,0 +1,8 @@
+html body {
+
+  &.accessibility-monochrome {
+    > *:not(.accessibility-menu) {
+      filter: grayscale(1);
+    }
+  }
+}

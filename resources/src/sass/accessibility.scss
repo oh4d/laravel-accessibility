@@ -1,4 +1,6 @@
 @import "variables";
 @import "./../fonts/laravel-accessibility.css";
 
-@import "./menu";
+@import "./accessibility/reset";
+@import "./accessibility/menu";
+@import "./accessibility/features";

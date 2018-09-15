@@ -11,7 +11,7 @@
 
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
+  font-family: 'laravel-accessibility' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -27,34 +27,34 @@
 .icon-accessibility:before {
   content: "\e908";
 }
-.icon-alt_description:before {
+.icon-alt-description:before {
   content: "\e900";
 }
-.icon-brigth_contrast:before {
+.icon-bright-contrast:before {
   content: "\e901";
 }
-.icon-cursor_bb:before {
+.icon-cursor-bb:before {
   content: "\e902";
 }
-.icon-cursor_bw:before {
+.icon-cursor-bw:before {
   content: "\e903";
 }
-.icon-dark_contrast:before {
+.icon-dark-contrast:before {
   content: "\e904";
 }
-.icon-decrease_font_size:before {
+.icon-decrease-font-size:before {
   content: "\e905";
 }
-.icon-font_family:before {
+.icon-font-family:before {
   content: "\e906";
 }
-.icon-highlight_links:before {
+.icon-highlight-links:before {
   content: "\e907";
 }
-.icon-highlight_titles:before {
+.icon-highlight-titles:before {
   content: "\e909";
 }
-.icon-increase_font_size:before {
+.icon-increase-font-size:before {
   content: "\e90a";
 }
 .icon-monochrome:before {

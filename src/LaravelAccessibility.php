@@ -5,6 +5,7 @@ namespace Oh4d\Accessibility;
 use Oh4d\Accessibility\Services\AssetService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Contracts\Foundation\Application;
 
 class LaravelAccessibility
 {
@@ -97,11 +98,12 @@ class LaravelAccessibility
 
     /**
      * @return string
-     * @throws \Throwable
      */
     protected function renderLayout()
     {
-        return view('accessibility::menu')->render();
+        $render = $this->getAssetService();
+
+        return $render->renderLayoutHead() . $render->render();
     }
 
     /**
@@ -115,7 +117,7 @@ class LaravelAccessibility
     /**
      * @param Request $request
      * @param Response $response
-     * @return Response
+     * @return boolean
      */
     protected function properLayoutCheck(Request $request, Response $response)
     {

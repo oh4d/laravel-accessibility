@@ -30,7 +30,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'accessibility');
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'accessibility');
 
         $this->publishes([
@@ -63,8 +62,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         ];
 
         $router->group($config, function($router) {
-            $router->get('assets/js', 'AssetsController@js');
-            $router->get('assets/css', 'AssetsController@css');
+            $router->get('assets/js', 'AssetsController@js')->name('accessibility.assets.js');
+            $router->get('assets/css', 'AssetsController@css')->name('accessibility.assets.css');
+            $router->get('assets/fonts/{fileName}', 'AssetsController@fonts')->name('accessibility.assets.fonts');
         });
     }
 }

@@ -1,0 +1,15 @@
+.accessibility {
+  * {
+    box-sizing: border-box;
+  }
+
+  button {
+    border: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+
+    i {
+      font-size: 2rem;
+    }
+  }
+}

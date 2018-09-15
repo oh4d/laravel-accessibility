@@ -1,0 +1,85 @@
+.accessibility-menu {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  position: fixed;
+  transition: all .3s ease;
+  transform: translateX(-100%);
+  background: $menu-background;
+  border-right: 1px solid $primary-app-color;
+
+  .accessibility-menu-trigger {
+    top: 50px;
+    left: 100%;
+    position: absolute;
+    border: 2px dashed $primary-app-color;
+    border-left: none;
+    padding: 15px 25px 15px 10px;
+    border-radius: 0 50% 50% 0;
+
+    i {
+      font-size: 2.7rem;
+    }
+  }
+
+  .accessibility-menu-header {
+    position: relative;
+    padding: 10px 30px;
+
+    h3 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .accessibility-menu-close-trigger {
+      top: 10px;
+      left: 5px;
+      position: absolute;
+
+      i {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .accessibility-menu-body {
+    left: 0;
+    right: 0;
+    padding: 20px;
+    overflow: auto;
+    max-height: 100%;
+    position: absolute;
+    background: $menu-background;
+
+    .accessibility-features {
+      font-size: 0;
+
+      .accessibility-feature {
+        width: 33.3%;
+        vertical-align: top;
+        display: inline-block;
+
+        button {
+          width: 100%;
+          padding: 10px;
+          display: block;
+          text-align: center;
+        }
+
+        &.accessibility-active-feature {
+          background: #ebebeb;
+        }
+      }
+    }
+  }
+
+  &.accessibility-menu-opened {
+    transform: translateX(0);
+
+    .accessibility-menu-trigger {
+      left: 0;
+      display: none;
+    }
+  }
+}
