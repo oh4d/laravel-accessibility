@@ -5,7 +5,6 @@ export default class {
      * @param accessibility
      */
     constructor(accessibility) {
-        this.$body = $('body');
         this.accessibility = accessibility;
         this.$el = $('<div class="accessibility accessibility-menu"/>');
 
@@ -116,15 +115,19 @@ export default class {
         return this.$features;
     }
 
+    /**
+     *
+     * @param listen
+     */
     documentClickListener(listen) {
         if (!listen) {
-            this.$body.off('click.accessibility.document-click-listener');
+            this.accessibility.$body.off('click.accessibility.document-click-listener');
             return;
         }
 
         let self = this;
 
-        this.$body.on('click.accessibility.document-click-listener', function(e) {
+        this.accessibility.$body.on('click.accessibility.document-click-listener', function(e) {
             if (self.$el.is(e.target) || self.$el.find(e.target).length)
                 return;
 

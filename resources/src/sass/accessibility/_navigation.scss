@@ -1,0 +1,23 @@
+.accessibility-navigation {
+
+  .accessibility-quick-access {
+
+    button {
+      top: 0;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 700;
+      background: #000;
+      padding: 8px 16px;
+      border-radius: 4px;
+      position: fixed;
+      border: 1px solid #fff;
+      transition: all .3s ease;
+      transform: translateY(-100%);
+
+      &:focus {
+        transform: translateY(0);
+      }
+    }
+  }
+}

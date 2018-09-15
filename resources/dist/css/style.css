@@ -72,6 +72,7 @@
 .accessibility * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
 .accessibility button {
@@ -82,6 +83,38 @@
 
 .accessibility button i {
   font-size: 2rem;
+}
+
+.accessibility ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.accessibility span.keyboard {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.accessibility span.keyboard kbd {
+  display: inline-block;
+  border: .2em solid;
+  border-radius: .3em;
+  color: #000000;
+  border-color: #ddd #bbb #777 #999;
+  background-color: #fff !important;
+  font-family: monospace;
+  background-image: -webkit-gradient(linear, right top, left bottom, from(#eee), color-stop(#fff), to(#eee));
+  background-image: linear-gradient(to bottom left, #eee, #fff, #eee);
+  padding: .1em .3em;
+  font-weight: 400;
+  vertical-align: bottom;
+}
+
+*:active,
+*:focus,
+*:hover {
+  outline: none;
 }
 
 .accessibility-menu {
@@ -176,4 +209,25 @@
 html body.accessibility-monochrome > *:not(.accessibility-menu) {
   -webkit-filter: grayscale(1);
           filter: grayscale(1);
+}
+
+.accessibility-navigation .accessibility-quick-access button {
+  top: 0;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  background: #000;
+  padding: 8px 16px;
+  border-radius: 4px;
+  position: fixed;
+  border: 1px solid #fff;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+}
+
+.accessibility-navigation .accessibility-quick-access button:focus {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
 }
