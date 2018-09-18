@@ -1,7 +1,13 @@
 export default class {
 
+    /**
+     * Accessibility Features Handler Class
+     *
+     * @param accessibility
+     */
     constructor(accessibility) {
         this.accessibility = accessibility;
+
         this.initStates();
     }
 

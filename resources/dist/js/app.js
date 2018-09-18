@@ -68,7 +68,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(1);
-module.exports = __webpack_require__(5);
+module.exports = __webpack_require__(6);
 
 
 /***/ }),
@@ -80,8 +80,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__navigation__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__accessibility_features__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__navigation__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__accessibility_features__ = __webpack_require__(5);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -94,12 +94,18 @@ window.$ = window.jQuery = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a;
 
 
 window.AccessibilityForAll = function () {
+
+    /**
+     * Accessibility For All
+     */
     function _class() {
         _classCallCheck(this, _class);
 
         this.initializeParams();
 
-        this.renderMenu();
+        this.getMainWrap();
+
+        this.render();
     }
 
     /**
@@ -113,14 +119,26 @@ window.AccessibilityForAll = function () {
             this.$body = $('body');
             this.features = [{ type: 'monochrome', enable: true, icon: 'accessibility icon-monochrome' }, { type: 'dark-contrast', enable: true, icon: 'accessibility icon-dark-contrast' }, { type: 'bright-contrast', enable: true, icon: 'accessibility icon-bright-contrast' }, { type: 'decrease-font-size', enable: true, icon: 'accessibility icon-decrease-font-size' }, { type: 'increase-font-size', enable: true, icon: 'accessibility icon-increase-font-size' }, { type: 'font-family', enable: true, icon: 'accessibility icon-font-family' }, { type: 'cursor-bw', enable: true, icon: 'accessibility icon-cursor-bw' }, { type: 'cursor-bb', enable: true, icon: 'accessibility icon-cursor-bb' }, { type: 'zoom', enable: true, icon: 'accessibility icon-zoom' }, { type: 'highlight-links', enable: true, icon: 'accessibility icon-highlight-links' }, { type: 'highlight-titles', enable: true, icon: 'accessibility icon-highlight-titles' }, { type: 'alt-description', enable: true, icon: 'accessibility icon-alt-description' }];
         }
+    }, {
+        key: 'getMainWrap',
+        value: function getMainWrap() {
+            if (typeof this.$el !== 'undefined') {
+                return this.$el;
+            }
+
+            this.$el = $('<div class="accessibility"/>');
+            this.$body.prepend(this.$el);
+
+            return this.$el;
+        }
 
         /**
          *
          */
 
     }, {
-        key: 'renderMenu',
-        value: function renderMenu() {
+        key: 'render',
+        value: function render() {
             this.accessibilityMenu = new __WEBPACK_IMPORTED_MODULE_1__menu__["a" /* default */](this);
             this.accessibilityFeatures = new __WEBPACK_IMPORTED_MODULE_3__accessibility_features__["a" /* default */](this);
             this.accessibilityNavigation = new __WEBPACK_IMPORTED_MODULE_2__navigation__["a" /* default */](this);
@@ -10587,6 +10605,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _class = function () {
 
     /**
+     * Accessibility Main Menu Class
      *
      * @param accessibility
      */
@@ -10594,7 +10613,7 @@ var _class = function () {
         _classCallCheck(this, _class);
 
         this.accessibility = accessibility;
-        this.$el = $('<div class="accessibility accessibility-menu"/>');
+        this.$el = $('<div class="accessibility-menu"/>');
 
         this.render();
 
@@ -10611,7 +10630,8 @@ var _class = function () {
         value: function render() {
             this.appendMenuContent();
 
-            this.$el.appendTo('body');
+            this.$container.attr('aria-hidden', true);
+            this.$el.appendTo(this.accessibility.getMainWrap());
         }
 
         /**
@@ -10623,8 +10643,14 @@ var _class = function () {
     }, {
         key: 'appendMenuContent',
         value: function appendMenuContent() {
+            this.$container = $('<div class="accessibility-menu-container"/>');
+
+            this.$el.append(this.$container);
+
             this.$el.append(this.getTrigger());
-            this.$el.append(this.getMenuHeader());
+
+            this.$container.append(this.getMenuHeader());
+
             this.getMenuBody().append(this.getFeatures());
         }
 
@@ -10640,7 +10666,7 @@ var _class = function () {
             }
 
             this.$menuBody = $('<div class="accessibility-menu-body"/>');
-            this.$el.append(this.$menuBody);
+            this.$container.append(this.$menuBody);
             return this.$menuBody;
         }
 
@@ -10762,23 +10788,45 @@ var _class = function () {
 
             // Open Menu
             this.$trigger.on('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                this.$el.addClass('accessibility-menu-opened');
-                this.documentClickListener(true);
+                self.openMenu(e);
             }.bind(this));
 
             // Close Menu
             this.$closeTrigger.on('click', function () {
-                this.$el.removeClass('accessibility-menu-opened');
-                this.documentClickListener(false);
+                self.closeMenu();
             }.bind(this));
 
             // Feature Clicked
             this.$features.find('.accessibility-feature button').on('click', function () {
                 self.accessibility.featureListener($(this).data('feature'));
             });
+        }
+
+        /**
+         * Open Accessibility Menu
+         */
+
+    }, {
+        key: 'openMenu',
+        value: function openMenu(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            this.$el.addClass('accessibility-menu-opened');
+            this.$container.attr('aria-hidden', false);
+            this.documentClickListener(true);
+        }
+
+        /**
+         * Close Accessibility Menu
+         */
+
+    }, {
+        key: 'closeMenu',
+        value: function closeMenu() {
+            this.$el.removeClass('accessibility-menu-opened');
+            this.$container.attr('aria-hidden', true);
+            this.documentClickListener(false);
         }
     }]);
 
@@ -10797,10 +10845,179 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _class = function () {
+
+    /**
+     * Accessibility Quick Navigation Class
+     *
+     * @param accessibility
+     */
     function _class(accessibility) {
         _classCallCheck(this, _class);
 
         this.accessibility = accessibility;
+        this.$el = $('<div class="accessibility-navigation"/>');
+
+        this.render();
+
+        this.$el.appendTo(this.accessibility.getMainWrap());
+    }
+
+    /**
+     *
+     */
+
+
+    _createClass(_class, [{
+        key: 'render',
+        value: function render() {
+            this.$el.append(this.getQuickAccess());
+        }
+
+        /**
+         *
+         * @returns {*|jQuery|HTMLElement}
+         */
+
+    }, {
+        key: 'getQuickAccess',
+        value: function getQuickAccess() {
+            if (typeof this.$quickAccess !== 'undefined') {
+                return this.$quickAccess;
+            }
+
+            this.$quickAccess = $('<div class="accessibility-quick-access"/>');
+            this.$quickAccess.append(this.createQuickAccessItems());
+
+            return this.$quickAccess;
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'createQuickAccessItems',
+        value: function createQuickAccessItems() {
+            this.items = [{ text: 'Press <span class="keyboard"><kbd>Enter ↵</kbd></span> To open Accessibility Menu', action: this.openAccessibilityMenu.bind(this) }];
+
+            var $itemsWrap = $('<ul/>');
+
+            $.each(this.items, function () {
+                var $item = $('<li/>');
+
+                $item.append('<button type="button" tabindex="1"/>');
+                $item.find('button').append(this.text);
+
+                $itemsWrap.append($item);
+
+                this.$el = $item;
+                this.$button = $item.find('button');
+            });
+
+            this.focusListener();
+
+            return $itemsWrap;
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'focusListener',
+        value: function focusListener() {
+            var self = this;
+
+            $(document).on('focus', '.accessibility-navigation button', function () {
+                var item = self.getButtonItemParams($(this));
+
+                if (item) {
+                    item.action(item, 'focus');
+                }
+            });
+
+            $(document).on('blur', '.accessibility-navigation button', function () {
+                var item = self.getButtonItemParams($(this));
+
+                if (item) {
+                    item.action(item, 'blur');
+                }
+            });
+        }
+
+        /**
+         *
+         * @param $el
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'getButtonItemParams',
+        value: function getButtonItemParams($el) {
+            var item = false;
+
+            $.each(this.items, function () {
+                if (!$el.is(this.$button)) return;
+
+                item = this;
+                return false;
+            });
+
+            return item;
+        }
+
+        /**
+         *
+         * @param item
+         * @param buttonState
+         */
+
+    }, {
+        key: 'openAccessibilityMenu',
+        value: function openAccessibilityMenu(item, buttonState) {
+            var self = this;
+
+            if (buttonState === 'focus') {
+                $(document).on('keypress.accessibility.enter-click-menu-toggle', function (e) {
+                    if (e.which === 13) {
+                        self.accessibility.accessibilityMenu.openMenu(e);
+                        item.$button.blur();
+                    }
+                });
+
+                return;
+            }
+
+            $(document).off('keypress.accessibility.enter-click-menu-toggle');
+        }
+    }]);
+
+    return _class;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (_class);
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _class = function () {
+
+    /**
+     * Accessibility Features Handler Class
+     *
+     * @param accessibility
+     */
+    function _class(accessibility) {
+        _classCallCheck(this, _class);
+
+        this.accessibility = accessibility;
+
         this.initStates();
     }
 
@@ -10880,93 +11097,10 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _class = function () {
-    function _class(accessibility) {
-        _classCallCheck(this, _class);
-
-        this.accessibility = accessibility;
-        this.$el = $('<div class="accessibility accessibility-navigation"/>');
-
-        this.render();
-
-        this.accessibility.$body.prepend(this.$el);
-    }
-
-    /**
-     *
-     */
-
-
-    _createClass(_class, [{
-        key: 'render',
-        value: function render() {
-            this.$el.append(this.getQuickAccess());
-        }
-
-        /**
-         *
-         * @returns {*|jQuery|HTMLElement}
-         */
-
-    }, {
-        key: 'getQuickAccess',
-        value: function getQuickAccess() {
-            if (typeof this.$quickAccess !== 'undefined') {
-                return this.$quickAccess;
-            }
-
-            this.$quickAccess = $('<div class="accessibility-quick-access"/>');
-            this.$quickAccess.append(this.createQuickAccessItems());
-            return this.$quickAccess;
-        }
-
-        /**
-         *
-         */
-
-    }, {
-        key: 'createQuickAccessItems',
-        value: function createQuickAccessItems() {
-            var items = [{ text: 'Press <span class="keyboard"><kbd>Enter ↵</kbd></span> To open Accessibility Menu', action: '' }];
-
-            var $itemsWrap = $('<ul/>');
-
-            $.each(items, function () {
-                var $item = $('<li/>');
-
-                $item.append('<button type="button"/>');
-                $item.find('button').append(this.text);
-
-                $itemsWrap.append($item);
-            });
-
-            return $itemsWrap;
-        }
-    }]);
-
-    return _class;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ })
 /******/ ]);

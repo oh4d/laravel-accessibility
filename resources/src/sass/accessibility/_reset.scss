@@ -1,12 +1,22 @@
-.accessibility {
+body > .accessibility {
   * {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+
+    &:active,
+    &:focus,
+    &:hover {
+      // outline: none;
+    }
   }
+
+  position: absolute;
+  z-index: 999999;
 
   button {
     border: none;
     cursor: pointer;
+    background: transparent;
     -webkit-appearance: none;
 
     i {
@@ -38,10 +48,4 @@
       vertical-align: bottom;
     }
   }
-}
-
-*:active,
-*:focus,
-*:hover {
-  outline: none;
 }

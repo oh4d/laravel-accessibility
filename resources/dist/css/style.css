@@ -69,34 +69,40 @@
 .icon-info:before {
   content: "\EA0C";
 }
-.accessibility * {
+body > .accessibility {
+  position: absolute;
+  z-index: 999999;
+}
+
+body > .accessibility * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
 
-.accessibility button {
+body > .accessibility button {
   border: none;
   cursor: pointer;
+  background: transparent;
   -webkit-appearance: none;
 }
 
-.accessibility button i {
+body > .accessibility button i {
   font-size: 2rem;
 }
 
-.accessibility ul {
+body > .accessibility ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.accessibility span.keyboard {
+body > .accessibility span.keyboard {
   display: inline-block;
   vertical-align: middle;
 }
 
-.accessibility span.keyboard kbd {
+body > .accessibility span.keyboard kbd {
   display: inline-block;
   border: .2em solid;
   border-radius: .3em;
@@ -111,23 +117,19 @@
   vertical-align: bottom;
 }
 
-*:active,
-*:focus,
-*:hover {
-  outline: none;
-}
-
 .accessibility-menu {
   top: 0;
   left: 0;
   bottom: 0;
   width: 300px;
   position: fixed;
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
   -webkit-transform: translateX(-100%);
           transform: translateX(-100%);
   background: #ffffff;
+  -webkit-transition: -webkit-transform .3s ease;
+  transition: -webkit-transform .3s ease;
+  transition: transform .3s ease;
+  transition: transform .3s ease, -webkit-transform .3s ease;
   border-right: 1px solid #000000;
 }
 
@@ -145,54 +147,65 @@
   font-size: 2.7rem;
 }
 
-.accessibility-menu .accessibility-menu-header {
-  position: relative;
-  padding: 10px 30px;
+.accessibility-menu .accessibility-menu-container {
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  max-height: 100%;
+  visibility: hidden;
+  position: absolute;
+  padding: 45px 20px 20px;
 }
 
-.accessibility-menu .accessibility-menu-header h3 {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-header {
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  padding: 10px 30px;
+  background: #000000;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-header h3 {
   margin: 0;
+  color: #ffffff;
   text-align: center;
 }
 
-.accessibility-menu .accessibility-menu-header .accessibility-menu-close-trigger {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-header .accessibility-menu-close-trigger {
   top: 10px;
   left: 5px;
+  color: #ffffff;
   position: absolute;
 }
 
-.accessibility-menu .accessibility-menu-header .accessibility-menu-close-trigger i {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-header .accessibility-menu-close-trigger i {
   font-size: 1rem;
 }
 
-.accessibility-menu .accessibility-menu-body {
-  left: 0;
-  right: 0;
-  padding: 20px;
-  overflow: auto;
-  max-height: 100%;
-  position: absolute;
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body {
   background: #ffffff;
 }
 
-.accessibility-menu .accessibility-menu-body .accessibility-features {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features {
   font-size: 0;
 }
 
-.accessibility-menu .accessibility-menu-body .accessibility-features .accessibility-feature {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-feature {
   width: 33.3%;
   vertical-align: top;
   display: inline-block;
 }
 
-.accessibility-menu .accessibility-menu-body .accessibility-features .accessibility-feature button {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-feature button {
   width: 100%;
   padding: 10px;
   display: block;
   text-align: center;
 }
 
-.accessibility-menu .accessibility-menu-body .accessibility-features .accessibility-feature.accessibility-active-feature {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-feature.accessibility-active-feature {
   background: #ebebeb;
 }
 
@@ -201,12 +214,16 @@
           transform: translateX(0);
 }
 
+.accessibility-menu.accessibility-menu-opened .accessibility-menu-container {
+  visibility: visible;
+}
+
 .accessibility-menu.accessibility-menu-opened .accessibility-menu-trigger {
   left: 0;
   display: none;
 }
 
-html body.accessibility-monochrome > *:not(.accessibility-menu) {
+html body.accessibility-monochrome > *:not(.accessibility) {
   -webkit-filter: grayscale(1);
           filter: grayscale(1);
 }
@@ -214,12 +231,11 @@ html body.accessibility-monochrome > *:not(.accessibility-menu) {
 .accessibility-navigation .accessibility-quick-access button {
   top: 0;
   color: #fff;
-  font-size: 24px;
-  font-weight: 700;
+  position: fixed;
   background: #000;
+  font-size: 1.5rem;
   padding: 8px 16px;
   border-radius: 4px;
-  position: fixed;
   border: 1px solid #fff;
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
@@ -228,6 +244,7 @@ html body.accessibility-monochrome > *:not(.accessibility-menu) {
 }
 
 .accessibility-navigation .accessibility-quick-access button:focus {
+  z-index: 999;
   -webkit-transform: translateY(0);
           transform: translateY(0);
 }

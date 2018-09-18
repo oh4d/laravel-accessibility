@@ -4,9 +4,9 @@
   bottom: 0;
   width: 300px;
   position: fixed;
-  transition: all .3s ease;
   transform: translateX(-100%);
   background: $menu-background;
+  transition: transform .3s ease;
   border-right: 1px solid $primary-app-color;
 
   .accessibility-menu-trigger {
@@ -23,52 +23,63 @@
     }
   }
 
-  .accessibility-menu-header {
-    position: relative;
-    padding: 10px 30px;
-
-    h3 {
-      margin: 0;
-      text-align: center;
-    }
-
-    .accessibility-menu-close-trigger {
-      top: 10px;
-      left: 5px;
-      position: absolute;
-
-      i {
-        font-size: 1rem;
-      }
-    }
-  }
-
-  .accessibility-menu-body {
+  .accessibility-menu-container {
+    top: 0;
     left: 0;
     right: 0;
-    padding: 20px;
     overflow: auto;
     max-height: 100%;
+    visibility: hidden;
     position: absolute;
-    background: $menu-background;
+    padding: 45px 20px 20px;
 
-    .accessibility-features {
-      font-size: 0;
+    .accessibility-menu-header {
+      top: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+      padding: 10px 30px;
+      background: #000000;
 
-      .accessibility-feature {
-        width: 33.3%;
-        vertical-align: top;
-        display: inline-block;
+      h3 {
+        margin: 0;
+        color: #ffffff;
+        text-align: center;
+      }
 
-        button {
-          width: 100%;
-          padding: 10px;
-          display: block;
-          text-align: center;
+      .accessibility-menu-close-trigger {
+        top: 10px;
+        left: 5px;
+        color: #ffffff;
+        position: absolute;
+
+        i {
+          font-size: 1rem;
         }
+      }
+    }
 
-        &.accessibility-active-feature {
-          background: #ebebeb;
+    .accessibility-menu-body {
+      background: $menu-background;
+
+      .accessibility-features {
+        font-size: 0;
+
+        .accessibility-feature {
+          width: 33.3%;
+          vertical-align: top;
+          display: inline-block;
+
+          button {
+            width: 100%;
+            padding: 10px;
+            display: block;
+            text-align: center;
+          }
+
+          &.accessibility-active-feature {
+            background: #ebebeb;
+          }
         }
       }
     }
@@ -76,6 +87,10 @@
 
   &.accessibility-menu-opened {
     transform: translateX(0);
+
+    .accessibility-menu-container {
+      visibility: visible;
+    }
 
     .accessibility-menu-trigger {
       left: 0;

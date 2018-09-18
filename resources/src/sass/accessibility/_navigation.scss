@@ -5,17 +5,17 @@
     button {
       top: 0;
       color: #fff;
-      font-size: 24px;
-      font-weight: 700;
+      position: fixed;
       background: #000;
+      font-size: 1.5rem;
       padding: 8px 16px;
       border-radius: 4px;
-      position: fixed;
       border: 1px solid #fff;
       transition: all .3s ease;
       transform: translateY(-100%);
 
       &:focus {
+        z-index: 999;
         transform: translateY(0);
       }
     }

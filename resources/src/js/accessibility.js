@@ -7,10 +7,15 @@ import AccessibilityFeatures from './accessibility-features';
 
 window.AccessibilityForAll = class {
 
+    /**
+     * Accessibility For All
+     */
     constructor() {
         this.initializeParams();
 
-        this.renderMenu();
+        this.getMainWrap();
+
+        this.render();
     }
 
     /**
@@ -34,10 +39,21 @@ window.AccessibilityForAll = class {
         ];
     }
 
+    getMainWrap() {
+        if (typeof this.$el !== 'undefined') {
+            return this.$el;
+        }
+
+        this.$el = $('<div class="accessibility"/>');
+        this.$body.prepend(this.$el);
+
+        return this.$el;
+    }
+
     /**
      *
      */
-    renderMenu() {
+    render() {
         this.accessibilityMenu = new AccessibilityMenu(this);
         this.accessibilityFeatures = new AccessibilityFeatures(this);
         this.accessibilityNavigation = new AccessibilityNavigation(this);

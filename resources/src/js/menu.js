@@ -1,12 +1,13 @@
 export default class {
 
     /**
+     * Accessibility Main Menu Class
      *
      * @param accessibility
      */
     constructor(accessibility) {
         this.accessibility = accessibility;
-        this.$el = $('<div class="accessibility accessibility-menu"/>');
+        this.$el = $('<div class="accessibility-menu"/>');
 
         this.render();
 
@@ -19,7 +20,8 @@ export default class {
     render() {
         this.appendMenuContent();
 
-        this.$el.appendTo('body');
+        this.$container.attr('aria-hidden', true);
+        this.$el.appendTo(this.accessibility.getMainWrap());
     }
 
     /**
@@ -28,8 +30,14 @@ export default class {
      * Menu Features
      */
     appendMenuContent() {
+        this.$container = $('<div class="accessibility-menu-container"/>');
+
+        this.$el.append(this.$container);
+
         this.$el.append(this.getTrigger());
-        this.$el.append(this.getMenuHeader());
+
+        this.$container.append(this.getMenuHeader());
+
         this.getMenuBody().append(this.getFeatures());
     }
 
@@ -42,7 +50,7 @@ export default class {
         }
 
         this.$menuBody = $('<div class="accessibility-menu-body"/>');
-        this.$el.append(this.$menuBody);
+        this.$container.append(this.$menuBody);
         return this.$menuBody;
     }
 
@@ -147,22 +155,38 @@ export default class {
 
         // Open Menu
         this.$trigger.on('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            this.$el.addClass('accessibility-menu-opened');
-            this.documentClickListener(true);
+            self.openMenu(e);
         }.bind(this));
 
         // Close Menu
         this.$closeTrigger.on('click', function() {
-            this.$el.removeClass('accessibility-menu-opened');
-            this.documentClickListener(false);
+            self.closeMenu();
         }.bind(this));
 
         // Feature Clicked
         this.$features.find('.accessibility-feature button').on('click', function() {
             self.accessibility.featureListener($(this).data('feature'));
         });
+    }
+
+    /**
+     * Open Accessibility Menu
+     */
+    openMenu(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.$el.addClass('accessibility-menu-opened');
+        this.$container.attr('aria-hidden', false);
+        this.documentClickListener(true);
+    }
+
+    /**
+     * Close Accessibility Menu
+     */
+    closeMenu() {
+        this.$el.removeClass('accessibility-menu-opened');
+        this.$container.attr('aria-hidden', true);
+        this.documentClickListener(false);
     }
 }
