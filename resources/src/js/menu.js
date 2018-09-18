@@ -63,7 +63,7 @@ export default class {
         }
 
         this.$menuHeader = $('<div class="accessibility-menu-header"/>');
-        this.$menuHeader.append('<h3>Accessibility</h3>');
+        this.$menuHeader.append('<h3 tabindex="0">' + this.accessibility.$i18n.trans('accessibility') + '</h3>');
         this.$menuHeader.append(this.getCloseTrigger());
         return this.$menuHeader;
     }
@@ -124,11 +124,14 @@ export default class {
     }
 
     /**
+     * Append Listeners For Closing The Accessibility Menu
      *
      * @param listen
      */
-    documentClickListener(listen) {
+    closeMenuListeners(listen) {
         if (!listen) {
+            this.accessibility.$body.off('focusin.accessibility.focus-menu-item');
+            this.accessibility.$body.off('keyup.accessibility.keyup-menu-item');
             this.accessibility.$body.off('click.accessibility.document-click-listener');
             return;
         }
@@ -139,16 +142,26 @@ export default class {
             if (self.$el.is(e.target) || self.$el.find(e.target).length)
                 return;
 
-            e.preventDefault();
-            e.stopPropagation();
+            self.closeMenu(e);
+        });
 
-            self.$el.removeClass('accessibility-menu-opened');
-            self.documentClickListener(false);
+        this.accessibility.$body.on('focusin.accessibility.focus-menu-item', function(e) {
+            if (self.$el.is(e.target) || self.$el.find(e.target).length)
+                return;
+
+            self.closeMenu();
+        });
+
+        this.accessibility.$body.on('keyup.accessibility.keyup-menu-item', function(e) {
+            if (e.which === 27){
+                self.closeMenu();
+            }
         });
     }
 
     /**
-     * 
+     * Set Global Menu Events
+     * This Events Will Always Be Active
      */
     setEvents() {
         let self = this;
@@ -159,13 +172,13 @@ export default class {
         }.bind(this));
 
         // Close Menu
-        this.$closeTrigger.on('click', function() {
-            self.closeMenu();
+        this.$closeTrigger.on('click', function(e) {
+            self.closeMenu(e);
         }.bind(this));
 
         // Feature Clicked
         this.$features.find('.accessibility-feature button').on('click', function() {
-            self.accessibility.featureListener($(this).data('feature'));
+            self.accessibility.featureListener($(this).parent(), $(this).data('feature'));
         });
     }
 
@@ -173,20 +186,27 @@ export default class {
      * Open Accessibility Menu
      */
     openMenu(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        this.accessibility.preventDefault(e);
 
         this.$el.addClass('accessibility-menu-opened');
         this.$container.attr('aria-hidden', false);
-        this.documentClickListener(true);
+
+        this.closeMenuListeners(true);
+
+        this.$menuHeader.find('h3').focus();
     }
 
     /**
      * Close Accessibility Menu
      */
-    closeMenu() {
+    closeMenu(e) {
+        this.accessibility.preventDefault(e);
+
         this.$el.removeClass('accessibility-menu-opened');
         this.$container.attr('aria-hidden', true);
-        this.documentClickListener(false);
+
+        this.closeMenuListeners(false);
+
+        this.accessibility.focusLastEl();
     }
 }

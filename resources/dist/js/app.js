@@ -80,14 +80,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__navigation__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__accessibility_features__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__i18n__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__navigation__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__accessibility_features__ = __webpack_require__(5);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
 window.$ = window.jQuery = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a;
+
 
 
 
@@ -119,6 +121,13 @@ window.AccessibilityForAll = function () {
             this.$body = $('body');
             this.features = [{ type: 'monochrome', enable: true, icon: 'accessibility icon-monochrome' }, { type: 'dark-contrast', enable: true, icon: 'accessibility icon-dark-contrast' }, { type: 'bright-contrast', enable: true, icon: 'accessibility icon-bright-contrast' }, { type: 'decrease-font-size', enable: true, icon: 'accessibility icon-decrease-font-size' }, { type: 'increase-font-size', enable: true, icon: 'accessibility icon-increase-font-size' }, { type: 'font-family', enable: true, icon: 'accessibility icon-font-family' }, { type: 'cursor-bw', enable: true, icon: 'accessibility icon-cursor-bw' }, { type: 'cursor-bb', enable: true, icon: 'accessibility icon-cursor-bb' }, { type: 'zoom', enable: true, icon: 'accessibility icon-zoom' }, { type: 'highlight-links', enable: true, icon: 'accessibility icon-highlight-links' }, { type: 'highlight-titles', enable: true, icon: 'accessibility icon-highlight-titles' }, { type: 'alt-description', enable: true, icon: 'accessibility icon-alt-description' }];
         }
+
+        /**
+         * Get Accessibility Main Wrapper
+         *
+         * @returns {*|jQuery|HTMLElement}
+         */
+
     }, {
         key: 'getMainWrap',
         value: function getMainWrap() {
@@ -139,24 +148,34 @@ window.AccessibilityForAll = function () {
     }, {
         key: 'render',
         value: function render() {
+            this.$i18n = new __WEBPACK_IMPORTED_MODULE_2__i18n__["a" /* default */]('en');
             this.accessibilityMenu = new __WEBPACK_IMPORTED_MODULE_1__menu__["a" /* default */](this);
-            this.accessibilityFeatures = new __WEBPACK_IMPORTED_MODULE_3__accessibility_features__["a" /* default */](this);
-            this.accessibilityNavigation = new __WEBPACK_IMPORTED_MODULE_2__navigation__["a" /* default */](this);
+            this.accessibilityFeatures = new __WEBPACK_IMPORTED_MODULE_4__accessibility_features__["a" /* default */](this);
+            this.accessibilityNavigation = new __WEBPACK_IMPORTED_MODULE_3__navigation__["a" /* default */](this);
         }
 
         /**
          *
+         * @param $el
          * @param feature
          */
 
     }, {
         key: 'featureListener',
-        value: function featureListener(feature) {
-            feature = this.camelCase(feature);
+        value: function featureListener($el, feature) {
+            feature = this.getFeatureBy(feature);
 
-            if (typeof this.accessibilityFeatures[feature] === 'undefined') return;
+            if (!feature || !feature.enable) return;
 
-            this.accessibilityFeatures[feature]();
+            feature.$el = $el;
+
+            var featureHandler = this.camelCase(feature.type);
+
+            if (typeof this.accessibilityFeatures[featureHandler] === 'undefined') return;
+
+            var activated = this.accessibilityFeatures[featureHandler](feature);
+
+            if (activated) this.accessibilityFeatures.featureActivated(feature);else this.accessibilityFeatures.featureDeActivated(feature);
         }
 
         /**
@@ -168,6 +187,56 @@ window.AccessibilityForAll = function () {
         key: 'getFeatures',
         value: function getFeatures() {
             return this.features;
+        }
+
+        /**
+         * Get Feature By Original Type Name
+         *
+         * @param type
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'getFeatureBy',
+        value: function getFeatureBy(type) {
+            var feature = false;
+
+            $.each(this.getFeatures(), function () {
+                if (this.type === type) {
+                    feature = this;
+                    return false;
+                }
+            });
+
+            return feature;
+        }
+
+        /**
+         * Focusing Last Blur Element Recorded
+         * And Resetting Param
+         */
+
+    }, {
+        key: 'focusLastEl',
+        value: function focusLastEl() {
+            if (!this.$lastFocusedEl) return;
+
+            this.$lastFocusedEl.focus();
+            this.$lastFocusedEl = false;
+        }
+
+        /**
+         * Set Blur Element For Use Later
+         *
+         * @param $el
+         */
+
+    }, {
+        key: 'setLastFocusedEl',
+        value: function setLastFocusedEl($el) {
+            if (!$el) return;
+
+            this.$lastFocusedEl = $el;
         }
 
         /**
@@ -216,6 +285,22 @@ window.AccessibilityForAll = function () {
             });
 
             return target;
+        }
+
+        /**
+         *
+         * @param e
+         */
+
+    }, {
+        key: 'preventDefault',
+        value: function preventDefault(e) {
+            if (!e) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
         }
     }]);
 
@@ -10682,7 +10767,7 @@ var _class = function () {
             }
 
             this.$menuHeader = $('<div class="accessibility-menu-header"/>');
-            this.$menuHeader.append('<h3>Accessibility</h3>');
+            this.$menuHeader.append('<h3 tabindex="0">' + this.accessibility.$i18n.trans('accessibility') + '</h3>');
             this.$menuHeader.append(this.getCloseTrigger());
             return this.$menuHeader;
         }
@@ -10752,14 +10837,17 @@ var _class = function () {
         }
 
         /**
+         * Append Listeners For Closing The Accessibility Menu
          *
          * @param listen
          */
 
     }, {
-        key: 'documentClickListener',
-        value: function documentClickListener(listen) {
+        key: 'closeMenuListeners',
+        value: function closeMenuListeners(listen) {
             if (!listen) {
+                this.accessibility.$body.off('focusin.accessibility.focus-menu-item');
+                this.accessibility.$body.off('keyup.accessibility.keyup-menu-item');
                 this.accessibility.$body.off('click.accessibility.document-click-listener');
                 return;
             }
@@ -10769,16 +10857,25 @@ var _class = function () {
             this.accessibility.$body.on('click.accessibility.document-click-listener', function (e) {
                 if (self.$el.is(e.target) || self.$el.find(e.target).length) return;
 
-                e.preventDefault();
-                e.stopPropagation();
+                self.closeMenu(e);
+            });
 
-                self.$el.removeClass('accessibility-menu-opened');
-                self.documentClickListener(false);
+            this.accessibility.$body.on('focusin.accessibility.focus-menu-item', function (e) {
+                if (self.$el.is(e.target) || self.$el.find(e.target).length) return;
+
+                self.closeMenu();
+            });
+
+            this.accessibility.$body.on('keyup.accessibility.keyup-menu-item', function (e) {
+                if (e.which === 27) {
+                    self.closeMenu();
+                }
             });
         }
 
         /**
-         * 
+         * Set Global Menu Events
+         * This Events Will Always Be Active
          */
 
     }, {
@@ -10792,13 +10889,13 @@ var _class = function () {
             }.bind(this));
 
             // Close Menu
-            this.$closeTrigger.on('click', function () {
-                self.closeMenu();
+            this.$closeTrigger.on('click', function (e) {
+                self.closeMenu(e);
             }.bind(this));
 
             // Feature Clicked
             this.$features.find('.accessibility-feature button').on('click', function () {
-                self.accessibility.featureListener($(this).data('feature'));
+                self.accessibility.featureListener($(this).parent(), $(this).data('feature'));
             });
         }
 
@@ -10809,12 +10906,14 @@ var _class = function () {
     }, {
         key: 'openMenu',
         value: function openMenu(e) {
-            e.preventDefault();
-            e.stopPropagation();
+            this.accessibility.preventDefault(e);
 
             this.$el.addClass('accessibility-menu-opened');
             this.$container.attr('aria-hidden', false);
-            this.documentClickListener(true);
+
+            this.closeMenuListeners(true);
+
+            this.$menuHeader.find('h3').focus();
         }
 
         /**
@@ -10823,10 +10922,15 @@ var _class = function () {
 
     }, {
         key: 'closeMenu',
-        value: function closeMenu() {
+        value: function closeMenu(e) {
+            this.accessibility.preventDefault(e);
+
             this.$el.removeClass('accessibility-menu-opened');
             this.$container.attr('aria-hidden', true);
-            this.documentClickListener(false);
+
+            this.closeMenuListeners(false);
+
+            this.accessibility.focusLastEl();
         }
     }]);
 
@@ -10847,7 +10951,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _class = function () {
 
     /**
-     * Accessibility Quick Navigation Class
+     * Accessibility QuicNavigation Class
      *
      * @param accessibility
      */
@@ -11033,15 +11137,45 @@ var _class = function () {
                 monochrome: false,
                 darkContrast: false,
                 brightContrast: false,
-                decreaseFontSize: false,
-                increaseFontSize: false,
                 fontFamily: false,
                 cursorBw: false,
                 cursorBb: false,
                 zoom: false,
                 highlightLinks: false,
-                highlightTitles: false
+                highlightTitles: false,
+
+                font: {
+                    max: 1.5,
+                    current: 1,
+                    $in: $('body'),
+                    search: ['*'],
+                    exclude: ['svg', '.accessibility']
+                }
             };
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'featureActivated',
+        value: function featureActivated(feature) {
+            if (!feature.$el) return;
+
+            feature.$el.addClass('accessibility-feature-activated');
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'featureDeActivated',
+        value: function featureDeActivated(feature) {
+            if (!feature.$el) return;
+
+            feature.$el.removeClass('accessibility-feature-activated');
         }
 
         /**
@@ -11059,6 +11193,97 @@ var _class = function () {
             }
 
             this.setState('monochrome', !this.states.monochrome);
+            return this.states.monochrome;
+        }
+
+        /**
+         * Increase Font Size Handler
+         */
+
+    }, {
+        key: 'increaseFontSize',
+        value: function increaseFontSize() {
+            if (this.states.font.current >= 1.5) return this.states.font.current > 1;
+
+            this.states.font.current += 0.1;
+
+            this.updateBodyElements();
+            return this.states.font.current > 1;
+        }
+
+        /**
+         * Decrease Font Size Handler
+         */
+
+    }, {
+        key: 'decreaseFontSize',
+        value: function decreaseFontSize() {
+            if (this.states.font.current <= 1) return false;
+
+            this.states.font.current -= 0.1;
+
+            this.updateBodyElements();
+            return this.states.font.current > 1;
+        }
+
+        /**
+         * Update Font Attribute To Document Elements
+         * Search & Loop On Elements Inside The Given Element To States
+         */
+
+    }, {
+        key: 'updateBodyElements',
+        value: function updateBodyElements() {
+            var self = this;
+
+            this.states.font.$in.find(this.fontElements()).each(function () {
+                var currentFontSize = parseFloat($(this).css('font-size'));
+
+                if (!currentFontSize) {
+                    return;
+                }
+
+                // Set The Default Font Size Per El
+                if (!$(this).data('original-font-size')) {
+                    $(this).data('original-font-size', currentFontSize);
+                }
+
+                var defaultFontSize = $(this).data('original-font-size'),
+                    updateFontSize = (defaultFontSize * self.states.font.current).toFixed(1) + 'px';
+
+                $(this).css('font-size', updateFontSize);
+            });
+        }
+
+        /**
+         * Building jQuery Query For Search
+         * Elements To Update Css Attributes
+         *
+         * @returns {string}
+         */
+
+    }, {
+        key: 'fontElements',
+        value: function fontElements() {
+            if (this.states.font.fontElements) {
+                return this.states.font.fontElements;
+            }
+
+            var exclude = '',
+                fontElements = '';
+
+            for (var i = 0; i < this.states.font.exclude.length; i++) {
+                exclude += ':not(' + this.states.font.exclude[i] + '):not(' + this.states.font.exclude[i] + ' *)';
+            }
+            exclude += ':not(script):not(style):not(link)';
+
+            for (var _i = 0; _i < this.states.font.search.length; _i++) {
+                fontElements += _i > 0 ? ',' : '';
+                fontElements += this.states.font.search + exclude;
+            }
+
+            this.states.font.fontElements = fontElements;
+            return this.states.font.fontElements;
         }
 
         /**
@@ -11101,6 +11326,142 @@ var _class = function () {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _class = function () {
+    /**
+     *
+     * @param locale
+     */
+    function _class() {
+        var locale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
+
+        _classCallCheck(this, _class);
+
+        this.locale = locale;
+        this.defaultLocale = 'en';
+
+        this.setLocale();
+    }
+
+    /**
+     * Get Translation By Key
+     *
+     * @param key
+     */
+
+
+    _createClass(_class, [{
+        key: 'trans',
+        value: function trans(key) {
+            if (!this.translations) return '';
+
+            for (var _key in this.translations) {
+                if (_key === key) return this.translations[key];
+            }
+        }
+
+        /**
+         * Set Locale
+         *
+         * @param locale
+         */
+
+    }, {
+        key: 'setLocale',
+        value: function setLocale(locale) {
+            if (!locale) locale = this.locale;
+
+            var trans = false;
+
+            this.locale = locale;
+
+            try {
+                trans = __webpack_require__(13)("./" + locale + '.js');
+            } catch (e) {
+                this.locale = this.defaultLocale;
+                trans = __webpack_require__(13)("./" + this.defaultLocale + '.js');
+            }
+
+            if (!trans.default) return;
+
+            this.translations = trans.default;
+        }
+    }]);
+
+    return _class;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (_class);
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./en.js": 14,
+	"./he.js": 15
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 13;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+    'accessibility': 'Accessibility',
+    'monochrome': 'Monochrome',
+    'dark-contrast': 'Dark Contrast',
+    'bright-contrast': 'Bright Contrast',
+    'decrease-font-size': 'Decrease Font Size',
+    'increase-font-size': 'Increase Font Size',
+    'font-family': 'Font Family',
+    'cursor-bw': 'Big White Cursor',
+    'cursor-bb': 'Big Black Cursor',
+    'zoom': 'Zoom',
+    'highlight-links': 'Highlight Links',
+    'highlight-titles': 'Highlight Titles',
+    'alt-description': 'Alt Description'
+});
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+    'accessibility': 'נגישות'
+});
 
 /***/ })
 /******/ ]);

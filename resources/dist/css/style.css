@@ -165,12 +165,13 @@ body > .accessibility span.keyboard kbd {
   position: absolute;
   padding: 10px 30px;
   background: #000000;
+  text-align: center;
 }
 
 .accessibility-menu .accessibility-menu-container .accessibility-menu-header h3 {
   margin: 0;
   color: #ffffff;
-  text-align: center;
+  display: inline-block;
 }
 
 .accessibility-menu .accessibility-menu-container .accessibility-menu-header .accessibility-menu-close-trigger {

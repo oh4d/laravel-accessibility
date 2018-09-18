@@ -1,7 +1,7 @@
 export default class {
 
     /**
-     * Accessibility Quick Navigation Class
+     * Accessibility QuicNavigation Class
      *
      * @param accessibility
      */

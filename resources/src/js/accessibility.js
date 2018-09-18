@@ -2,6 +2,7 @@ import jQuery from 'jquery';
 window.$ = window.jQuery = jQuery;
 
 import AccessibilityMenu from './menu';
+import AccessibilityTrans from './i18n';
 import AccessibilityNavigation from './navigation';
 import AccessibilityFeatures from './accessibility-features';
 
@@ -39,6 +40,11 @@ window.AccessibilityForAll = class {
         ];
     }
 
+    /**
+     * Get Accessibility Main Wrapper
+     *
+     * @returns {*|jQuery|HTMLElement}
+     */
     getMainWrap() {
         if (typeof this.$el !== 'undefined') {
             return this.$el;
@@ -54,6 +60,7 @@ window.AccessibilityForAll = class {
      *
      */
     render() {
+        this.$i18n = new AccessibilityTrans('en');
         this.accessibilityMenu = new AccessibilityMenu(this);
         this.accessibilityFeatures = new AccessibilityFeatures(this);
         this.accessibilityNavigation = new AccessibilityNavigation(this);
@@ -61,15 +68,28 @@ window.AccessibilityForAll = class {
 
     /**
      *
+     * @param $el
      * @param feature
      */
-    featureListener(feature) {
-        feature = this.camelCase(feature);
+    featureListener($el, feature) {
+        feature = this.getFeatureBy(feature);
 
-        if (typeof this.accessibilityFeatures[feature] === 'undefined')
+        if (! feature || ! feature.enable)
             return;
 
-        this.accessibilityFeatures[feature]();
+        feature.$el = $el;
+
+        let featureHandler = this.camelCase(feature.type);
+
+        if (typeof this.accessibilityFeatures[featureHandler] === 'undefined')
+            return;
+
+        let activated = this.accessibilityFeatures[featureHandler](feature);
+
+        if (activated)
+            this.accessibilityFeatures.featureActivated(feature);
+        else
+            this.accessibilityFeatures.featureDeActivated(feature);
     }
 
     /**
@@ -78,6 +98,49 @@ window.AccessibilityForAll = class {
      */
     getFeatures() {
         return this.features;
+    }
+
+    /**
+     * Get Feature By Original Type Name
+     *
+     * @param type
+     * @returns {boolean}
+     */
+    getFeatureBy(type) {
+        let feature = false;
+
+        $.each(this.getFeatures(), function() {
+            if (this.type === type) {
+                feature = this;
+                return false;
+            }
+        });
+
+        return feature;
+    }
+
+    /**
+     * Focusing Last Blur Element Recorded
+     * And Resetting Param
+     */
+    focusLastEl() {
+        if (! this.$lastFocusedEl)
+            return;
+
+        this.$lastFocusedEl.focus();
+        this.$lastFocusedEl = false;
+    }
+
+    /**
+     * Set Blur Element For Use Later
+     *
+     * @param $el
+     */
+    setLastFocusedEl($el) {
+        if (! $el)
+            return;
+
+        this.$lastFocusedEl = $el;
     }
 
     /**
@@ -118,5 +181,18 @@ window.AccessibilityForAll = class {
         });
 
         return target;
-    };
+    }
+
+    /**
+     *
+     * @param e
+     */
+    preventDefault(e) {
+        if (!e) {
+            return;
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
+    }
 };

@@ -1,0 +1,15 @@
+export default {
+    'accessibility':                'Accessibility',
+    'monochrome':                   'Monochrome',
+    'dark-contrast':                'Dark Contrast',
+    'bright-contrast':              'Bright Contrast',
+    'decrease-font-size':           'Decrease Font Size',
+    'increase-font-size':           'Increase Font Size',
+    'font-family':                  'Font Family',
+    'cursor-bw':                    'Big White Cursor',
+    'cursor-bb':                    'Big Black Cursor',
+    'zoom':                         'Zoom',
+    'highlight-links':              'Highlight Links',
+    'highlight-titles':             'Highlight Titles',
+    'alt-description':              'Alt Description',
+}
