@@ -1,3 +1,5 @@
+import ImgAltDescription from './features/img-alt-description';
+
 export default class {
 
     /**
@@ -9,6 +11,8 @@ export default class {
         this.accessibility = accessibility;
 
         this.initStates();
+
+        this.initFeatures();
     }
 
     /**
@@ -25,15 +29,23 @@ export default class {
             zoom: false,
             highlightLinks: false,
             highlightTitles: false,
+            altDescription: false,
 
-            font: {
+            fontSize: {
                 max: 1.5,
                 current: 1,
-                $in: $('body'),
+                $in: $('html'),
                 search: ['*'],
-                exclude: ['svg', '.accessibility']
+                exclude: ['svg', '.accessibility', 'head']
             }
         };
+    }
+
+    /**
+     * Initialize Features Handlers
+     */
+    initFeatures() {
+        this.imgAltDescription = new ImgAltDescription(this.accessibility);
     }
 
     /**
@@ -57,7 +69,38 @@ export default class {
     }
 
     /**
+     *
+     */
+    cursorBb() {
+        if (this.states.cursorBb) {
+            this.accessibility.$body.removeClass('accessibility-big-black-cursor');
+        } else {
+            this.removeAllCursors();
+            this.accessibility.$body.addClass('accessibility-big-black-cursor');
+        }
+
+        this.setState('cursorBb', !this.states.cursorBb);
+        return this.states.cursorBb;
+    }
+
+    /**
+     *
+     */
+    cursorBw() {
+        if (this.states.cursorBw) {
+            this.accessibility.$body.removeClass('accessibility-big-white-cursor');
+        } else {
+            this.removeAllCursors();
+            this.accessibility.$body.addClass('accessibility-big-white-cursor');
+        }
+
+        this.setState('cursorBw', !this.states.cursorBw);
+        return this.states.cursorBw;
+    }
+
+    /**
      * Monochrome Contrast Handler
+     * @returns {boolean}
      */
     monochrome() {
         if (this.states.monochrome) {
@@ -72,29 +115,132 @@ export default class {
     }
 
     /**
+     *
+     * @returns {boolean}
+     */
+    darkContrast() {
+        if (this.states.darkContrast) {
+            this.accessibility.$body.removeClass('accessibility-dark-contrast');
+        } else {
+            this.removeAllContrasts();
+            this.accessibility.$body.addClass('accessibility-dark-contrast');
+        }
+
+        this.setState('darkContrast', !this.states.darkContrast);
+        return this.states.darkContrast;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    brightContrast() {
+        if (this.states.brightContrast) {
+            this.accessibility.$body.removeClass('accessibility-bright-contrast');
+        } else {
+            this.removeAllContrasts();
+            this.accessibility.$body.addClass('accessibility-bright-contrast');
+        }
+
+        this.setState('brightContrast', !this.states.brightContrast);
+        return this.states.brightContrast;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    highlightLinks() {
+        if (this.states.highlightLinks) {
+            this.accessibility.$body.removeClass('accessibility-highlight-link');
+        } else {
+            this.accessibility.$body.addClass('accessibility-highlight-link');
+        }
+
+        this.setState('highlightLinks', !this.states.highlightLinks);
+        return this.states.highlightLinks;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    highlightTitles() {
+        if (this.states.highlightTitles) {
+            this.accessibility.$body.removeClass('accessibility-highlight-titles');
+        } else {
+            this.accessibility.$body.addClass('accessibility-highlight-titles');
+        }
+
+        this.setState('highlightTitles', !this.states.highlightTitles);
+        return this.states.highlightTitles;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    fontFamily() {
+        if (this.states.fontFamily) {
+            this.accessibility.$body.removeClass('accessibility-readable-font-family');
+        } else {
+            this.accessibility.$body.addClass('accessibility-readable-font-family');
+        }
+
+        this.setState('fontFamily', !this.states.fontFamily);
+        return this.states.fontFamily;
+    }
+
+    zoom() {
+        if (this.states.zoom) {
+            this.accessibility.$body.removeClass('accessibility-body-zoomed');
+        } else {
+            this.accessibility.$body.addClass('accessibility-body-zoomed');
+        }
+
+        this.setState('zoom', !this.states.zoom);
+        return this.states.zoom;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    altDescription() {
+        if (this.states.altDescription) {
+            this.setImageAltDescription(false);
+        } else {
+            this.setImageAltDescription(true);
+        }
+
+        this.setState('altDescription', !this.states.altDescription);
+        return this.states.altDescription;
+    }
+
+    /**
      * Increase Font Size Handler
      */
     increaseFontSize() {
-        if (this.states.font.current >= 1.5)
-            return (this.states.font.current > 1);
+        if (this.states.fontSize.current >= 1.5)
+            return null;
 
-        this.states.font.current += 0.1;
+        this.states.fontSize.current += 0.1;
 
         this.updateBodyElements();
-        return (this.states.font.current > 1);
+        return null;
     }
 
     /**
      * Decrease Font Size Handler
      */
     decreaseFontSize() {
-        if (this.states.font.current <= 1)
-            return false;
+        if (this.states.fontSize.current <= 1)
+            return null;
 
-        this.states.font.current -= 0.1;
+        this.states.fontSize.current -= 0.1;
 
         this.updateBodyElements();
-        return (this.states.font.current > 1);
+        return null;
     }
 
     /**
@@ -104,7 +250,7 @@ export default class {
     updateBodyElements() {
         let self = this;
 
-        this.states.font.$in.find(this.fontElements()).each(function() {
+        this.states.fontSize.$in.find(this.fontElements()).each(function() {
             let currentFontSize = parseFloat($(this).css('font-size'));
 
             if (!currentFontSize) {
@@ -117,7 +263,7 @@ export default class {
             }
 
             let defaultFontSize = $(this).data('original-font-size'),
-                updateFontSize = (defaultFontSize * self.states.font.current).toFixed(1) + 'px';
+                updateFontSize = (defaultFontSize * self.states.fontSize.current).toFixed(1) + 'px';
 
             $(this).css('font-size', updateFontSize);
         });
@@ -130,25 +276,42 @@ export default class {
      * @returns {string}
      */
     fontElements() {
-        if (this.states.font.fontElements) {
-            return this.states.font.fontElements;
+        if (this.states.fontSize.fontElements) {
+            return this.states.fontSize.fontElements;
         }
 
         let exclude = '',
             fontElements = '';
 
-        for (let i = 0; i < this.states.font.exclude.length; i++) {
-            exclude += ':not(' + this.states.font.exclude[i] + '):not(' + this.states.font.exclude[i] + ' *)';
+        for (let i = 0; i < this.states.fontSize.exclude.length; i++) {
+            exclude += ':not(' + this.states.fontSize.exclude[i] + '):not(' + this.states.fontSize.exclude[i] + ' *)';
         }
         exclude += ':not(script):not(style):not(link)';
 
-        for (let i = 0; i < this.states.font.search.length; i++) {
+        for (let i = 0; i < this.states.fontSize.search.length; i++) {
             fontElements += (i > 0) ? ',' : '';
-            fontElements += this.states.font.search + exclude;
+            fontElements += this.states.fontSize.search + exclude;
         }
 
-        this.states.font.fontElements = fontElements;
-        return this.states.font.fontElements;
+        this.states.fontSize.fontElements = fontElements;
+        return this.states.fontSize.fontElements;
+    }
+
+    /**
+     *
+     * @param enable
+     */
+    setImageAltDescription(enable = true) {
+        if (! enable) {
+            $(document).off('mouseenter.accessibility.image-hover-description');
+            return;
+        }
+
+        let self = this;
+
+        $(document).on('mouseenter.accessibility.image-hover-description', 'body > img, body > :not(.accessibility) img', function(e) {
+            self.imgAltDescription.mouseIn($(this), e);
+        });
     }
 
     /**
@@ -166,15 +329,28 @@ export default class {
      */
     removeAllContrasts() {
         if (this.states.darkContrast) {
-
+            this.darkContrast();
         }
 
         if (this.states.brightContrast) {
-
+            this.brightContrast();
         }
 
         if (this.states.monochrome) {
             this.monochrome();
+        }
+    }
+
+    /**
+     *
+     */
+    removeAllCursors() {
+        if (this.states.cursorBb) {
+            this.cursorBb();
+        }
+
+        if (this.states.cursorBw) {
+            this.cursorBw();
         }
     }
 }

@@ -1,8 +1,223 @@
 html body {
 
+  .accessibility {
+    .accessibility-img-alt-description {
+      display: none;
+      position: fixed;
+      visibility: hidden;
+
+      span {
+        padding: 10px;
+        display: block;
+        color: #ffffff;
+        border-radius: 3px;
+        background: rgba(0,0,0,.8);
+      }
+
+      &.accessibility-img-description-block {
+        display: block;
+      }
+
+      &.accessibility-img-mouse-in {
+        visibility: visible;
+      }
+    }
+  }
+
+  &.accessibility-body-zoomed {
+    > :not(.accessibility) {
+      zoom: 1.5;
+    }
+  }
+
   &.accessibility-monochrome {
     > *:not(.accessibility) {
       filter: grayscale(1);
+    }
+  }
+
+  &.accessibility-dark-contrast {
+    color: #ffffff;
+    background-color: #000000;
+
+    > :not(.accessibility),
+    > :not(.accessibility) :not(img):not(video) {
+      color: #ffffff;
+      background-color: #000000;
+    }
+
+    > :not(.accessibility) img,
+    > :not(.accessibility) video,
+    > :not(.accessibility) input[type="image"] {
+      filter: invert(1);
+    }
+
+    > a,
+    > [role="link"],
+    > :not(.accessibility) a,
+    > :not(.accessibility) [role="link"] {
+      color: #ffd700;
+      border-color: #ffd700;
+    }
+
+    > a,
+    > :not(.accessibility) a {
+      outline: 1px dashed #ffd700;
+    }
+
+    :placeholder-shown {
+      background-color: #000000;
+    }
+  }
+
+  &.accessibility-bright-contrast {
+    color: #000000;
+    background-color: #ffffff;
+
+    > :not(.accessibility),
+    > :not(.accessibility) :not(img):not(video) {
+      color: #000000;
+      background-color: #ffffff;
+    }
+
+    > :not(.accessibility) img,
+    > :not(.accessibility) video,
+    > :not(.accessibility) input[type="image"] {
+      filter: contrast(1.5);
+    }
+
+    > a,
+    > [role="link"],
+    > :not(.accessibility) a,
+    > :not(.accessibility) [role="link"] {
+      color: #000000;
+      border-color: #000000;
+    }
+
+    > a,
+    > :not(.accessibility) a {
+      outline: 1px dashed #000000;
+    }
+
+    :placeholder-shown {
+      background-color: #ffffff;
+    }
+  }
+
+  &.accessibility-dark-contrast,
+  &.accessibility-bright-contrast {
+    a:hover,
+    a:hover *,
+    > :not(.accessibility) a:hover,
+    > :not(.accessibility) a:hover *,
+    > :not(.accessibility):not([tabindex="-1"]):focus,
+    > :not(.accessibility):not([tabindex="-1"]):focus,
+    > :not(.accessibility):not([tabindex="-1"]):focus *,
+    > :not(.accessibility):not([tabindex="-1"]):focus * {
+      color: #000000;
+      fill: #000000;
+      stroke: #000000;
+      background-color: #fffacd;
+      font-weight: bold;
+      transition: color 0.3s ease-in, fill 0.3s ease-in;
+      filter: contrast(1);
+    }
+  }
+
+  &.accessibility-readable-font-family {
+    font-family: 'Arial';
+
+    > :not(.accessibility):not(i),
+    > :not(.accessibility) *:not(i) {
+      font-family: 'Arial';
+    }
+  }
+
+  &.accessibility-highlight-titles {
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6,
+    > [role=heading],
+    > :not(.accessibility) h1,
+    > :not(.accessibility) h2,
+    > :not(.accessibility) h3,
+    > :not(.accessibility) h4,
+    > :not(.accessibility) h5,
+    > :not(.accessibility) h6,
+    > :not(.accessibility) [role=heading] {
+      border-bottom: 2px solid yellow;
+    }
+  }
+
+  &.accessibility-highlight-link {
+    > a,
+    > [role=link],
+    > :not(.accessibility) a,
+    > :not(.accessibility) [role=link] {
+      color: red;
+      text-decoration: none;
+      border-bottom: 2px solid red;
+    }
+  }
+
+  &.accessibility-big-black-cursor {
+    cursor: url('images/bigcursorblack.cur'), auto;
+
+    a,
+    [role="link"],
+    area,
+    label,
+    audio,
+    video,
+    button,
+    [role="button"],
+    [type="button"],
+    [type="submit"],
+    [type="image"],
+    [role="radio"],
+    [type="radio"],
+    [role="checkbox"],
+    [type="checkbox"],
+    select,
+    [role="combobox"],
+    [role="option"],
+    [role="slider"],
+    [role="scrollbar"],
+    [role="spinbutton"],
+    [role="tab"] {
+      cursor: url('images/bighandblack.cur'), auto;
+    }
+  }
+
+  &.accessibility-big-white-cursor {
+    cursor: url('images/bigcursorwhite.cur'), auto;
+
+    a,
+    [role="link"],
+    area,
+    label,
+    audio,
+    video,
+    button,
+    [role="button"],
+    [type="button"],
+    [type="submit"],
+    [type="image"],
+    [role="radio"],
+    [type="radio"],
+    [role="checkbox"],
+    [type="checkbox"],
+    select,
+    [role="combobox"],
+    [role="option"],
+    [role="slider"],
+    [role="scrollbar"],
+    [role="spinbutton"],
+    [role="tab"] {
+      cursor: url('images/bighandwhite.cur'), auto;
     }
   }
 }

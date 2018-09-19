@@ -86,6 +86,9 @@ window.AccessibilityForAll = class {
 
         let activated = this.accessibilityFeatures[featureHandler](feature);
 
+        if (activated === null)
+            return;
+
         if (activated)
             this.accessibilityFeatures.featureActivated(feature);
         else

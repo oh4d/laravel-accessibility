@@ -12,6 +12,8 @@ class AssetService
 
     protected $fontsFiles = [];
 
+    protected $imagesFiles = [];
+
     /**
      * @var LaravelAccessibility
      */
@@ -112,6 +114,11 @@ class AssetService
         $this->fontsFiles[] = $this->accessibility->getBasePath('resources/src/fonts/laravel-accessibility.svg');
         $this->fontsFiles[] = $this->accessibility->getBasePath('resources/src/fonts/laravel-accessibility.ttf');
         $this->fontsFiles[] = $this->accessibility->getBasePath('resources/src/fonts/laravel-accessibility.woff');
+
+        $this->imagesFiles[] = $this->accessibility->getBasePath("resources/src/images/bighandblack.cur");
+        $this->imagesFiles[] = $this->accessibility->getBasePath("resources/src/images/bighandwhite.cur");
+        $this->imagesFiles[] = $this->accessibility->getBasePath("resources/src/images/bigcursorblack.cur");
+        $this->imagesFiles[] = $this->accessibility->getBasePath("resources/src/images/bigcursorwhite.cur");
     }
 
     protected function appendCustomAssetProps($type)

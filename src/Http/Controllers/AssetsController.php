@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\File;
 class AssetsController extends BaseController
 {
     /**
+     * Return & Combine CSS Files
+     *
      * @return Response
      */
     public function css()
@@ -21,6 +23,8 @@ class AssetsController extends BaseController
     }
 
     /**
+     * Return & Combine JS Files
+     *
      * @return Response
      */
     public function js()
@@ -34,6 +38,8 @@ class AssetsController extends BaseController
     }
 
     /**
+     * Return Fonts Asset File By Name
+     *
      * @param $fileName
      * @return Response
      */
@@ -43,6 +49,24 @@ class AssetsController extends BaseController
         $assetService = $this->accessibility->getAssetService();
 
         $content = $assetService->assetToString('fonts', $file);
+        $type = File::mimeType($file);
+
+        $response = new Response($content, 200, ['Content-Type' => $type]);
+        return $this->cacheResponse($response);
+    }
+
+    /**
+     * Return Images Asset File By Name
+     *
+     * @param $fileName
+     * @return Response
+     */
+    public function images($fileName)
+    {
+        $file = $this->accessibility->getBasePath("resources/src/images/{$fileName}");
+        $assetService = $this->accessibility->getAssetService();
+
+        $content = $assetService->assetToString('images', $file);
         $type = File::mimeType($file);
 
         $response = new Response($content, 200, ['Content-Type' => $type]);

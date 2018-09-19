@@ -70,8 +70,13 @@
   content: "\EA0C";
 }
 body > .accessibility {
-  position: absolute;
   z-index: 999999;
+  font-size: 16px;
+  position: absolute;
+}
+
+body > .accessibility :focus {
+  outline: #4d90fe auto 1px;
 }
 
 body > .accessibility * {
@@ -121,7 +126,7 @@ body > .accessibility span.keyboard kbd {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 300px;
+  width: 350px;
   position: fixed;
   -webkit-transform: translateX(-100%);
           transform: translateX(-100%);
@@ -151,11 +156,12 @@ body > .accessibility span.keyboard kbd {
   top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   overflow: auto;
   max-height: 100%;
   visibility: hidden;
   position: absolute;
-  padding: 45px 20px 20px;
+  padding: 45px 10px 20px;
 }
 
 .accessibility-menu .accessibility-menu-container .accessibility-menu-header {
@@ -189,25 +195,50 @@ body > .accessibility span.keyboard kbd {
   background: #ffffff;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features-row {
+  padding: 6px 0;
+  border-bottom: 1px solid #d1d2d3;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row {
   font-size: 0;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-feature {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature {
   width: 33.3%;
   vertical-align: top;
   display: inline-block;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-feature button {
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature:not(:last-of-type) {
+  border-right: 1px solid #d1d2d3;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature button {
   width: 100%;
   padding: 10px;
   display: block;
   text-align: center;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-feature.accessibility-active-feature {
-  background: #ebebeb;
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature span {
+  display: block;
+  font-size: 13px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature.accessibility-feature-activated button {
+  font-weight: bold;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body button:hover {
+  background: #ddeeff;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body button:focus {
+  background: #ddeeff;
+  outline: #4d90fe auto 1px;
 }
 
 .accessibility-menu.accessibility-menu-opened {
@@ -224,9 +255,224 @@ body > .accessibility span.keyboard kbd {
   display: none;
 }
 
+html body .accessibility .accessibility-img-alt-description {
+  display: none;
+  position: fixed;
+  visibility: hidden;
+}
+
+html body .accessibility .accessibility-img-alt-description span {
+  padding: 10px;
+  display: block;
+  color: #ffffff;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+html body .accessibility .accessibility-img-alt-description.accessibility-img-description-block {
+  display: block;
+}
+
+html body .accessibility .accessibility-img-alt-description.accessibility-img-mouse-in {
+  visibility: visible;
+}
+
+html body.accessibility-body-zoomed > :not(.accessibility) {
+  zoom: 1.5;
+}
+
 html body.accessibility-monochrome > *:not(.accessibility) {
   -webkit-filter: grayscale(1);
           filter: grayscale(1);
+}
+
+html body.accessibility-dark-contrast {
+  color: #ffffff;
+  background-color: #000000;
+}
+
+html body.accessibility-dark-contrast > :not(.accessibility),
+html body.accessibility-dark-contrast > :not(.accessibility) :not(img):not(video) {
+  color: #ffffff;
+  background-color: #000000;
+}
+
+html body.accessibility-dark-contrast > :not(.accessibility) img,
+html body.accessibility-dark-contrast > :not(.accessibility) video,
+html body.accessibility-dark-contrast > :not(.accessibility) input[type="image"] {
+  -webkit-filter: invert(1);
+          filter: invert(1);
+}
+
+html body.accessibility-dark-contrast > a,
+html body.accessibility-dark-contrast > [role="link"],
+html body.accessibility-dark-contrast > :not(.accessibility) a,
+html body.accessibility-dark-contrast > :not(.accessibility) [role="link"] {
+  color: #ffd700;
+  border-color: #ffd700;
+}
+
+html body.accessibility-dark-contrast > a,
+html body.accessibility-dark-contrast > :not(.accessibility) a {
+  outline: 1px dashed #ffd700;
+}
+
+html body.accessibility-dark-contrast :placeholder-shown {
+  background-color: #000000;
+}
+
+html body.accessibility-bright-contrast {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+html body.accessibility-bright-contrast > :not(.accessibility),
+html body.accessibility-bright-contrast > :not(.accessibility) :not(img):not(video) {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+html body.accessibility-bright-contrast > :not(.accessibility) img,
+html body.accessibility-bright-contrast > :not(.accessibility) video,
+html body.accessibility-bright-contrast > :not(.accessibility) input[type="image"] {
+  -webkit-filter: contrast(1.5);
+          filter: contrast(1.5);
+}
+
+html body.accessibility-bright-contrast > a,
+html body.accessibility-bright-contrast > [role="link"],
+html body.accessibility-bright-contrast > :not(.accessibility) a,
+html body.accessibility-bright-contrast > :not(.accessibility) [role="link"] {
+  color: #000000;
+  border-color: #000000;
+}
+
+html body.accessibility-bright-contrast > a,
+html body.accessibility-bright-contrast > :not(.accessibility) a {
+  outline: 1px dashed #000000;
+}
+
+html body.accessibility-bright-contrast :placeholder-shown {
+  background-color: #ffffff;
+}
+
+html body.accessibility-dark-contrast a:hover,
+html body.accessibility-dark-contrast a:hover *,
+html body.accessibility-dark-contrast > :not(.accessibility) a:hover,
+html body.accessibility-dark-contrast > :not(.accessibility) a:hover *,
+html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
+html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
+html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus *,
+html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus *, html body.accessibility-bright-contrast a:hover,
+html body.accessibility-bright-contrast a:hover *,
+html body.accessibility-bright-contrast > :not(.accessibility) a:hover,
+html body.accessibility-bright-contrast > :not(.accessibility) a:hover *,
+html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
+html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
+html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus *,
+html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus * {
+  color: #000000;
+  fill: #000000;
+  stroke: #000000;
+  background-color: #fffacd;
+  font-weight: bold;
+  -webkit-transition: color 0.3s ease-in, fill 0.3s ease-in;
+  transition: color 0.3s ease-in, fill 0.3s ease-in;
+  -webkit-filter: contrast(1);
+          filter: contrast(1);
+}
+
+html body.accessibility-readable-font-family {
+  font-family: 'Arial';
+}
+
+html body.accessibility-readable-font-family > :not(.accessibility):not(i),
+html body.accessibility-readable-font-family > :not(.accessibility) *:not(i) {
+  font-family: 'Arial';
+}
+
+html body.accessibility-highlight-titles > h1,
+html body.accessibility-highlight-titles > h2,
+html body.accessibility-highlight-titles > h3,
+html body.accessibility-highlight-titles > h4,
+html body.accessibility-highlight-titles > h5,
+html body.accessibility-highlight-titles > h6,
+html body.accessibility-highlight-titles > [role=heading],
+html body.accessibility-highlight-titles > :not(.accessibility) h1,
+html body.accessibility-highlight-titles > :not(.accessibility) h2,
+html body.accessibility-highlight-titles > :not(.accessibility) h3,
+html body.accessibility-highlight-titles > :not(.accessibility) h4,
+html body.accessibility-highlight-titles > :not(.accessibility) h5,
+html body.accessibility-highlight-titles > :not(.accessibility) h6,
+html body.accessibility-highlight-titles > :not(.accessibility) [role=heading] {
+  border-bottom: 2px solid yellow;
+}
+
+html body.accessibility-highlight-link > a,
+html body.accessibility-highlight-link > [role=link],
+html body.accessibility-highlight-link > :not(.accessibility) a,
+html body.accessibility-highlight-link > :not(.accessibility) [role=link] {
+  color: red;
+  text-decoration: none;
+  border-bottom: 2px solid red;
+}
+
+html body.accessibility-big-black-cursor {
+  cursor: url("images/bigcursorblack.cur"), auto;
+}
+
+html body.accessibility-big-black-cursor a,
+html body.accessibility-big-black-cursor [role="link"],
+html body.accessibility-big-black-cursor area,
+html body.accessibility-big-black-cursor label,
+html body.accessibility-big-black-cursor audio,
+html body.accessibility-big-black-cursor video,
+html body.accessibility-big-black-cursor button,
+html body.accessibility-big-black-cursor [role="button"],
+html body.accessibility-big-black-cursor [type="button"],
+html body.accessibility-big-black-cursor [type="submit"],
+html body.accessibility-big-black-cursor [type="image"],
+html body.accessibility-big-black-cursor [role="radio"],
+html body.accessibility-big-black-cursor [type="radio"],
+html body.accessibility-big-black-cursor [role="checkbox"],
+html body.accessibility-big-black-cursor [type="checkbox"],
+html body.accessibility-big-black-cursor select,
+html body.accessibility-big-black-cursor [role="combobox"],
+html body.accessibility-big-black-cursor [role="option"],
+html body.accessibility-big-black-cursor [role="slider"],
+html body.accessibility-big-black-cursor [role="scrollbar"],
+html body.accessibility-big-black-cursor [role="spinbutton"],
+html body.accessibility-big-black-cursor [role="tab"] {
+  cursor: url("images/bighandblack.cur"), auto;
+}
+
+html body.accessibility-big-white-cursor {
+  cursor: url("images/bigcursorwhite.cur"), auto;
+}
+
+html body.accessibility-big-white-cursor a,
+html body.accessibility-big-white-cursor [role="link"],
+html body.accessibility-big-white-cursor area,
+html body.accessibility-big-white-cursor label,
+html body.accessibility-big-white-cursor audio,
+html body.accessibility-big-white-cursor video,
+html body.accessibility-big-white-cursor button,
+html body.accessibility-big-white-cursor [role="button"],
+html body.accessibility-big-white-cursor [type="button"],
+html body.accessibility-big-white-cursor [type="submit"],
+html body.accessibility-big-white-cursor [type="image"],
+html body.accessibility-big-white-cursor [role="radio"],
+html body.accessibility-big-white-cursor [type="radio"],
+html body.accessibility-big-white-cursor [role="checkbox"],
+html body.accessibility-big-white-cursor [type="checkbox"],
+html body.accessibility-big-white-cursor select,
+html body.accessibility-big-white-cursor [role="combobox"],
+html body.accessibility-big-white-cursor [role="option"],
+html body.accessibility-big-white-cursor [role="slider"],
+html body.accessibility-big-white-cursor [role="scrollbar"],
+html body.accessibility-big-white-cursor [role="spinbutton"],
+html body.accessibility-big-white-cursor [role="tab"] {
+  cursor: url("images/bighandwhite.cur"), auto;
 }
 
 .accessibility-navigation .accessibility-quick-access button {

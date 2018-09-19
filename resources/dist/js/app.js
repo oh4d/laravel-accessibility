@@ -60,29 +60,53 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
-module.exports = __webpack_require__(6);
-
+var map = {
+	"./en.js": 6,
+	"./he.js": 7
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 0;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(2);
+module.exports = __webpack_require__(10);
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__i18n__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__navigation__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__accessibility_features__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__i18n__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__navigation__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__accessibility_features__ = __webpack_require__(9);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -174,6 +198,8 @@ window.AccessibilityForAll = function () {
             if (typeof this.accessibilityFeatures[featureHandler] === 'undefined') return;
 
             var activated = this.accessibilityFeatures[featureHandler](feature);
+
+            if (activated === null) return;
 
             if (activated) this.accessibilityFeatures.featureActivated(feature);else this.accessibilityFeatures.featureDeActivated(feature);
         }
@@ -308,7 +334,7 @@ window.AccessibilityForAll = function () {
 }();
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10679,7 +10705,7 @@ return jQuery;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10784,7 +10810,7 @@ var _class = function () {
                 return this.$trigger;
             }
 
-            this.$trigger = $('<button type="button"/>').addClass('accessibility-menu-trigger');
+            this.$trigger = $('<button type="button" role="button"/>').addClass('accessibility-menu-trigger');
 
             this.$trigger.append('<i/>');
             this.$trigger.find('i').addClass('accessibility icon-accessibility');
@@ -10817,23 +10843,66 @@ var _class = function () {
     }, {
         key: 'getFeatures',
         value: function getFeatures() {
+            var _this = this;
+
             if (typeof this.$features !== 'undefined') {
                 return this.$features;
             }
 
-            var self = this;
+            var self = this,
+                features = this.spreadFeaturesToRows();
+
             this.$features = $('<div class="accessibility-features"/>');
 
-            $.each(this.accessibility.getFeatures(), function () {
-                var $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
+            var _loop = function _loop(row) {
+                var $row = $('<div class="accessibility-features-row"/>');
 
-                $feature.append('<button type="button" data-feature="' + this.type + '"><i></i><span></span></button>');
-                $feature.find('i').addClass(this.icon);
+                $.each(features[row], function () {
+                    var $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
 
-                self.$features.append($feature);
-            });
+                    $feature.append('<button type="button" data-feature="' + this.type + '"><i></i><span></span></button>');
+
+                    $feature.find('i').addClass(this.icon);
+                    $feature.find('span').html(self.accessibility.$i18n.trans(this.type));
+
+                    $row.append($feature);
+                });
+
+                _this.$features.append($row);
+            };
+
+            for (var row = 0; row < features.length; row++) {
+                _loop(row);
+            }
 
             return this.$features;
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'spreadFeaturesToRows',
+        value: function spreadFeaturesToRows() {
+            var index = 0,
+                features = [];
+
+            $.each(this.accessibility.getFeatures(), function () {
+                if (!this.enable) return;
+
+                if (features[index] && features[index].length >= 3) {
+                    index++;
+                }
+
+                if (!features[index]) {
+                    features[index] = [];
+                }
+
+                features[index].push(this);
+            });
+
+            return features;
         }
 
         /**
@@ -10940,7 +11009,114 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 4 */
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _class = function () {
+    /**
+     *
+     * @param locale
+     */
+    function _class() {
+        var locale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
+
+        _classCallCheck(this, _class);
+
+        this.locale = locale;
+        this.defaultLocale = 'en';
+
+        this.setLocale();
+    }
+
+    /**
+     * Get Translation By Key
+     *
+     * @param key
+     */
+
+
+    _createClass(_class, [{
+        key: 'trans',
+        value: function trans(key) {
+            if (!this.translations) return '';
+
+            for (var _key in this.translations) {
+                if (_key === key) return this.translations[key];
+            }
+        }
+
+        /**
+         * Set Locale
+         *
+         * @param locale
+         */
+
+    }, {
+        key: 'setLocale',
+        value: function setLocale(locale) {
+            if (!locale) locale = this.locale;
+
+            var trans = false;
+
+            this.locale = locale;
+
+            try {
+                trans = __webpack_require__(0)("./" + locale + '.js');
+            } catch (e) {
+                this.locale = this.defaultLocale;
+                trans = __webpack_require__(0)("./" + this.defaultLocale + '.js');
+            }
+
+            if (!trans.default) return;
+
+            this.translations = trans.default;
+        }
+    }]);
+
+    return _class;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (_class);
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+    'accessibility': 'Accessibility',
+    'monochrome': 'Monochrome',
+    'dark-contrast': 'Dark Contrast',
+    'bright-contrast': 'Bright Contrast',
+    'decrease-font-size': 'Decrease Font Size',
+    'increase-font-size': 'Increase Font Size',
+    'font-family': 'Font Family',
+    'cursor-bw': 'Big White Cursor',
+    'cursor-bb': 'Big Black Cursor',
+    'zoom': 'Zoom',
+    'highlight-links': 'Highlight Links',
+    'highlight-titles': 'Highlight Titles',
+    'alt-description': 'Alt Description'
+});
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+    'accessibility': 'נגישות'
+});
+
+/***/ }),
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11102,13 +11278,16 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 5 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__features_img_alt_description__ = __webpack_require__(16);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
 
 var _class = function () {
 
@@ -11123,6 +11302,8 @@ var _class = function () {
         this.accessibility = accessibility;
 
         this.initStates();
+
+        this.initFeatures();
     }
 
     /**
@@ -11143,15 +11324,26 @@ var _class = function () {
                 zoom: false,
                 highlightLinks: false,
                 highlightTitles: false,
+                altDescription: false,
 
-                font: {
+                fontSize: {
                     max: 1.5,
                     current: 1,
-                    $in: $('body'),
+                    $in: $('html'),
                     search: ['*'],
-                    exclude: ['svg', '.accessibility']
+                    exclude: ['svg', '.accessibility', 'head']
                 }
             };
+        }
+
+        /**
+         * Initialize Features Handlers
+         */
+
+    }, {
+        key: 'initFeatures',
+        value: function initFeatures() {
+            this.imgAltDescription = new __WEBPACK_IMPORTED_MODULE_0__features_img_alt_description__["a" /* default */](this.accessibility);
         }
 
         /**
@@ -11179,7 +11371,44 @@ var _class = function () {
         }
 
         /**
+         *
+         */
+
+    }, {
+        key: 'cursorBb',
+        value: function cursorBb() {
+            if (this.states.cursorBb) {
+                this.accessibility.$body.removeClass('accessibility-big-black-cursor');
+            } else {
+                this.removeAllCursors();
+                this.accessibility.$body.addClass('accessibility-big-black-cursor');
+            }
+
+            this.setState('cursorBb', !this.states.cursorBb);
+            return this.states.cursorBb;
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'cursorBw',
+        value: function cursorBw() {
+            if (this.states.cursorBw) {
+                this.accessibility.$body.removeClass('accessibility-big-white-cursor');
+            } else {
+                this.removeAllCursors();
+                this.accessibility.$body.addClass('accessibility-big-white-cursor');
+            }
+
+            this.setState('cursorBw', !this.states.cursorBw);
+            return this.states.cursorBw;
+        }
+
+        /**
          * Monochrome Contrast Handler
+         * @returns {boolean}
          */
 
     }, {
@@ -11197,18 +11426,140 @@ var _class = function () {
         }
 
         /**
+         *
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'darkContrast',
+        value: function darkContrast() {
+            if (this.states.darkContrast) {
+                this.accessibility.$body.removeClass('accessibility-dark-contrast');
+            } else {
+                this.removeAllContrasts();
+                this.accessibility.$body.addClass('accessibility-dark-contrast');
+            }
+
+            this.setState('darkContrast', !this.states.darkContrast);
+            return this.states.darkContrast;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'brightContrast',
+        value: function brightContrast() {
+            if (this.states.brightContrast) {
+                this.accessibility.$body.removeClass('accessibility-bright-contrast');
+            } else {
+                this.removeAllContrasts();
+                this.accessibility.$body.addClass('accessibility-bright-contrast');
+            }
+
+            this.setState('brightContrast', !this.states.brightContrast);
+            return this.states.brightContrast;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'highlightLinks',
+        value: function highlightLinks() {
+            if (this.states.highlightLinks) {
+                this.accessibility.$body.removeClass('accessibility-highlight-link');
+            } else {
+                this.accessibility.$body.addClass('accessibility-highlight-link');
+            }
+
+            this.setState('highlightLinks', !this.states.highlightLinks);
+            return this.states.highlightLinks;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'highlightTitles',
+        value: function highlightTitles() {
+            if (this.states.highlightTitles) {
+                this.accessibility.$body.removeClass('accessibility-highlight-titles');
+            } else {
+                this.accessibility.$body.addClass('accessibility-highlight-titles');
+            }
+
+            this.setState('highlightTitles', !this.states.highlightTitles);
+            return this.states.highlightTitles;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'fontFamily',
+        value: function fontFamily() {
+            if (this.states.fontFamily) {
+                this.accessibility.$body.removeClass('accessibility-readable-font-family');
+            } else {
+                this.accessibility.$body.addClass('accessibility-readable-font-family');
+            }
+
+            this.setState('fontFamily', !this.states.fontFamily);
+            return this.states.fontFamily;
+        }
+    }, {
+        key: 'zoom',
+        value: function zoom() {
+            if (this.states.zoom) {
+                this.accessibility.$body.removeClass('accessibility-body-zoomed');
+            } else {
+                this.accessibility.$body.addClass('accessibility-body-zoomed');
+            }
+
+            this.setState('zoom', !this.states.zoom);
+            return this.states.zoom;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'altDescription',
+        value: function altDescription() {
+            if (this.states.altDescription) {
+                this.setImageAltDescription(false);
+            } else {
+                this.setImageAltDescription(true);
+            }
+
+            this.setState('altDescription', !this.states.altDescription);
+            return this.states.altDescription;
+        }
+
+        /**
          * Increase Font Size Handler
          */
 
     }, {
         key: 'increaseFontSize',
         value: function increaseFontSize() {
-            if (this.states.font.current >= 1.5) return this.states.font.current > 1;
+            if (this.states.fontSize.current >= 1.5) return null;
 
-            this.states.font.current += 0.1;
+            this.states.fontSize.current += 0.1;
 
             this.updateBodyElements();
-            return this.states.font.current > 1;
+            return null;
         }
 
         /**
@@ -11218,12 +11569,12 @@ var _class = function () {
     }, {
         key: 'decreaseFontSize',
         value: function decreaseFontSize() {
-            if (this.states.font.current <= 1) return false;
+            if (this.states.fontSize.current <= 1) return null;
 
-            this.states.font.current -= 0.1;
+            this.states.fontSize.current -= 0.1;
 
             this.updateBodyElements();
-            return this.states.font.current > 1;
+            return null;
         }
 
         /**
@@ -11236,7 +11587,7 @@ var _class = function () {
         value: function updateBodyElements() {
             var self = this;
 
-            this.states.font.$in.find(this.fontElements()).each(function () {
+            this.states.fontSize.$in.find(this.fontElements()).each(function () {
                 var currentFontSize = parseFloat($(this).css('font-size'));
 
                 if (!currentFontSize) {
@@ -11249,7 +11600,7 @@ var _class = function () {
                 }
 
                 var defaultFontSize = $(this).data('original-font-size'),
-                    updateFontSize = (defaultFontSize * self.states.font.current).toFixed(1) + 'px';
+                    updateFontSize = (defaultFontSize * self.states.fontSize.current).toFixed(1) + 'px';
 
                 $(this).css('font-size', updateFontSize);
             });
@@ -11265,25 +11616,47 @@ var _class = function () {
     }, {
         key: 'fontElements',
         value: function fontElements() {
-            if (this.states.font.fontElements) {
-                return this.states.font.fontElements;
+            if (this.states.fontSize.fontElements) {
+                return this.states.fontSize.fontElements;
             }
 
             var exclude = '',
                 fontElements = '';
 
-            for (var i = 0; i < this.states.font.exclude.length; i++) {
-                exclude += ':not(' + this.states.font.exclude[i] + '):not(' + this.states.font.exclude[i] + ' *)';
+            for (var i = 0; i < this.states.fontSize.exclude.length; i++) {
+                exclude += ':not(' + this.states.fontSize.exclude[i] + '):not(' + this.states.fontSize.exclude[i] + ' *)';
             }
             exclude += ':not(script):not(style):not(link)';
 
-            for (var _i = 0; _i < this.states.font.search.length; _i++) {
+            for (var _i = 0; _i < this.states.fontSize.search.length; _i++) {
                 fontElements += _i > 0 ? ',' : '';
-                fontElements += this.states.font.search + exclude;
+                fontElements += this.states.fontSize.search + exclude;
             }
 
-            this.states.font.fontElements = fontElements;
-            return this.states.font.fontElements;
+            this.states.fontSize.fontElements = fontElements;
+            return this.states.fontSize.fontElements;
+        }
+
+        /**
+         *
+         * @param enable
+         */
+
+    }, {
+        key: 'setImageAltDescription',
+        value: function setImageAltDescription() {
+            var enable = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+            if (!enable) {
+                $(document).off('mouseenter.accessibility.image-hover-description');
+                return;
+            }
+
+            var self = this;
+
+            $(document).on('mouseenter.accessibility.image-hover-description', 'body > img, body > :not(.accessibility) img', function (e) {
+                self.imgAltDescription.mouseIn($(this), e);
+            });
         }
 
         /**
@@ -11306,12 +11679,32 @@ var _class = function () {
     }, {
         key: 'removeAllContrasts',
         value: function removeAllContrasts() {
-            if (this.states.darkContrast) {}
+            if (this.states.darkContrast) {
+                this.darkContrast();
+            }
 
-            if (this.states.brightContrast) {}
+            if (this.states.brightContrast) {
+                this.brightContrast();
+            }
 
             if (this.states.monochrome) {
                 this.monochrome();
+            }
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'removeAllCursors',
+        value: function removeAllCursors() {
+            if (this.states.cursorBb) {
+                this.cursorBb();
+            }
+
+            if (this.states.cursorBw) {
+                this.cursorBw();
             }
         }
     }]);
@@ -11322,18 +11715,18 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 6 */
+/* 10 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
 /* 11 */,
-/* 12 */
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11342,63 +11735,144 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _class = function () {
-    /**
-     *
-     * @param locale
-     */
-    function _class() {
-        var locale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
-
+    function _class(accessibility) {
         _classCallCheck(this, _class);
 
-        this.locale = locale;
-        this.defaultLocale = 'en';
+        this.accessibility = accessibility;
 
-        this.setLocale();
+        this.prepare();
     }
 
     /**
-     * Get Translation By Key
      *
-     * @param key
+     * @returns {*}
      */
 
 
     _createClass(_class, [{
-        key: 'trans',
-        value: function trans(key) {
-            if (!this.translations) return '';
-
-            for (var _key in this.translations) {
-                if (_key === key) return this.translations[key];
+        key: 'prepare',
+        value: function prepare() {
+            if (this.$el) {
+                return this.$el;
             }
+
+            this.$el = $('<div class="accessibility-img-alt-description"/>');
+            this.accessibility.getMainWrap().append(this.$el);
+            return this.$el;
         }
 
         /**
-         * Set Locale
          *
-         * @param locale
+         * @param $el
+         * @param event
          */
 
     }, {
-        key: 'setLocale',
-        value: function setLocale(locale) {
-            if (!locale) locale = this.locale;
+        key: 'mouseIn',
+        value: function mouseIn($el, event) {
+            if (!$el) return;
 
-            var trans = false;
+            var self = this,
+                alt = $el.attr('alt');
 
-            this.locale = locale;
+            if (!alt) return;
 
-            try {
-                trans = __webpack_require__(13)("./" + locale + '.js');
-            } catch (e) {
-                this.locale = this.defaultLocale;
-                trans = __webpack_require__(13)("./" + this.defaultLocale + '.js');
+            this.$hoverImg = $el;
+
+            this.$el.addClass('accessibility-img-description-block');
+
+            this.renderAltDescription(alt, event);
+
+            this.visible();
+
+            this.$hoverImg.on('mouseout.accessibility.image-mouse-out', function () {
+                self.mouseOut();
+            });
+
+            this.$hoverImg.on('mousemove.accessibility.image-mouse-move', function (e) {
+                self.positionBox(e);
+            });
+        }
+
+        /**
+         *
+         * @param $el
+         */
+
+    }, {
+        key: 'mouseOut',
+        value: function mouseOut() {
+            this.visible(false);
+
+            this.$hoverImg.off('mouseout.accessibility.image-mouse-out');
+            this.$hoverImg.off('mousemove.accessibility.image-mouse-move');
+
+            this.$hoverImg = false;
+        }
+
+        /**
+         *
+         * @param visible
+         */
+
+    }, {
+        key: 'visible',
+        value: function visible() {
+            var _visible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+            if (!_visible) {
+                this.$el.removeClass('accessibility-img-mouse-in accessibility-img-description-block');
+                this.$el.html('');
+                return;
             }
 
-            if (!trans.default) return;
+            this.$el.addClass('accessibility-img-mouse-in');
+        }
 
-            this.translations = trans.default;
+        /**
+         *
+         * @param $el
+         * @param alt
+         * @param event
+         */
+
+    }, {
+        key: 'renderAltDescription',
+        value: function renderAltDescription(alt, event) {
+            var $box = $('<span/>');
+            $box.html(alt);
+
+            this.prepare().html($box);
+            this.positionBox(event);
+        }
+
+        /**
+         *
+         * @param event
+         */
+
+    }, {
+        key: 'positionBox',
+        value: function positionBox(event) {
+            this.accessibility.preventDefault(event);
+
+            var elWidth = this.$el.width(),
+                pX = event.clientX - elWidth / 2,
+                pY = event.clientY + 20;
+
+            if (this.accessibility.$body.hasClass('accessibility-big-white-cursor') || this.accessibility.$body.hasClass('accessibility-big-black-cursor')) {
+                pY += 20;
+            }
+
+            if (event.clientX + elWidth / 2 > this.accessibility.$body.width()) {
+                pX = event.clientX - elWidth;
+            }
+
+            if (pX < 0) {
+                pX = event.clientX;
+            }
+
+            this.$el.css({ 'left': pX, 'top': pY });
         }
     }]);
 
@@ -11406,62 +11880,6 @@ var _class = function () {
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (_class);
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./en.js": 14,
-	"./he.js": 15
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 13;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = ({
-    'accessibility': 'Accessibility',
-    'monochrome': 'Monochrome',
-    'dark-contrast': 'Dark Contrast',
-    'bright-contrast': 'Bright Contrast',
-    'decrease-font-size': 'Decrease Font Size',
-    'increase-font-size': 'Increase Font Size',
-    'font-family': 'Font Family',
-    'cursor-bw': 'Big White Cursor',
-    'cursor-bb': 'Big Black Cursor',
-    'zoom': 'Zoom',
-    'highlight-links': 'Highlight Links',
-    'highlight-titles': 'Highlight Titles',
-    'alt-description': 'Alt Description'
-});
-
-/***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = ({
-    'accessibility': 'נגישות'
-});
 
 /***/ })
 /******/ ]);

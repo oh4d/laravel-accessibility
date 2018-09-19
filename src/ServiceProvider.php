@@ -65,6 +65,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $router->get('assets/js', 'AssetsController@js')->name('accessibility.assets.js');
             $router->get('assets/css', 'AssetsController@css')->name('accessibility.assets.css');
             $router->get('assets/fonts/{fileName}', 'AssetsController@fonts')->name('accessibility.assets.fonts');
+            $router->get('assets/images/{fileName}', 'AssetsController@images')->name('accessibility.assets.images');
         });
     }
 }

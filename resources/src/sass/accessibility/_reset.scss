@@ -1,17 +1,16 @@
 body > .accessibility {
+  z-index: 999999;
+  font-size: 16px;
+  position: absolute;
+
+  :focus {
+    outline: rgb(77, 144, 254) auto  1px;
+  }
+
   * {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-
-    &:active,
-    &:focus,
-    &:hover {
-      // outline: none;
-    }
   }
-
-  position: absolute;
-  z-index: 999999;
 
   button {
     border: none;

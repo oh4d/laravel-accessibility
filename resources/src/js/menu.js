@@ -77,7 +77,7 @@ export default class {
             return this.$trigger;
         }
 
-        this.$trigger = $('<button type="button"/>').addClass('accessibility-menu-trigger');
+        this.$trigger = $('<button type="button" role="button"/>').addClass('accessibility-menu-trigger');
 
         this.$trigger.append('<i/>');
         this.$trigger.find('i').addClass('accessibility icon-accessibility');
@@ -108,19 +108,54 @@ export default class {
             return this.$features;
         }
 
-        let self = this;
+        let self = this,
+            features = this.spreadFeaturesToRows();
+
         this.$features = $('<div class="accessibility-features"/>');
 
-        $.each(this.accessibility.getFeatures(), function() {
-            let $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
+        for (let row = 0; row < features.length; row++) {
+            let $row = $('<div class="accessibility-features-row"/>');
 
-            $feature.append('<button type="button" data-feature="'+this.type+'"><i></i><span></span></button>');
-            $feature.find('i').addClass(this.icon);
+            $.each(features[row], function() {
+                let $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
 
-            self.$features.append($feature);
-        });
+                $feature.append('<button type="button" data-feature="'+this.type+'"><i></i><span></span></button>');
+
+                $feature.find('i').addClass(this.icon);
+                $feature.find('span').html(self.accessibility.$i18n.trans(this.type));
+
+                $row.append($feature);
+            });
+
+            this.$features.append($row);
+        }
 
         return this.$features;
+    }
+
+    /**
+     *
+     */
+    spreadFeaturesToRows() {
+        let index = 0,
+            features = [];
+
+        $.each(this.accessibility.getFeatures(), function() {
+            if (! this.enable)
+                return;
+
+            if (features[index] && features[index].length >= 3) {
+                index++;
+            }
+
+            if (! features[index]) {
+                features[index] = [];
+            }
+
+            features[index].push(this);
+        });
+
+        return features;
     }
 
     /**
