@@ -68,6 +68,15 @@ html body {
     :placeholder-shown {
       background-color: #000000;
     }
+
+    > .accessibility {
+      .accessibility-img-alt-description {
+        span {
+          color: #000000;
+          background: rgba(255,255,255,.9);
+        }
+      }
+    }
   }
 
   &.accessibility-bright-contrast {

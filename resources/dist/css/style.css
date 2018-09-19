@@ -321,6 +321,11 @@ html body.accessibility-dark-contrast :placeholder-shown {
   background-color: #000000;
 }
 
+html body.accessibility-dark-contrast > .accessibility .accessibility-img-alt-description span {
+  color: #000000;
+  background: rgba(255, 255, 255, 0.9);
+}
+
 html body.accessibility-bright-contrast {
   color: #000000;
   background-color: #ffffff;
