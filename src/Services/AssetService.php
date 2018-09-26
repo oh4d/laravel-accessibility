@@ -83,12 +83,27 @@ class AssetService
     }
 
     /**
+     * Render Accessibility Config
+     * For Initialize JS Function
+     *
+     * @return string
+     */
+    public function renderConfig()
+    {
+        $config = [
+            'features' => config('accessibility.features')
+        ];
+
+        return json_encode($config);
+    }
+
+    /**
      * @return string
      */
     public function render()
     {
         $js = '';
-        $js .= sprintf("var %s = new %s();\n", 'accessibility', 'AccessibilityForAll');
+        $js .= sprintf("var %s = new %s(%s);\n", 'accessibility', 'AccessibilityForAll', $this->renderConfig());
 
         return "<script type=\"text/javascript\">\n$js\n</script>\n";
     }

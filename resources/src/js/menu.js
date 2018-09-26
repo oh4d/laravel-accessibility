@@ -38,7 +38,11 @@ export default class {
 
         this.$container.append(this.getMenuHeader());
 
-        this.getMenuBody().append(this.getFeatures());
+        this.getMenuBody().append(this.getLayoutFeatures());
+
+        this.getMenuBody().append(this.getViewFeatures());
+
+        this.$container.append(this.getMenuFooter());
     }
 
     /**
@@ -69,6 +73,20 @@ export default class {
     }
 
     /**
+     *
+     * @returns {*|jQuery|HTMLElement}
+     */
+    getMenuFooter() {
+        if (typeof this.$menuFooter !== 'undefined') {
+            return this.$menuFooter;
+        }
+
+        this.$menuFooter = $('<div class="accessibility-menu-footer"/>');
+        this.$menuFooter.append(this.getFooterActions());
+        return this.$menuFooter;
+    }
+
+    /**
      * Return Menu Trigger Button
      * @returns {*}
      */
@@ -77,10 +95,12 @@ export default class {
             return this.$trigger;
         }
 
-        this.$trigger = $('<button type="button" role="button"/>').addClass('accessibility-menu-trigger');
+        this.$trigger = $('<button type="button" aria-labelledby="accessibilityTriggerButtonTt" role="button"/>').addClass('accessibility-menu-trigger');
 
         this.$trigger.append('<i/>');
         this.$trigger.find('i').addClass('accessibility icon-accessibility');
+        this.$trigger.append(AccessibilityForAll.renderToolTipEl('Accessibility Menu', 'accessibilityTriggerButtonTt'));
+
         return this.$trigger;
     }
 
@@ -101,36 +121,98 @@ export default class {
     }
 
     /**
+     *
+     * @returns {*|jQuery|HTMLElement}
+     */
+    getFooterActions() {
+        if (typeof this.$footerFeatures !== 'undefined') {
+            return this.$footerFeatures;
+        }
+
+        this.$footerFeatures = $('<div class="accessibility-footer-features"/>');
+
+        let features = this.accessibility.getHelperFeatures();
+
+        this.$footerFeatures.append(this.createFeaturesEl(features));
+
+        return this.$footerFeatures;
+    }
+
+    /**
+     *
+     * @returns {*|jQuery|HTMLElement}
+     */
+    getLayoutFeatures() {
+        if (typeof this.$layoutFeatures !== 'undefined') {
+            return this.$layoutFeatures;
+        }
+
+        this.$layoutFeatures = $('<div class="accessibility-layout-features"/>');
+
+        let features = this.accessibility.getLayoutFeatures();
+
+        this.$layoutFeatures.append(this.createFeaturesEl(features));
+
+        return this.$layoutFeatures;
+    }
+
+    /**
      * Return Features Element To Menu Container
      */
-    getFeatures() {
-        if (typeof this.$features !== 'undefined') {
-            return this.$features;
+    getViewFeatures() {
+        if (typeof this.$viewFeatures !== 'undefined') {
+            return this.$viewFeatures;
+        }
+
+        let features = this.spreadFeaturesToRows();
+
+        this.$viewFeatures = $('<div class="accessibility-features"/>');
+
+        for (let row = 0; row < features.length; row++) {
+            this.$viewFeatures.append(this.createFeaturesEl(features[row], $('<div class="accessibility-features-row"/>')));
+        }
+
+        return this.$viewFeatures;
+    }
+
+    /**
+     *
+     * @param features
+     * @param $append
+     */
+    createFeaturesEl(features, $append = null) {
+        if (! features) {
+            return null;
         }
 
         let self = this,
-            features = this.spreadFeaturesToRows();
+            $container = '';
 
-        this.$features = $('<div class="accessibility-features"/>');
+        $.each(features, function() {
+            let $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
 
-        for (let row = 0; row < features.length; row++) {
-            let $row = $('<div class="accessibility-features-row"/>');
+            $feature.append('<button type="button" data-feature="'+this.type+'"><i></i><span></span></button>');
 
-            $.each(features[row], function() {
-                let $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
+            let featureState = self.accessibility.accessibilityFeatures.getState(this.type);
 
-                $feature.append('<button type="button" data-feature="'+this.type+'"><i></i><span></span></button>');
+            if (featureState === 'enable') {
+                $feature.addClass('accessibility-feature-activated');
+            }
 
-                $feature.find('i').addClass(this.icon);
-                $feature.find('span').html(self.accessibility.$i18n.trans(this.type));
+            $feature.find('i').addClass(this.icon);
+            $feature.find('span').html(self.accessibility.$i18n.trans(this.type));
 
-                $row.append($feature);
-            });
+            if ($append) {
+                $append.append($feature);
+            }
 
-            this.$features.append($row);
-        }
+            $container += $feature.prop('outerHTML');
 
-        return this.$features;
+            // Appending feature trigger $el to features object
+            // self.accessibility.appendFeatureEl(this.type, $feature);
+        });
+
+        return ($append) ? $append : $container;
     }
 
     /**
@@ -211,9 +293,19 @@ export default class {
             self.closeMenu(e);
         }.bind(this));
 
-        // Feature Clicked
-        this.$features.find('.accessibility-feature button').on('click', function() {
-            self.accessibility.featureListener($(this).parent(), $(this).data('feature'));
+        // View Feature Clicked
+        this.$viewFeatures.find('.accessibility-feature button').on('click', function() {
+            self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'));
+        });
+
+        // Layout Feature Clicked
+        this.$layoutFeatures.find('.accessibility-feature button').on('click', function() {
+            self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'), 'layout');
+        });
+
+        // Footer Feature Clicked
+        this.$footerFeatures.find('.accessibility-feature button').on('click', function() {
+            self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'), 'helper');
         });
     }
 
@@ -221,7 +313,7 @@ export default class {
      * Open Accessibility Menu
      */
     openMenu(e) {
-        this.accessibility.preventDefault(e);
+        AccessibilityForAll.preventDefault(e);
 
         this.$el.addClass('accessibility-menu-opened');
         this.$container.attr('aria-hidden', false);
@@ -235,7 +327,7 @@ export default class {
      * Close Accessibility Menu
      */
     closeMenu(e) {
-        this.accessibility.preventDefault(e);
+        AccessibilityForAll.preventDefault(e);
 
         this.$el.removeClass('accessibility-menu-opened');
         this.$container.attr('aria-hidden', true);

@@ -76,7 +76,7 @@ body > .accessibility {
 }
 
 body > .accessibility :focus {
-  outline: #4d90fe auto 1px;
+  outline: none;
 }
 
 body > .accessibility * {
@@ -85,8 +85,14 @@ body > .accessibility * {
   font-family: Arial, sans-serif;
 }
 
+body > .accessibility a {
+  color: #000000;
+  text-decoration: none;
+}
+
 body > .accessibility button {
   border: none;
+  color: #000000;
   cursor: pointer;
   background: transparent;
   -webkit-appearance: none;
@@ -141,11 +147,13 @@ body > .accessibility span.keyboard kbd {
 .accessibility-menu .accessibility-menu-trigger {
   top: 50px;
   left: 100%;
+  color: #ffffff;
   position: absolute;
-  border: 2px dashed #000000;
+  border-radius: 0 50% 50% 0;
+  border: 2px solid #ffffff;
   border-left: none;
   padding: 15px 25px 15px 10px;
-  border-radius: 0 50% 50% 0;
+  background: #000000;
 }
 
 .accessibility-menu .accessibility-menu-trigger i {
@@ -161,7 +169,19 @@ body > .accessibility span.keyboard kbd {
   max-height: 100%;
   visibility: hidden;
   position: absolute;
-  padding: 45px 10px 20px;
+  padding: 55px 10px 90px;
+}
+
+.accessibility-menu .accessibility-menu-container :focus {
+  outline: #4d90fe auto 1px;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-feature button span {
+  font-size: 13px;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-feature.accessibility-feature-activated button {
+  font-weight: bold;
 }
 
 .accessibility-menu .accessibility-menu-container .accessibility-menu-header {
@@ -200,6 +220,27 @@ body > .accessibility span.keyboard kbd {
   border-bottom: 1px solid #d1d2d3;
 }
 
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature {
+  padding: 5px 0;
+  border-bottom: 1px solid #d1d2d3;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button {
+  width: 100%;
+  padding: 10px;
+  display: block;
+  text-align: left;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button i {
+  margin-right: 10px;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button i, .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row {
   font-size: 0;
 }
@@ -223,13 +264,8 @@ body > .accessibility span.keyboard kbd {
 
 .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature span {
   display: block;
-  font-size: 13px;
   margin-top: 10px;
   text-align: center;
-}
-
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature.accessibility-feature-activated button {
-  font-weight: bold;
 }
 
 .accessibility-menu .accessibility-menu-container .accessibility-menu-body button:hover {
@@ -239,6 +275,30 @@ body > .accessibility span.keyboard kbd {
 .accessibility-menu .accessibility-menu-container .accessibility-menu-body button:focus {
   background: #ddeeff;
   outline: #4d90fe auto 1px;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-footer {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  position: absolute;
+  text-align: center;
+  background: #ffffff;
+  -webkit-box-shadow: 1px 0 3px rgba(0, 0, 0, 0.6);
+          box-shadow: 1px 0 3px rgba(0, 0, 0, 0.6);
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-footer button {
+  padding: 10px;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.accessibility-menu .accessibility-menu-container .accessibility-menu-footer button span {
+  display: block;
+  margin-top: 10px;
 }
 
 .accessibility-menu.accessibility-menu-opened {
@@ -284,6 +344,13 @@ html body.accessibility-body-zoomed > :not(.accessibility) {
 html body.accessibility-monochrome > *:not(.accessibility) {
   -webkit-filter: grayscale(1);
           filter: grayscale(1);
+}
+
+html body.accessibility-transitions-disabled * {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-animation: none !important;
+          animation: none !important;
 }
 
 html body.accessibility-dark-contrast {
@@ -366,25 +433,25 @@ html body.accessibility-dark-contrast a:hover *,
 html body.accessibility-dark-contrast > :not(.accessibility) a:hover,
 html body.accessibility-dark-contrast > :not(.accessibility) a:hover *,
 html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
-html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
+html body.accessibility-dark-contrast > :not(.accessibility) :not([tabindex="-1"]):focus,
 html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus *,
-html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus *, html body.accessibility-bright-contrast a:hover,
+html body.accessibility-dark-contrast > :not(.accessibility) :not([tabindex="-1"]):focus *, html body.accessibility-bright-contrast a:hover,
 html body.accessibility-bright-contrast a:hover *,
 html body.accessibility-bright-contrast > :not(.accessibility) a:hover,
 html body.accessibility-bright-contrast > :not(.accessibility) a:hover *,
 html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
-html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
+html body.accessibility-bright-contrast > :not(.accessibility) :not([tabindex="-1"]):focus,
 html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus *,
-html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus * {
-  color: #000000;
+html body.accessibility-bright-contrast > :not(.accessibility) :not([tabindex="-1"]):focus * {
   fill: #000000;
+  color: #000000;
   stroke: #000000;
-  background-color: #fffacd;
   font-weight: bold;
-  -webkit-transition: color 0.3s ease-in, fill 0.3s ease-in;
-  transition: color 0.3s ease-in, fill 0.3s ease-in;
   -webkit-filter: contrast(1);
           filter: contrast(1);
+  background-color: #fffacd;
+  -webkit-transition: color 0.3s ease-in, fill 0.3s ease-in;
+  transition: color 0.3s ease-in, fill 0.3s ease-in;
 }
 
 html body.accessibility-readable-font-family {
@@ -480,6 +547,26 @@ html body.accessibility-big-white-cursor [role="tab"] {
   cursor: url("images/bighandwhite.cur"), auto;
 }
 
+html body.accessibility-quick-navigation-enabled {
+  padding-top: 55px;
+}
+
+html body.accessibility-quick-navigation-enabled [tabindex]:hover,
+html body.accessibility-quick-navigation-enabled [tabindex]:hover {
+  -webkit-box-shadow: 0 0 6px 3px Blue, 0 0 2px #333 inset !important;
+          box-shadow: 0 0 6px 3px Blue, 0 0 2px #333 inset !important;
+}
+
+html body.accessibility-quick-navigation-enabled .accessibility-quick-navigation {
+  visibility: visible;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+}
+
+html body.accessibility-quick-navigation-enabled .accessibility-quick-access {
+  visibility: hidden;
+}
+
 .accessibility-navigation .accessibility-quick-access button {
   top: 0;
   color: #fff;
@@ -499,4 +586,85 @@ html body.accessibility-big-white-cursor [role="tab"] {
   z-index: 999;
   -webkit-transform: translateY(0);
           transform: translateY(0);
+}
+
+.accessibility-navigation .accessibility-quick-navigation {
+  top: 0;
+  left: 50%;
+  position: fixed;
+  visibility: hidden;
+  text-align: center;
+  -webkit-transform: translate(-50%, -100%);
+          transform: translate(-50%, -100%);
+  -webkit-transition: -webkit-transform .3s ease;
+  transition: -webkit-transform .3s ease;
+  transition: transform .3s ease;
+  transition: transform .3s ease, -webkit-transform .3s ease;
+}
+
+.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container {
+  background: #ffffff;
+  border: 5px solid rgba(0, 0, 0, 0.7);
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+}
+
+.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul,
+.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul li,
+.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > button {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul li a {
+  display: block;
+}
+
+.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul li a,
+.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container button {
+  padding: 10px;
+}
+
+body > .accessibility [role=tooltip],
+body > .accessibility [aria-labelledby] {
+  position: relative;
+}
+
+body > .accessibility [role=tooltip] .accessibility-index-tooltip,
+body > .accessibility [aria-labelledby] .accessibility-index-tooltip {
+  top: 100%;
+  opacity: 0;
+  padding: 10px;
+  color: #ffffff;
+  border-radius: 5px;
+  visibility: hidden;
+  position: absolute;
+  -webkit-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+  background: rgba(0, 0, 0, 0.7);
+  margin-top: 11px;
+  width: 300px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+body > .accessibility [role=tooltip] .accessibility-index-tooltip:after,
+body > .accessibility [aria-labelledby] .accessibility-index-tooltip:after {
+  left: 0;
+  right: 0;
+  content: '';
+  width: 0;
+  margin: auto;
+  bottom: 100%;
+  position: absolute;
+  border: 10px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.7);
+}
+
+body > .accessibility [role=tooltip]:hover .accessibility-index-tooltip, body > .accessibility [role=tooltip]:focus .accessibility-index-tooltip,
+body > .accessibility [aria-labelledby]:hover .accessibility-index-tooltip,
+body > .accessibility [aria-labelledby]:focus .accessibility-index-tooltip {
+  opacity: 1;
+  visibility: visible;
 }

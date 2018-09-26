@@ -12,11 +12,13 @@
   .accessibility-menu-trigger {
     top: 50px;
     left: 100%;
+    color: #ffffff;
     position: absolute;
-    border: 2px dashed $primary-app-color;
+    border-radius: 0 50% 50% 0;
+    border: 2px solid #ffffff;
     border-left: none;
     padding: 15px 25px 15px 10px;
-    border-radius: 0 50% 50% 0;
+    background: $primary-app-color;
 
     i {
       font-size: 2.7rem;
@@ -32,7 +34,25 @@
     max-height: 100%;
     visibility: hidden;
     position: absolute;
-    padding: 45px 10px 20px;
+    padding: 55px 10px 90px;
+
+    :focus {
+      outline: rgb(77, 144, 254) auto  1px;
+    }
+
+    .accessibility-feature {
+      button {
+        span {
+          font-size: 13px;
+        }
+      }
+
+      &.accessibility-feature-activated {
+        button {
+          font-weight: bold;
+        }
+      }
+    }
 
     .accessibility-menu-header {
       top: 0;
@@ -69,6 +89,30 @@
         border-bottom: 1px solid #d1d2d3;
       }
 
+      .accessibility-layout-features {
+
+        .accessibility-feature {
+          padding: 5px 0;
+          border-bottom: 1px solid #d1d2d3;
+
+          button {
+            width: 100%;
+            padding: 10px;
+            display: block;
+            text-align: left;
+
+            i {
+              margin-right: 10px;
+            }
+
+            i, span {
+              display: inline-block;
+              vertical-align: middle;
+            }
+          }
+        }
+      }
+
       .accessibility-features {
 
         .accessibility-features-row {
@@ -92,15 +136,8 @@
 
             span {
               display: block;
-              font-size: 13px;
               margin-top: 10px;
               text-align: center;
-            }
-
-            &.accessibility-feature-activated {
-              button {
-                font-weight: bold;
-              }
             }
           }
         }
@@ -113,6 +150,29 @@
       button:focus {
         background: #ddeeff;
         outline: rgb(77, 144, 254) auto  1px;
+      }
+    }
+
+    .accessibility-menu-footer {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 10px;
+      position: absolute;
+      text-align: center;
+      background: #ffffff;
+      box-shadow: 1px 0 3px rgba(0,0,0,.6);
+
+      button {
+        padding: 10px;
+        text-align: center;
+        display: inline-block;
+        vertical-align: middle;
+
+        span {
+          display: block;
+          margin-top: 10px;
+        }
       }
     }
   }

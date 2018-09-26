@@ -1,0 +1,42 @@
+body > .accessibility {
+  [role=tooltip],
+  [aria-labelledby] {
+    position: relative;
+
+    .accessibility-index-tooltip {
+      top: 100%;
+      opacity: 0;
+      padding: 10px;
+      color: #ffffff;
+      border-radius: 5px;
+      visibility: hidden;
+      position: absolute;
+      transition: opacity .3s ease;
+      background: rgba(0,0,0,.7);
+      margin-top: 11px;
+      width: 300px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      &:after {
+        left: 0;
+        right: 0;
+        content: '';
+        width: 0;
+        margin: auto;
+        bottom: 100%;
+        position: absolute;
+        border: 10px solid transparent;
+        border-bottom-color: rgba(0,0,0,.7);
+      }
+    }
+
+    &:hover,
+    &:focus {
+      .accessibility-index-tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+}

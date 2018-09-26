@@ -28,17 +28,17 @@ return [
 
     'features' => [
         'monochrome'                => true, // Monochrome
-        'dark-contrast'             => true, // Dark Contrast
-        'bright-contrast'           => true, // Bright Contrast
-        'decrease-font-size'        => true, // In\Decrease Font Size
-        'increase-font-size'        => true, // In\Decrease Font Size
-        'font-family'               => true, // Change Font Family For Readable One
-        'cursor-bw'                 => true, // Big White Cursor
-        'cursor-bb'                 => true, // Big Black Cursor
+        'darkContrast'              => true, // Dark Contrast
+        'brightContrast'            => true, // Bright Contrast
+        'decreaseFontSize'          => true, // In\Decrease Font Size
+        'increaseFontSize'          => true, // In\Decrease Font Size
+        'fontFamily'                => true, // Change Font Family For Readable One
+        'cursorBw'                  => true, // Big White Cursor
+        'cursorBb'                  => true, // Big Black Cursor
         'zoom'                      => true, // Zoom In\Out
-        'highlight-links'           => true, // Highlight Links
-        'highlight-titles'          => true, // Highlight Titles
-        'alt-description'           => true, // Alt Description Box
+        'highlightLinks'            => true, // Highlight Links
+        'highlightTitles'           => true, // Highlight Titles
+        'altDescription'            => true, // Alt Description Box
     ],
 
     'route_prefix' => '__accessibility'

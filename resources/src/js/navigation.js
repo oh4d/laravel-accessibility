@@ -1,7 +1,7 @@
 export default class {
 
     /**
-     * Accessibility QuicNavigation Class
+     * Accessibility Navigation Class
      *
      * @param accessibility
      */
@@ -19,6 +19,68 @@ export default class {
      */
     render() {
         this.$el.append(this.getQuickAccess());
+
+        this.renderQuickNavigation();
+
+        this.focusListener();
+    }
+
+    /**
+     *
+     */
+    renderQuickNavigation() {
+        if (! this.isQuickNavigationEnable())
+            return;
+
+        let feature = this.accessibility.getFeatureBy('quick-navigation', 'layout');
+
+        if (! feature.enable)
+            return;
+
+        let initializedState = this.accessibility.accessibilityFeatures.getState('quickNavigation'),
+            quickNavigation = {
+                $el: null,
+                state: 'disable',
+                items: this.bindQuickNavigationItems()
+            };
+
+        this.accessibility.accessibilityFeatures.extendStates({quickNavigation});
+
+        this.getQuickNavigation();
+
+        quickNavigation.$el = this.$quickNavigation;
+
+        this.accessibility.accessibilityFeatures.extendStates({quickNavigation});
+        this.$el.append(this.$quickNavigation);
+
+        if (initializedState && initializedState.state === 'enable') {
+            this.enableQuickNavigation();
+        }
+    }
+
+    /**
+     *
+     */
+    getQuickNavigation() {
+        if (typeof this.$quickNavigation !== 'undefined') {
+            return this.$quickNavigation;
+        }
+
+        this.$quickNavigation = $('<div class="accessibility-quick-navigation"/>');
+
+        let $container = $('<div class="accessibility-quick-navigation-container"/>'),
+            $infoButton = $('<button tabindex="1" role="tooltip"/>');
+
+        $infoButton.append('<i class="accessibility icon-info"></i>');
+
+        let info = this.accessibility.$i18n.trans('info-enable-quick-navigation', '<span class="keyboard"><kbd>Ctrl</kbd> + <kbd>F9</kbd></span>');
+        $infoButton.append(AccessibilityForAll.renderToolTipEl(info));
+
+        $container.append($infoButton);
+        $container.append(this.createQuickNavigationItems());
+
+        this.$quickNavigation.append($container);
+        return this.$quickNavigation;
     }
 
     /**
@@ -39,10 +101,30 @@ export default class {
     /**
      *
      */
+    createQuickNavigationItems() {
+        let $items = $('<ul/>');
+
+        $.each(this.accessibility.accessibilityFeatures.states.quickNavigation.items, function() {
+            let $item = $('<li/>');
+
+            $item.append('<a href="javascript:void(0)" tabindex="1">'+this.text+'</a>');
+            $items.append($item);
+        });
+
+        return $items;
+    }
+
+    /**
+     *
+     */
     createQuickAccessItems() {
         this.items = [
-            {text: 'Press <span class="keyboard"><kbd>Enter ↵</kbd></span> To open Accessibility Menu', action: this.openAccessibilityMenu.bind(this)}
+            {text: this.accessibility.$i18n.trans('press-to-open-menu', '<span class="keyboard"><kbd>Enter ↵</kbd></span>'), keyListener: 13, action: this.openAccessibilityMenu.bind(this)}
         ];
+
+        if (this.isQuickNavigationEnable()) {
+            this.items.push({text: this.accessibility.$i18n.trans('press-to-enable-quick-navigation', '<span class="keyboard"><kbd>Enter ↵</kbd></span>'), keyListener: 13, action: this.enableQuickNavigation.bind(this)})
+        }
 
         let $itemsWrap = $('<ul/>');
 
@@ -58,8 +140,6 @@ export default class {
             this.$button = $item.find('button');
         });
 
-        this.focusListener();
-
         return $itemsWrap;
     }
 
@@ -72,18 +152,54 @@ export default class {
         $(document).on('focus', '.accessibility-navigation button', function() {
             let item = self.getButtonItemParams($(this));
 
-            if (item) {
-                item.action(item, 'focus');
+            if (! item)
+                return;
+
+            if (item.keyListener) {
+                self.bindKeyListerner(item.keyListener, item, 'focus');
+                return;
             }
+
+            item.action(item, 'focus');
         });
 
         $(document).on('blur', '.accessibility-navigation button', function() {
             let item = self.getButtonItemParams($(this));
 
-            if (item) {
-                item.action(item, 'blur');
+            if (! item)
+                return;
+
+            if (item.keyListener) {
+                self.bindKeyListerner(item.keyListener, item, 'blur');
+                return;
             }
+
+            item.action(item, 'blur');
         });
+    }
+
+    /**
+     *
+     * @param key
+     * @param item
+     * @param buttonState
+     * @param e
+     */
+    bindKeyListerner(key, item, buttonState, e) {
+        let self = this;
+
+        if (buttonState === 'focus') {
+            $(document).on('keypress.accessibility.navigation-focus-item-listener', function(e) {
+                if (e.which === key) {
+                    item.action(e);
+                    item.$button.blur();
+                }
+            });
+
+            return;
+        }
+
+        $(document).off('keypress.accessibility.navigation-focus-item-listener');
     }
 
     /**
@@ -107,23 +223,46 @@ export default class {
 
     /**
      *
-     * @param item
-     * @param buttonState
+     * @param e
      */
-    openAccessibilityMenu(item, buttonState) {
-        let self = this;
+    openAccessibilityMenu(e) {
+        this.accessibility.accessibilityMenu.openMenu(e);
+    }
 
-        if (buttonState === 'focus') {
-            $(document).on('keypress.accessibility.enter-click-menu-toggle', function(e) {
-                if (e.which === 13) {
-                    self.accessibility.accessibilityMenu.openMenu(e);
-                    item.$button.blur();
-                }
-            });
-
+    /**
+     *
+     * @param e
+     */
+    enableQuickNavigation(e) {
+        if (! this.isQuickNavigationEnable())
             return;
-        }
 
-        $(document).off('keypress.accessibility.enter-click-menu-toggle');
+        this.accessibility.accessibilityFeatures.enableQuickNavigation();
+    }
+
+    /**
+     *
+     */
+    disableQuickNavigation() {
+        this.accessibility.accessibilityFeatures.disableQuickNavigation();
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    isQuickNavigationEnable() {
+        this.navigationConfig = this.navigationConfig ? this.navigationConfig : this.accessibility.options.getConfig('navigation');
+        return (this.navigationConfig && this.navigationConfig.enable);
+    }
+
+    /**
+     *
+     * @returns {*[]}
+     */
+    bindQuickNavigationItems() {
+        return [
+            {text: 'Test', action: ''}
+        ];
     }
 }

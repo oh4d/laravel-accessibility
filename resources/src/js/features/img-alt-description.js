@@ -98,7 +98,7 @@ export default class {
      * @param event
      */
     positionBox(event) {
-        this.accessibility.preventDefault(event);
+        AccessibilityForAll.preventDefault(event);
 
         let elWidth = this.$el.width(),
             pX = event.clientX - (elWidth / 2),

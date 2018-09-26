@@ -14,15 +14,43 @@ export default class {
      * Get Translation By Key
      *
      * @param key
+     * @param attributes
      */
-    trans(key) {
+    trans(key, attributes = null) {
         if (! this.translations)
             return '';
 
         for (let _key in this.translations) {
             if (_key === key)
-                return this.translations[key];
+                return (attributes) ? this.bindAttributes(this.translations[key], attributes) : this.translations[key];
         }
+    }
+
+    /**
+     *
+     * @param trans
+     * @param attributes
+     * @returns {*}
+     */
+    bindAttributes(trans, attributes) {
+        let transSpliced = trans.split('(:a)');
+
+        if (transSpliced.length <= 1)
+            return trans;
+
+        attributes = (typeof attributes === 'string') ? [attributes] : attributes;
+
+        let transBinding = '';
+
+        for (let i = 0; i < transSpliced.length; i++) {
+            transBinding += transSpliced[i];
+
+            if (attributes[i]) {
+                transBinding += attributes[i];
+            }
+        }
+
+        return transBinding;
     }
 
     /**

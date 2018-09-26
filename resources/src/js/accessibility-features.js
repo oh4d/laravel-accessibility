@@ -1,3 +1,4 @@
+import QuickNavigation from './features/quick-navigation';
 import ImgAltDescription from './features/img-alt-description';
 
 export default class {
@@ -19,33 +20,72 @@ export default class {
      * Initialize Features States
      */
     initStates() {
-        this.states = {
-            monochrome: false,
-            darkContrast: false,
-            brightContrast: false,
-            fontFamily: false,
-            cursorBw: false,
-            cursorBb: false,
-            zoom: false,
-            highlightLinks: false,
-            highlightTitles: false,
-            altDescription: false,
+        let storageStates = this.accessibility.accessibilityStorage.initializeFromStorage();
+
+        this.states = $.extend({
+            monochrome: 'disable',
+            darkContrast: 'disable',
+            brightContrast: 'disable',
+            fontFamily: 'disable',
+            cursorBw: 'disable',
+            cursorBb: 'disable',
+            zoom: 'disable',
+            highlightLinks: 'disable',
+            highlightTitles: 'disable',
+            altDescription: 'disable',
+            disableTransitions: 'disable',
 
             fontSize: {
-                max: 1.5,
                 current: 1,
-                $in: $('html'),
                 search: ['*'],
+                $in: $('html'),
                 exclude: ['svg', '.accessibility', 'head']
+            },
+
+            quickNavigation: {
+                state: 'disable'
             }
-        };
+        }, this.mapStorageKeyObj(storageStates));
+    }
+
+    /**
+     *
+     * @param object
+     */
+    extendStates(object) {
+        this.states = $.extend(this.states, object);
     }
 
     /**
      * Initialize Features Handlers
+     * Append To Object Features From Outside Classes
+     * Loop On States Object To Activate Actions
      */
     initFeatures() {
         this.imgAltDescription = new ImgAltDescription(this.accessibility);
+        this.quickNavigationHandler = new QuickNavigation(this.accessibility);
+
+        let self = this;
+
+        $.each(this.states, function(key) {
+            let feature = self.getAccessibilityFeature(key);
+
+            if (this !== 'enable' || ! feature.enable) {
+                return;
+            }
+
+            if (typeof self[key] === 'undefined') {
+                return;
+            }
+
+            self[key]();
+        });
+
+        if (this.states.fontSize.current > 1) {
+            this.updateBodyElements();
+        }
+
+        this.initialized = true;
     }
 
     /**
@@ -72,134 +112,163 @@ export default class {
      *
      */
     cursorBb() {
-        if (this.states.cursorBb) {
+        if (this.states.cursorBb === 'enable' && this.initialized) {
             this.accessibility.$body.removeClass('accessibility-big-black-cursor');
         } else {
             this.removeAllCursors();
             this.accessibility.$body.addClass('accessibility-big-black-cursor');
         }
 
-        this.setState('cursorBb', !this.states.cursorBb);
-        return this.states.cursorBb;
+        let state = (this.initialized && this.states.cursorBb === 'enable') ? 'disable' : 'enable';
+        this.setState('cursorBb', state);
+        return (state === 'enable') ? 'cursorBb' : 'disable';
     }
 
     /**
      *
      */
     cursorBw() {
-        if (this.states.cursorBw) {
+        if (this.states.cursorBw === 'enable' && this.initialized) {
             this.accessibility.$body.removeClass('accessibility-big-white-cursor');
         } else {
             this.removeAllCursors();
             this.accessibility.$body.addClass('accessibility-big-white-cursor');
         }
 
-        this.setState('cursorBw', !this.states.cursorBw);
-        return this.states.cursorBw;
+        let state = (this.initialized && this.states.cursorBw === 'enable') ? 'disable' : 'enable';
+        this.setState('cursorBw', state);
+        return (state === 'enable') ? 'cursorBw' : 'disable';
     }
 
     /**
      * Monochrome Contrast Handler
-     * @returns {boolean}
+     * @returns string
      */
     monochrome() {
-        if (this.states.monochrome) {
+        if (this.states.monochrome === 'enable' && this.initialized) {
             this.accessibility.$body.removeClass('accessibility-monochrome');
         } else {
             this.removeAllContrasts();
             this.accessibility.$body.addClass('accessibility-monochrome');
         }
 
-        this.setState('monochrome', !this.states.monochrome);
-        return this.states.monochrome;
+        let state = (this.initialized && this.states.monochrome === 'enable') ? 'disable' : 'enable';
+        this.setState('monochrome', state);
+        return (state === 'enable') ? 'monochrome' : 'disable';
     }
 
     /**
      *
-     * @returns {boolean}
+     * @returns string
      */
     darkContrast() {
-        if (this.states.darkContrast) {
+        if (this.states.darkContrast === 'enable' && this.initialized) {
             this.accessibility.$body.removeClass('accessibility-dark-contrast');
         } else {
             this.removeAllContrasts();
             this.accessibility.$body.addClass('accessibility-dark-contrast');
         }
 
-        this.setState('darkContrast', !this.states.darkContrast);
-        return this.states.darkContrast;
+        let state = (this.initialized && this.states.darkContrast === 'enable') ? 'disable' : 'enable';
+        this.setState('darkContrast', state);
+        return (state === 'enable') ? 'darkContrast' : 'disable';
     }
 
     /**
      *
-     * @returns {boolean}
+     * @returns string
      */
     brightContrast() {
-        if (this.states.brightContrast) {
+        if (this.states.brightContrast === 'enable' && this.initialized) {
             this.accessibility.$body.removeClass('accessibility-bright-contrast');
         } else {
             this.removeAllContrasts();
             this.accessibility.$body.addClass('accessibility-bright-contrast');
         }
 
-        this.setState('brightContrast', !this.states.brightContrast);
-        return this.states.brightContrast;
+        let state = (this.initialized && this.states.brightContrast === 'enable') ? 'disable' : 'enable';
+        this.setState('brightContrast', state);
+        return (state === 'enable') ? 'brightContrast' : 'disable';
     }
 
     /**
      *
-     * @returns {boolean}
+     * @returns string
      */
     highlightLinks() {
-        if (this.states.highlightLinks) {
+        if (this.states.highlightLinks === 'enable' && this.initialized) {
             this.accessibility.$body.removeClass('accessibility-highlight-link');
         } else {
             this.accessibility.$body.addClass('accessibility-highlight-link');
         }
 
-        this.setState('highlightLinks', !this.states.highlightLinks);
+        let state = (this.initialized && this.states.highlightLinks === 'enable') ? 'disable' : 'enable';
+        this.setState('highlightLinks', state);
         return this.states.highlightLinks;
     }
 
     /**
      *
-     * @returns {boolean}
+     * @returns string
      */
     highlightTitles() {
-        if (this.states.highlightTitles) {
+        if (this.states.highlightTitles === 'enable' && this.initialized) {
             this.accessibility.$body.removeClass('accessibility-highlight-titles');
         } else {
             this.accessibility.$body.addClass('accessibility-highlight-titles');
         }
 
-        this.setState('highlightTitles', !this.states.highlightTitles);
+        let state = (this.initialized && this.states.highlightTitles === 'enable') ? 'disable' : 'enable';
+        this.setState('highlightTitles', state);
         return this.states.highlightTitles;
     }
 
     /**
      *
-     * @returns {boolean}
+     * @returns string
      */
     fontFamily() {
-        if (this.states.fontFamily) {
+        if (this.states.fontFamily === 'enable' && this.initialized) {
             this.accessibility.$body.removeClass('accessibility-readable-font-family');
         } else {
             this.accessibility.$body.addClass('accessibility-readable-font-family');
         }
 
-        this.setState('fontFamily', !this.states.fontFamily);
+        let state = (this.initialized && this.states.fontFamily === 'enable') ? 'disable' : 'enable';
+        this.setState('fontFamily', state);
         return this.states.fontFamily;
     }
 
+    /**
+     *
+     * @returns string
+     */
     zoom() {
-        if (this.states.zoom) {
+        if (this.states.zoom === 'enable' && this.initialized) {
             this.accessibility.$body.removeClass('accessibility-body-zoomed');
         } else {
             this.accessibility.$body.addClass('accessibility-body-zoomed');
         }
 
-        this.setState('zoom', !this.states.zoom);
+        let state = (this.initialized && this.states.zoom === 'enable') ? 'disable' : 'enable';
+        this.setState('zoom', state);
         return this.states.zoom;
+    }
+
+    /**
+     *
+     * @returns string
+     */
+    disableTransitions() {
+        if (this.states.disableTransitions === 'enable' && this.initialized) {
+            this.accessibility.$body.removeClass('accessibility-transitions-disabled');
+        } else {
+            this.accessibility.$body.addClass('accessibility-transitions-disabled');
+        }
+
+        let state = (this.initialized && this.states.disableTransitions === 'enable') ? 'disable' : 'enable';
+        this.setState('disableTransitions', state);
+        return this.states.disableTransitions;
     }
 
     /**
@@ -207,13 +276,14 @@ export default class {
      * @returns {boolean}
      */
     altDescription() {
-        if (this.states.altDescription) {
+        if (this.states.altDescription === 'enable' && this.initialized) {
             this.setImageAltDescription(false);
         } else {
             this.setImageAltDescription(true);
         }
 
-        this.setState('altDescription', !this.states.altDescription);
+        let state = (this.initialized && this.states.altDescription === 'enable') ? 'disable' : 'enable';
+        this.setState('altDescription', state);
         return this.states.altDescription;
     }
 
@@ -221,13 +291,13 @@ export default class {
      * Increase Font Size Handler
      */
     increaseFontSize() {
-        if (this.states.fontSize.current >= 1.5)
-            return null;
+        if (this.states.fontSize.current >= this.states.fontSize.max)
+            return this.states.fontSize.current;
 
         this.states.fontSize.current += 0.1;
 
         this.updateBodyElements();
-        return null;
+        return this.states.fontSize.current;
     }
 
     /**
@@ -240,7 +310,56 @@ export default class {
         this.states.fontSize.current -= 0.1;
 
         this.updateBodyElements();
-        return null;
+        return (this.states.fontSize.current <= 1) ? 'disable' : this.states.fontSize.current;
+    }
+
+    /**
+     * Toggle Quick Navigation
+     */
+    quickNavigation() {
+        if (typeof this.states.quickNavigation === 'undefined')
+            return;
+
+        if (this.states.quickNavigation.state === 'enable' && this.initialized) {
+            this.disableQuickNavigation();
+            return this.states.quickNavigation.state;
+        }
+
+        this.enableQuickNavigation();
+        return this.states.quickNavigation.state;
+    }
+
+    /**
+     * Enable Quick Navigation
+     */
+    enableQuickNavigation() {
+        if (this.states.quickNavigation.state === 'enable') {
+            return;
+        }
+
+        this.accessibility.$body.addClass('accessibility-quick-navigation-enabled');
+        this.accessibility.$body.scrollTop(0);
+
+        this.states.quickNavigation.state = 'enable';
+        this.states.quickNavigation.$el.find('button').focus();
+
+        this.quickNavigationHandler.initialize();
+    }
+
+    /**
+     * Disable Quick Navigation
+     */
+    disableQuickNavigation() {
+        if (this.states.quickNavigation.state === 'disable') {
+            return;
+        }
+
+        this.accessibility.$body.removeClass('accessibility-quick-navigation-enabled');
+        this.accessibility.$body.scrollTop(0);
+
+        this.states.quickNavigation.state = 'disable';
+
+        this.quickNavigationHandler.destroy();
     }
 
     /**
@@ -249,6 +368,8 @@ export default class {
      */
     updateBodyElements() {
         let self = this;
+
+        this.states.fontSize.current = Number(this.states.fontSize.current.toFixed(2));
 
         this.states.fontSize.$in.find(this.fontElements()).each(function() {
             let currentFontSize = parseFloat($(this).css('font-size'));
@@ -315,6 +436,37 @@ export default class {
     }
 
     /**
+     *
+     */
+    reset() {
+        let self = this;
+
+        $.each(this.states, function(key) {
+            if (this !== 'enable') {
+                return;
+            }
+
+            if (typeof self[key] === 'undefined') {
+                return;
+            }
+
+            self[key]();
+        });
+
+        if (this.states.fontSize.current > 1) {
+            this.states.fontSize.current = 1;
+            this.updateBodyElements();
+        }
+
+        if (this.states.quickNavigation.state === 'enable') {
+            this.quickNavigation();
+        }
+
+        this.accessibility.accessibilityStorage.resetStorage();
+        return null;
+    }
+
+    /**
      * Update Feature State
      *
      * @param type
@@ -325,18 +477,94 @@ export default class {
     }
 
     /**
+     *
+     * @param type
+     * @returns {null}
+     */
+    getState(type) {
+        if (typeof this.states[type] !== 'undefined') {
+            return this.states[type];
+        }
+
+        let camelCase = this.accessibility.camelCase(type);
+
+        return (typeof this.states[camelCase] !== 'undefined') ? this.states[camelCase] : null;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    getAccessibilityFeature(featureKey) {
+        let featureName = AccessibilityForAll.snakeCase(featureKey);
+        return this.accessibility.getFeatureBy(featureName);
+    }
+
+    /**
+     *
+     * @param featureName
+     * @returns {*}
+     */
+    mapFeatureToStorage(featureName) {
+        let mappingTypeToState = {
+            cursorBb: 'cursorPointer',
+            cursorBw: 'cursorPointer',
+            monochrome: 'colorContrast',
+            darkContrast: 'colorContrast',
+            brightContrast: 'colorContrast',
+            increaseFontSize: 'fontSize',
+            decreaseFontSize: 'fontSize'
+        };
+
+        return mappingTypeToState[featureName] ? mappingTypeToState[featureName] : featureName;
+    }
+
+    /**
+     *
+     * @param storageStates
+     * @returns {*}
+     */
+    mapStorageKeyObj(storageStates) {
+        let mappingValueToAction = ['colorContrast', 'cursorPointer'];
+
+        if (typeof storageStates.quickNavigation !== 'undefined') {
+            storageStates.quickNavigation = {state: storageStates.quickNavigation};
+        }
+
+        if (typeof storageStates.fontSize !== 'undefined') {
+            storageStates.fontSize = {
+                $in: $('html'),
+                search: ['*'],
+                current: Number(storageStates.fontSize),
+                exclude: ['svg', '.accessibility', 'head']
+            }
+        }
+
+        $.each(mappingValueToAction, function() {
+            if (typeof storageStates[this] === 'undefined') {
+                return;
+            }
+
+            storageStates[storageStates[this]] = 'enable';
+            delete storageStates[this];
+        });
+
+        return storageStates;
+    }
+
+    /**
      * Remove All Enabled Features Contrasts
      */
     removeAllContrasts() {
-        if (this.states.darkContrast) {
+        if (this.states.darkContrast === 'enable' && this.initialized) {
             this.darkContrast();
         }
 
-        if (this.states.brightContrast) {
+        if (this.states.brightContrast === 'enable' && this.initialized) {
             this.brightContrast();
         }
 
-        if (this.states.monochrome) {
+        if (this.states.monochrome === 'enable' && this.initialized) {
             this.monochrome();
         }
     }
@@ -345,11 +573,11 @@ export default class {
      *
      */
     removeAllCursors() {
-        if (this.states.cursorBb) {
+        if (this.states.cursorBb === 'enable' && this.initialized) {
             this.cursorBb();
         }
 
-        if (this.states.cursorBw) {
+        if (this.states.cursorBw === 'enable' && this.initialized) {
             this.cursorBw();
         }
     }

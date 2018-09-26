@@ -92,7 +92,7 @@ webpackContext.id = 0;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(2);
-module.exports = __webpack_require__(11);
+module.exports = __webpack_require__(14);
 
 
 /***/ }),
@@ -106,7 +106,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__i18n__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__navigation__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__accessibility_features__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__accessibility_storage__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__accessibility_options__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__accessibility_features__ = __webpack_require__(11);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -119,15 +121,19 @@ window.$ = window.jQuery = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a;
 
 
 
+
+
 window.AccessibilityForAll = function () {
 
     /**
      * Accessibility For All
      */
     function _class() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
         _classCallCheck(this, _class);
 
-        this.initializeParams();
+        this.initializeParams(options);
 
         this.getMainWrap();
 
@@ -141,9 +147,16 @@ window.AccessibilityForAll = function () {
 
     _createClass(_class, [{
         key: 'initializeParams',
-        value: function initializeParams() {
+        value: function initializeParams(options) {
             this.$body = $('body');
-            this.features = [{ type: 'monochrome', enable: true, icon: 'accessibility icon-monochrome' }, { type: 'dark-contrast', enable: true, icon: 'accessibility icon-dark-contrast' }, { type: 'bright-contrast', enable: true, icon: 'accessibility icon-bright-contrast' }, { type: 'decrease-font-size', enable: true, icon: 'accessibility icon-decrease-font-size' }, { type: 'increase-font-size', enable: true, icon: 'accessibility icon-increase-font-size' }, { type: 'font-family', enable: true, icon: 'accessibility icon-font-family' }, { type: 'cursor-bw', enable: true, icon: 'accessibility icon-cursor-bw' }, { type: 'cursor-bb', enable: true, icon: 'accessibility icon-cursor-bb' }, { type: 'zoom', enable: true, icon: 'accessibility icon-zoom' }, { type: 'highlight-links', enable: true, icon: 'accessibility icon-highlight-links' }, { type: 'highlight-titles', enable: true, icon: 'accessibility icon-highlight-titles' }, { type: 'alt-description', enable: true, icon: 'accessibility icon-alt-description' }];
+
+            this.options = new __WEBPACK_IMPORTED_MODULE_5__accessibility_options__["a" /* default */](options);
+
+            this.features = [{ type: 'monochrome', enable: this.options.getConfig('features.monochrome'), icon: 'accessibility icon-monochrome' }, { type: 'dark-contrast', enable: this.options.getConfig('features.darkContrast'), icon: 'accessibility icon-dark-contrast' }, { type: 'bright-contrast', enable: this.options.getConfig('features.brightContrast'), icon: 'accessibility icon-bright-contrast' }, { type: 'decrease-font-size', enable: this.options.getConfig('features.decreaseFontSize'), icon: 'accessibility icon-decrease-font-size' }, { type: 'increase-font-size', enable: this.options.getConfig('features.increaseFontSize'), icon: 'accessibility icon-increase-font-size' }, { type: 'font-family', enable: this.options.getConfig('features.fontFamily'), icon: 'accessibility icon-font-family' }, { type: 'cursor-bw', enable: this.options.getConfig('features.cursorBw'), icon: 'accessibility icon-cursor-bw' }, { type: 'cursor-bb', enable: this.options.getConfig('features.cursorBb'), icon: 'accessibility icon-cursor-bb' }, { type: 'zoom', enable: this.options.getConfig('features.zoom'), icon: 'accessibility icon-zoom' }, { type: 'highlight-links', enable: this.options.getConfig('features.highlightLinks'), icon: 'accessibility icon-highlight-links' }, { type: 'highlight-titles', enable: this.options.getConfig('features.highlightTitles'), icon: 'accessibility icon-highlight-titles' }, { type: 'alt-description', enable: this.options.getConfig('features.altDescription'), icon: 'accessibility icon-alt-description' }];
+
+            this.layoutFeatures = [{ type: 'quick-navigation', enable: this.options.getConfig('navigation.enable'), icon: 'accessibility icon-zoom' }, { type: 'disable-transitions', enable: this.options.getConfig('features.disableTransitions'), icon: 'accessibility icon-zoom' }];
+
+            this.helperFeatures = [{ type: 'reset', enable: this.options.getConfig('menu.footer.reset'), icon: 'accessibility icon-alt-description' }];
         }
 
         /**
@@ -173,9 +186,33 @@ window.AccessibilityForAll = function () {
         key: 'render',
         value: function render() {
             this.$i18n = new __WEBPACK_IMPORTED_MODULE_2__i18n__["a" /* default */]('en');
-            this.accessibilityMenu = new __WEBPACK_IMPORTED_MODULE_1__menu__["a" /* default */](this);
-            this.accessibilityFeatures = new __WEBPACK_IMPORTED_MODULE_4__accessibility_features__["a" /* default */](this);
+
+            this.accessibilityStorage = new __WEBPACK_IMPORTED_MODULE_4__accessibility_storage__["a" /* default */](this);
+
+            this.accessibilityFeatures = new __WEBPACK_IMPORTED_MODULE_6__accessibility_features__["a" /* default */](this);
+
             this.accessibilityNavigation = new __WEBPACK_IMPORTED_MODULE_3__navigation__["a" /* default */](this);
+
+            this.accessibilityMenu = new __WEBPACK_IMPORTED_MODULE_1__menu__["a" /* default */](this);
+        }
+
+        /**
+         *
+         * @param $el
+         * @param feature
+         * @param type
+         */
+
+    }, {
+        key: 'initFeatureListener',
+        value: function initFeatureListener($el, feature) {
+            var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'view';
+
+            feature = this.getFeatureBy(feature, type);
+
+            if (!feature || !feature.enable) return;
+
+            this.featureListener($el, feature);
         }
 
         /**
@@ -187,8 +224,6 @@ window.AccessibilityForAll = function () {
     }, {
         key: 'featureListener',
         value: function featureListener($el, feature) {
-            feature = this.getFeatureBy(feature);
-
             if (!feature || !feature.enable) return;
 
             feature.$el = $el;
@@ -201,7 +236,16 @@ window.AccessibilityForAll = function () {
 
             if (activated === null) return;
 
-            if (activated) this.accessibilityFeatures.featureActivated(feature);else this.accessibilityFeatures.featureDeActivated(feature);
+            this.accessibilityStorage.setStorage(featureHandler, activated);
+
+            if (activated === 'disable') {
+                this.accessibilityFeatures.featureDeActivated(feature);
+                return;
+            }
+
+            if (isNaN(activated)) {
+                this.accessibilityFeatures.featureActivated(feature);
+            }
         }
 
         /**
@@ -216,18 +260,44 @@ window.AccessibilityForAll = function () {
         }
 
         /**
+         *
+         * @returns {*[]}
+         */
+
+    }, {
+        key: 'getLayoutFeatures',
+        value: function getLayoutFeatures() {
+            return this.layoutFeatures;
+        }
+
+        /**
+         *
+         * @returns {*}
+         */
+
+    }, {
+        key: 'getHelperFeatures',
+        value: function getHelperFeatures() {
+            return this.helperFeatures;
+        }
+
+        /**
          * Get Feature By Original Type Name
          *
          * @param type
+         * @param featuresType
          * @returns {boolean}
          */
 
     }, {
         key: 'getFeatureBy',
         value: function getFeatureBy(type) {
-            var feature = false;
+            var featuresType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'view';
 
-            $.each(this.getFeatures(), function () {
+            var features = featuresType === 'layout' ? this.getLayoutFeatures() : featuresType === 'helper' ? this.getHelperFeatures() : this.getFeatures(),
+                feature = false;
+
+            $.each(features, function () {
                 if (this.type === type) {
                     feature = this;
                     return false;
@@ -235,6 +305,26 @@ window.AccessibilityForAll = function () {
             });
 
             return feature;
+        }
+
+        /**
+         *
+         * @param type
+         * @param $el
+         */
+
+    }, {
+        key: 'appendFeatureEl',
+        value: function appendFeatureEl(type, $el) {
+            for (var i = 0; i < this.features.length; i++) {
+                if (this.features[i].type !== type) continue;
+
+                if (!this.features[i].$el) {
+                    this.features[i].$el = [];
+                }
+
+                this.features[i].$el.push($el);
+            }
         }
 
         /**
@@ -267,20 +357,6 @@ window.AccessibilityForAll = function () {
 
         /**
          *
-         * @param str
-         * @returns {string}
-         */
-
-    }, {
-        key: 'ucwords',
-        value: function ucwords(str) {
-            return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
-                return $1.toUpperCase();
-            });
-        }
-
-        /**
-         *
          * @param value
          * @returns {*}
          */
@@ -288,8 +364,9 @@ window.AccessibilityForAll = function () {
     }, {
         key: 'camelCase',
         value: function camelCase(value) {
-            value = this.ucwords(this.replaceAll(['-', '_'], ' ', value));
+            value = AccessibilityForAll.ucwords(this.replaceAll(['-', '_'], ' ', value));
             value = this.replaceAll(' ', '', value);
+
             return value.charAt(0).toLowerCase() + value.slice(1);
         }
 
@@ -314,6 +391,49 @@ window.AccessibilityForAll = function () {
         }
 
         /**
+         * Get Host
+         *
+         * @returns {string | *}
+         */
+
+    }, {
+        key: 'getDomain',
+        value: function getDomain() {
+            if (this.hostname) {
+                return this.hostname;
+            }
+
+            this.hostname = window.location.hostname;
+            return this.hostname;
+        }
+
+        /**
+         *
+         * @param str
+         * @returns {string}
+         */
+
+    }], [{
+        key: 'ucwords',
+        value: function ucwords(str) {
+            return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
+                return $1.toUpperCase();
+            });
+        }
+
+        /**
+         *
+         * @param string
+         * @returns {string}
+         */
+
+    }, {
+        key: 'snakeCase',
+        value: function snakeCase(string) {
+            return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        }
+
+        /**
          *
          * @param e
          */
@@ -327,6 +447,28 @@ window.AccessibilityForAll = function () {
 
             e.preventDefault();
             e.stopPropagation();
+        }
+
+        /**
+         *
+         * @param content
+         * @param id
+         * @returns {*|jQuery|HTMLElement}
+         */
+
+    }, {
+        key: 'renderToolTipEl',
+        value: function renderToolTipEl(content) {
+            var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            var $el = $('<div class="accessibility-index-tooltip"/>');
+
+            if (id) {
+                $el.attr('id', id);
+            }
+
+            $el.html(content);
+            return $el;
         }
     }]);
 
@@ -10762,7 +10904,11 @@ var _class = function () {
 
             this.$container.append(this.getMenuHeader());
 
-            this.getMenuBody().append(this.getFeatures());
+            this.getMenuBody().append(this.getLayoutFeatures());
+
+            this.getMenuBody().append(this.getViewFeatures());
+
+            this.$container.append(this.getMenuFooter());
         }
 
         /**
@@ -10799,6 +10945,23 @@ var _class = function () {
         }
 
         /**
+         *
+         * @returns {*|jQuery|HTMLElement}
+         */
+
+    }, {
+        key: 'getMenuFooter',
+        value: function getMenuFooter() {
+            if (typeof this.$menuFooter !== 'undefined') {
+                return this.$menuFooter;
+            }
+
+            this.$menuFooter = $('<div class="accessibility-menu-footer"/>');
+            this.$menuFooter.append(this.getFooterActions());
+            return this.$menuFooter;
+        }
+
+        /**
          * Return Menu Trigger Button
          * @returns {*}
          */
@@ -10810,10 +10973,12 @@ var _class = function () {
                 return this.$trigger;
             }
 
-            this.$trigger = $('<button type="button" role="button"/>').addClass('accessibility-menu-trigger');
+            this.$trigger = $('<button type="button" aria-labelledby="accessibilityTriggerButtonTt" role="button"/>').addClass('accessibility-menu-trigger');
 
             this.$trigger.append('<i/>');
             this.$trigger.find('i').addClass('accessibility icon-accessibility');
+            this.$trigger.append(AccessibilityForAll.renderToolTipEl('Accessibility Menu', 'accessibilityTriggerButtonTt'));
+
             return this.$trigger;
         }
 
@@ -10837,45 +11002,112 @@ var _class = function () {
         }
 
         /**
+         *
+         * @returns {*|jQuery|HTMLElement}
+         */
+
+    }, {
+        key: 'getFooterActions',
+        value: function getFooterActions() {
+            if (typeof this.$footerFeatures !== 'undefined') {
+                return this.$footerFeatures;
+            }
+
+            this.$footerFeatures = $('<div class="accessibility-footer-features"/>');
+
+            var features = this.accessibility.getHelperFeatures();
+
+            this.$footerFeatures.append(this.createFeaturesEl(features));
+
+            return this.$footerFeatures;
+        }
+
+        /**
+         *
+         * @returns {*|jQuery|HTMLElement}
+         */
+
+    }, {
+        key: 'getLayoutFeatures',
+        value: function getLayoutFeatures() {
+            if (typeof this.$layoutFeatures !== 'undefined') {
+                return this.$layoutFeatures;
+            }
+
+            this.$layoutFeatures = $('<div class="accessibility-layout-features"/>');
+
+            var features = this.accessibility.getLayoutFeatures();
+
+            this.$layoutFeatures.append(this.createFeaturesEl(features));
+
+            return this.$layoutFeatures;
+        }
+
+        /**
          * Return Features Element To Menu Container
          */
 
     }, {
-        key: 'getFeatures',
-        value: function getFeatures() {
-            var _this = this;
+        key: 'getViewFeatures',
+        value: function getViewFeatures() {
+            if (typeof this.$viewFeatures !== 'undefined') {
+                return this.$viewFeatures;
+            }
 
-            if (typeof this.$features !== 'undefined') {
-                return this.$features;
+            var features = this.spreadFeaturesToRows();
+
+            this.$viewFeatures = $('<div class="accessibility-features"/>');
+
+            for (var row = 0; row < features.length; row++) {
+                this.$viewFeatures.append(this.createFeaturesEl(features[row], $('<div class="accessibility-features-row"/>')));
+            }
+
+            return this.$viewFeatures;
+        }
+
+        /**
+         *
+         * @param features
+         * @param $append
+         */
+
+    }, {
+        key: 'createFeaturesEl',
+        value: function createFeaturesEl(features) {
+            var $append = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            if (!features) {
+                return null;
             }
 
             var self = this,
-                features = this.spreadFeaturesToRows();
+                $container = '';
 
-            this.$features = $('<div class="accessibility-features"/>');
+            $.each(features, function () {
+                var $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
 
-            var _loop = function _loop(row) {
-                var $row = $('<div class="accessibility-features-row"/>');
+                $feature.append('<button type="button" data-feature="' + this.type + '"><i></i><span></span></button>');
 
-                $.each(features[row], function () {
-                    var $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
+                var featureState = self.accessibility.accessibilityFeatures.getState(this.type);
 
-                    $feature.append('<button type="button" data-feature="' + this.type + '"><i></i><span></span></button>');
+                if (featureState === 'enable') {
+                    $feature.addClass('accessibility-feature-activated');
+                }
 
-                    $feature.find('i').addClass(this.icon);
-                    $feature.find('span').html(self.accessibility.$i18n.trans(this.type));
+                $feature.find('i').addClass(this.icon);
+                $feature.find('span').html(self.accessibility.$i18n.trans(this.type));
 
-                    $row.append($feature);
-                });
+                if ($append) {
+                    $append.append($feature);
+                }
 
-                _this.$features.append($row);
-            };
+                $container += $feature.prop('outerHTML');
 
-            for (var row = 0; row < features.length; row++) {
-                _loop(row);
-            }
+                // Appending feature trigger $el to features object
+                // self.accessibility.appendFeatureEl(this.type, $feature);
+            });
 
-            return this.$features;
+            return $append ? $append : $container;
         }
 
         /**
@@ -10962,9 +11194,19 @@ var _class = function () {
                 self.closeMenu(e);
             }.bind(this));
 
-            // Feature Clicked
-            this.$features.find('.accessibility-feature button').on('click', function () {
-                self.accessibility.featureListener($(this).parent(), $(this).data('feature'));
+            // View Feature Clicked
+            this.$viewFeatures.find('.accessibility-feature button').on('click', function () {
+                self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'));
+            });
+
+            // Layout Feature Clicked
+            this.$layoutFeatures.find('.accessibility-feature button').on('click', function () {
+                self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'), 'layout');
+            });
+
+            // Footer Feature Clicked
+            this.$footerFeatures.find('.accessibility-feature button').on('click', function () {
+                self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'), 'helper');
             });
         }
 
@@ -10975,7 +11217,7 @@ var _class = function () {
     }, {
         key: 'openMenu',
         value: function openMenu(e) {
-            this.accessibility.preventDefault(e);
+            AccessibilityForAll.preventDefault(e);
 
             this.$el.addClass('accessibility-menu-opened');
             this.$container.attr('aria-hidden', false);
@@ -10992,7 +11234,7 @@ var _class = function () {
     }, {
         key: 'closeMenu',
         value: function closeMenu(e) {
-            this.accessibility.preventDefault(e);
+            AccessibilityForAll.preventDefault(e);
 
             this.$el.removeClass('accessibility-menu-opened');
             this.$container.attr('aria-hidden', true);
@@ -11037,17 +11279,49 @@ var _class = function () {
      * Get Translation By Key
      *
      * @param key
+     * @param attributes
      */
 
 
     _createClass(_class, [{
         key: 'trans',
         value: function trans(key) {
+            var attributes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
             if (!this.translations) return '';
 
             for (var _key in this.translations) {
-                if (_key === key) return this.translations[key];
+                if (_key === key) return attributes ? this.bindAttributes(this.translations[key], attributes) : this.translations[key];
             }
+        }
+
+        /**
+         *
+         * @param trans
+         * @param attributes
+         * @returns {*}
+         */
+
+    }, {
+        key: 'bindAttributes',
+        value: function bindAttributes(trans, attributes) {
+            var transSpliced = trans.split('(:a)');
+
+            if (transSpliced.length <= 1) return trans;
+
+            attributes = typeof attributes === 'string' ? [attributes] : attributes;
+
+            var transBinding = '';
+
+            for (var i = 0; i < transSpliced.length; i++) {
+                transBinding += transSpliced[i];
+
+                if (attributes[i]) {
+                    transBinding += attributes[i];
+                }
+            }
+
+            return transBinding;
         }
 
         /**
@@ -11102,7 +11376,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     'zoom': 'Zoom',
     'highlight-links': 'Highlight Links',
     'highlight-titles': 'Highlight Titles',
-    'alt-description': 'Alt Description'
+    'alt-description': 'Alt Description',
+    'reset': 'Reset',
+    'disable-transitions': 'Disable Transitions',
+    'quick-navigation': 'Enable keyboard navigation menu',
+    'info-enable-quick-navigation': 'You can always press (:a) To get back to quick navigation',
+    'press-to-open-menu': 'Press (:a) To open Accessibility Menu',
+    'press-to-enable-quick-navigation': 'Press (:a) To enable keyboard navigation menu'
 });
 
 /***/ }),
@@ -11127,7 +11407,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _class = function () {
 
     /**
-     * Accessibility QuicNavigation Class
+     * Accessibility Navigation Class
      *
      * @param accessibility
      */
@@ -11151,6 +11431,72 @@ var _class = function () {
         key: 'render',
         value: function render() {
             this.$el.append(this.getQuickAccess());
+
+            this.renderQuickNavigation();
+
+            this.focusListener();
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'renderQuickNavigation',
+        value: function renderQuickNavigation() {
+            if (!this.isQuickNavigationEnable()) return;
+
+            var feature = this.accessibility.getFeatureBy('quick-navigation', 'layout');
+
+            if (!feature.enable) return;
+
+            var initializedState = this.accessibility.accessibilityFeatures.getState('quickNavigation'),
+                quickNavigation = {
+                $el: null,
+                state: 'disable',
+                items: this.bindQuickNavigationItems()
+            };
+
+            this.accessibility.accessibilityFeatures.extendStates({ quickNavigation: quickNavigation });
+
+            this.getQuickNavigation();
+
+            quickNavigation.$el = this.$quickNavigation;
+
+            this.accessibility.accessibilityFeatures.extendStates({ quickNavigation: quickNavigation });
+            this.$el.append(this.$quickNavigation);
+
+            if (initializedState && initializedState.state === 'enable') {
+                this.enableQuickNavigation();
+            }
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'getQuickNavigation',
+        value: function getQuickNavigation() {
+            if (typeof this.$quickNavigation !== 'undefined') {
+                return this.$quickNavigation;
+            }
+
+            this.$quickNavigation = $('<div class="accessibility-quick-navigation"/>');
+
+            var $container = $('<div class="accessibility-quick-navigation-container"/>'),
+                $infoButton = $('<button tabindex="1" role="tooltip"/>');
+
+            $infoButton.append('<i class="accessibility icon-info"></i>');
+
+            var info = this.accessibility.$i18n.trans('info-enable-quick-navigation', '<span class="keyboard"><kbd>Ctrl</kbd> + <kbd>F9</kbd></span>');
+            $infoButton.append(AccessibilityForAll.renderToolTipEl(info));
+
+            $container.append($infoButton);
+            $container.append(this.createQuickNavigationItems());
+
+            this.$quickNavigation.append($container);
+            return this.$quickNavigation;
         }
 
         /**
@@ -11176,9 +11522,32 @@ var _class = function () {
          */
 
     }, {
+        key: 'createQuickNavigationItems',
+        value: function createQuickNavigationItems() {
+            var $items = $('<ul/>');
+
+            $.each(this.accessibility.accessibilityFeatures.states.quickNavigation.items, function () {
+                var $item = $('<li/>');
+
+                $item.append('<a href="javascript:void(0)" tabindex="1">' + this.text + '</a>');
+                $items.append($item);
+            });
+
+            return $items;
+        }
+
+        /**
+         *
+         */
+
+    }, {
         key: 'createQuickAccessItems',
         value: function createQuickAccessItems() {
-            this.items = [{ text: 'Press <span class="keyboard"><kbd>Enter ↵</kbd></span> To open Accessibility Menu', action: this.openAccessibilityMenu.bind(this) }];
+            this.items = [{ text: this.accessibility.$i18n.trans('press-to-open-menu', '<span class="keyboard"><kbd>Enter ↵</kbd></span>'), keyListener: 13, action: this.openAccessibilityMenu.bind(this) }];
+
+            if (this.isQuickNavigationEnable()) {
+                this.items.push({ text: this.accessibility.$i18n.trans('press-to-enable-quick-navigation', '<span class="keyboard"><kbd>Enter ↵</kbd></span>'), keyListener: 13, action: this.enableQuickNavigation.bind(this) });
+            }
 
             var $itemsWrap = $('<ul/>');
 
@@ -11193,8 +11562,6 @@ var _class = function () {
                 this.$el = $item;
                 this.$button = $item.find('button');
             });
-
-            this.focusListener();
 
             return $itemsWrap;
         }
@@ -11211,18 +11578,55 @@ var _class = function () {
             $(document).on('focus', '.accessibility-navigation button', function () {
                 var item = self.getButtonItemParams($(this));
 
-                if (item) {
-                    item.action(item, 'focus');
+                if (!item) return;
+
+                if (item.keyListener) {
+                    self.bindKeyListerner(item.keyListener, item, 'focus');
+                    return;
                 }
+
+                item.action(item, 'focus');
             });
 
             $(document).on('blur', '.accessibility-navigation button', function () {
                 var item = self.getButtonItemParams($(this));
 
-                if (item) {
-                    item.action(item, 'blur');
+                if (!item) return;
+
+                if (item.keyListener) {
+                    self.bindKeyListerner(item.keyListener, item, 'blur');
+                    return;
                 }
+
+                item.action(item, 'blur');
             });
+        }
+
+        /**
+         *
+         * @param key
+         * @param item
+         * @param buttonState
+         * @param e
+         */
+
+    }, {
+        key: 'bindKeyListerner',
+        value: function bindKeyListerner(key, item, buttonState, e) {
+            var self = this;
+
+            if (buttonState === 'focus') {
+                $(document).on('keypress.accessibility.navigation-focus-item-listener', function (e) {
+                    if (e.which === key) {
+                        item.action(e);
+                        item.$button.blur();
+                    }
+                });
+
+                return;
+            }
+
+            $(document).off('keypress.accessibility.navigation-focus-item-listener');
         }
 
         /**
@@ -11248,27 +11652,59 @@ var _class = function () {
 
         /**
          *
-         * @param item
-         * @param buttonState
+         * @param e
          */
 
     }, {
         key: 'openAccessibilityMenu',
-        value: function openAccessibilityMenu(item, buttonState) {
-            var self = this;
+        value: function openAccessibilityMenu(e) {
+            this.accessibility.accessibilityMenu.openMenu(e);
+        }
 
-            if (buttonState === 'focus') {
-                $(document).on('keypress.accessibility.enter-click-menu-toggle', function (e) {
-                    if (e.which === 13) {
-                        self.accessibility.accessibilityMenu.openMenu(e);
-                        item.$button.blur();
-                    }
-                });
+        /**
+         *
+         * @param e
+         */
 
-                return;
-            }
+    }, {
+        key: 'enableQuickNavigation',
+        value: function enableQuickNavigation(e) {
+            if (!this.isQuickNavigationEnable()) return;
 
-            $(document).off('keypress.accessibility.enter-click-menu-toggle');
+            this.accessibility.accessibilityFeatures.enableQuickNavigation();
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'disableQuickNavigation',
+        value: function disableQuickNavigation() {
+            this.accessibility.accessibilityFeatures.disableQuickNavigation();
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'isQuickNavigationEnable',
+        value: function isQuickNavigationEnable() {
+            this.navigationConfig = this.navigationConfig ? this.navigationConfig : this.accessibility.options.getConfig('navigation');
+            return this.navigationConfig && this.navigationConfig.enable;
+        }
+
+        /**
+         *
+         * @returns {*[]}
+         */
+
+    }, {
+        key: 'bindQuickNavigationItems',
+        value: function bindQuickNavigationItems() {
+            return [{ text: 'Test', action: '' }];
         }
     }]);
 
@@ -11282,10 +11718,335 @@ var _class = function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__features_img_alt_description__ = __webpack_require__(10);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _class = function () {
+    /**
+     *
+     * @param accessibility
+     */
+    function _class(accessibility) {
+        _classCallCheck(this, _class);
+
+        this.accessibility = accessibility;
+
+        this.type = this.accessibility.options.getConfig('storage');
+    }
+
+    /**
+     *
+     */
+
+
+    _createClass(_class, [{
+        key: 'initializeFromStorage',
+        value: function initializeFromStorage() {
+            if (this.type === 'cookies') {
+                return this.convertStringToObj(this.getCookie());
+            }
+
+            return {};
+        }
+
+        /**
+         *
+         * @param featureName
+         * @param value
+         */
+
+    }, {
+        key: 'setStorage',
+        value: function setStorage(featureName, value) {
+            value = value !== 'disable' ? value : null;
+            featureName = this.accessibility.accessibilityFeatures.mapFeatureToStorage(featureName);
+
+            var feature = _defineProperty({}, featureName, value);
+
+            this.updateOrCreateToStorage(feature);
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'resetStorage',
+        value: function resetStorage() {
+            var prefix = 'AccForAll';
+
+            if (this.type === 'cookies') {
+                document.cookie = prefix + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                return;
+            }
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'getStorage',
+        value: function getStorage() {}
+
+        /**
+         *
+         * @param obj
+         */
+
+    }, {
+        key: 'updateOrCreateToStorage',
+        value: function updateOrCreateToStorage(obj) {
+            if (this.type === 'cookies') {
+                return this.setCookie(obj);
+            }
+        }
+
+        /**
+         *
+         * @param feature
+         */
+
+    }, {
+        key: 'setCookie',
+        value: function setCookie(feature) {
+            var _cookiesParams;
+
+            var prefix = 'AccForAll',
+                domain = this.accessibility.getDomain(),
+                maxAge = 31536000,
+                expires = new Date();
+
+            expires.setDate(expires.getDate() + 7);
+
+            var params = this.updateCookieParams(feature);
+
+            var cookiesParams = (_cookiesParams = {}, _defineProperty(_cookiesParams, prefix, params), _defineProperty(_cookiesParams, 'expires', params ? expires.toGMTString() : '01 Jan 1970 00:00:01 GMT'), _cookiesParams);
+
+            var cookie = this.convertObjToString(cookiesParams);
+
+            document.cookie = cookie;
+            return cookie;
+        }
+
+        /**
+         *
+         * @param obj
+         * @returns {string}
+         */
+
+    }, {
+        key: 'updateCookieParams',
+        value: function updateCookieParams(obj) {
+            var cookie = this.getCookie();
+
+            if (!cookie) return this.convertObjToString(obj, ',');
+
+            var cookieObj = $.extend(this.convertStringToObj(cookie), obj);
+
+            return this.convertObjToString(cookieObj, ',');
+        }
+
+        /**
+         *
+         * @returns {*}
+         */
+
+    }, {
+        key: 'getCookie',
+        value: function getCookie() {
+            var prefix = 'AccForAll=',
+                ca = document.cookie.split(';');
+
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1, c.length);
+                }
+
+                if (c.indexOf(prefix) === 0) {
+                    return c.substring(prefix.length, c.length);
+                }
+            }
+
+            return null;
+        }
+
+        /**
+         *
+         * @param obj
+         * @param separator
+         * @returns {string}
+         */
+
+    }, {
+        key: 'convertObjToString',
+        value: function convertObjToString(obj) {
+            var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ';';
+
+            var string = '';
+
+            $.each(obj, function (key) {
+                if (!this && typeof this !== 'string') return;
+
+                string += key + '=' + this + separator;
+            });
+
+            return string.slice(0, -1);
+        }
+
+        /**
+         *
+         * @param string
+         * @param separator
+         * @returns {{}}
+         */
+
+    }, {
+        key: 'convertStringToObj',
+        value: function convertStringToObj(string) {
+            var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ',';
+
+            var obj = {};
+
+            if (!string) return obj;
+
+            string = string.split(separator);
+
+            for (var i = 0; i < string.length; i++) {
+                var cur = string[i].split('=');
+
+                obj[cur[0]] = cur[1];
+            }
+
+            return obj;
+        }
+    }]);
+
+    return _class;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (_class);
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _class = function () {
+    function _class(options) {
+        _classCallCheck(this, _class);
+
+        this.config = this.setConfig(options);
+    }
+
+    /**
+     *
+     * @param options
+     */
+
+
+    _createClass(_class, [{
+        key: 'setConfig',
+        value: function setConfig(options) {
+            var config = $.extend({
+                locale: 'en',
+                direction: 'ltr',
+                storage: 'cookies'
+            }, options);
+
+            config.menu = $.extend({
+                footer: {
+                    reset: true
+                }
+            }, config.menu);
+
+            config.features = $.extend({
+                monochrome: true,
+                darkContrast: true,
+                brightContrast: true,
+                decreaseFontSize: true,
+                increaseFontSize: true,
+                fontFamily: true,
+                cursorBw: true,
+                cursorBb: true,
+                zoom: true,
+                highlightLinks: true,
+                highlightTitles: true,
+                altDescription: true,
+                disableTransitions: true
+            }, config.features);
+
+            config.navigation = $.extend({
+                enable: true
+            }, config.navigation);
+
+            return config;
+        }
+
+        /**
+         *
+         * @param key
+         * @param config
+         * @returns {*}
+         */
+
+    }, {
+        key: 'getConfig',
+        value: function getConfig(key) {
+            var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            key = key.split('.');
+            config = config ? config : this.config;
+
+            if (!key[0]) return null;
+
+            if (!config[key[0]]) return null;
+
+            if (key.length === 1) return config[key[0]];
+
+            if (_typeof(config[key[0]]) !== 'object') return config[key[0]];
+
+            var continueKey = '';
+
+            for (var i = 1; i < key.length; i++) {
+                continueKey += key[i];
+
+                if (i + 1 < key.length) {
+                    continueKey += '.';
+                }
+            }
+
+            return this.getConfig(continueKey, config[key[0]]);
+        }
+    }]);
+
+    return _class;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (_class);
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__features_quick_navigation__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__features_img_alt_description__ = __webpack_require__(13);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 
 
 
@@ -11314,36 +12075,78 @@ var _class = function () {
     _createClass(_class, [{
         key: 'initStates',
         value: function initStates() {
-            this.states = {
-                monochrome: false,
-                darkContrast: false,
-                brightContrast: false,
-                fontFamily: false,
-                cursorBw: false,
-                cursorBb: false,
-                zoom: false,
-                highlightLinks: false,
-                highlightTitles: false,
-                altDescription: false,
+            var storageStates = this.accessibility.accessibilityStorage.initializeFromStorage();
+
+            this.states = $.extend({
+                monochrome: 'disable',
+                darkContrast: 'disable',
+                brightContrast: 'disable',
+                fontFamily: 'disable',
+                cursorBw: 'disable',
+                cursorBb: 'disable',
+                zoom: 'disable',
+                highlightLinks: 'disable',
+                highlightTitles: 'disable',
+                altDescription: 'disable',
+                disableTransitions: 'disable',
 
                 fontSize: {
-                    max: 1.5,
                     current: 1,
-                    $in: $('html'),
                     search: ['*'],
+                    $in: $('html'),
                     exclude: ['svg', '.accessibility', 'head']
+                },
+
+                quickNavigation: {
+                    state: 'disable'
                 }
-            };
+            }, this.mapStorageKeyObj(storageStates));
+        }
+
+        /**
+         *
+         * @param object
+         */
+
+    }, {
+        key: 'extendStates',
+        value: function extendStates(object) {
+            this.states = $.extend(this.states, object);
         }
 
         /**
          * Initialize Features Handlers
+         * Append To Object Features From Outside Classes
+         * Loop On States Object To Activate Actions
          */
 
     }, {
         key: 'initFeatures',
         value: function initFeatures() {
-            this.imgAltDescription = new __WEBPACK_IMPORTED_MODULE_0__features_img_alt_description__["a" /* default */](this.accessibility);
+            this.imgAltDescription = new __WEBPACK_IMPORTED_MODULE_1__features_img_alt_description__["a" /* default */](this.accessibility);
+            this.quickNavigationHandler = new __WEBPACK_IMPORTED_MODULE_0__features_quick_navigation__["a" /* default */](this.accessibility);
+
+            var self = this;
+
+            $.each(this.states, function (key) {
+                var feature = self.getAccessibilityFeature(key);
+
+                if (this !== 'enable' || !feature.enable) {
+                    return;
+                }
+
+                if (typeof self[key] === 'undefined') {
+                    return;
+                }
+
+                self[key]();
+            });
+
+            if (this.states.fontSize.current > 1) {
+                this.updateBodyElements();
+            }
+
+            this.initialized = true;
         }
 
         /**
@@ -11377,15 +12180,16 @@ var _class = function () {
     }, {
         key: 'cursorBb',
         value: function cursorBb() {
-            if (this.states.cursorBb) {
+            if (this.states.cursorBb === 'enable' && this.initialized) {
                 this.accessibility.$body.removeClass('accessibility-big-black-cursor');
             } else {
                 this.removeAllCursors();
                 this.accessibility.$body.addClass('accessibility-big-black-cursor');
             }
 
-            this.setState('cursorBb', !this.states.cursorBb);
-            return this.states.cursorBb;
+            var state = this.initialized && this.states.cursorBb === 'enable' ? 'disable' : 'enable';
+            this.setState('cursorBb', state);
+            return state === 'enable' ? 'cursorBb' : 'disable';
         }
 
         /**
@@ -11395,138 +12199,171 @@ var _class = function () {
     }, {
         key: 'cursorBw',
         value: function cursorBw() {
-            if (this.states.cursorBw) {
+            if (this.states.cursorBw === 'enable' && this.initialized) {
                 this.accessibility.$body.removeClass('accessibility-big-white-cursor');
             } else {
                 this.removeAllCursors();
                 this.accessibility.$body.addClass('accessibility-big-white-cursor');
             }
 
-            this.setState('cursorBw', !this.states.cursorBw);
-            return this.states.cursorBw;
+            var state = this.initialized && this.states.cursorBw === 'enable' ? 'disable' : 'enable';
+            this.setState('cursorBw', state);
+            return state === 'enable' ? 'cursorBw' : 'disable';
         }
 
         /**
          * Monochrome Contrast Handler
-         * @returns {boolean}
+         * @returns string
          */
 
     }, {
         key: 'monochrome',
         value: function monochrome() {
-            if (this.states.monochrome) {
+            if (this.states.monochrome === 'enable' && this.initialized) {
                 this.accessibility.$body.removeClass('accessibility-monochrome');
             } else {
                 this.removeAllContrasts();
                 this.accessibility.$body.addClass('accessibility-monochrome');
             }
 
-            this.setState('monochrome', !this.states.monochrome);
-            return this.states.monochrome;
+            var state = this.initialized && this.states.monochrome === 'enable' ? 'disable' : 'enable';
+            this.setState('monochrome', state);
+            return state === 'enable' ? 'monochrome' : 'disable';
         }
 
         /**
          *
-         * @returns {boolean}
+         * @returns string
          */
 
     }, {
         key: 'darkContrast',
         value: function darkContrast() {
-            if (this.states.darkContrast) {
+            if (this.states.darkContrast === 'enable' && this.initialized) {
                 this.accessibility.$body.removeClass('accessibility-dark-contrast');
             } else {
                 this.removeAllContrasts();
                 this.accessibility.$body.addClass('accessibility-dark-contrast');
             }
 
-            this.setState('darkContrast', !this.states.darkContrast);
-            return this.states.darkContrast;
+            var state = this.initialized && this.states.darkContrast === 'enable' ? 'disable' : 'enable';
+            this.setState('darkContrast', state);
+            return state === 'enable' ? 'darkContrast' : 'disable';
         }
 
         /**
          *
-         * @returns {boolean}
+         * @returns string
          */
 
     }, {
         key: 'brightContrast',
         value: function brightContrast() {
-            if (this.states.brightContrast) {
+            if (this.states.brightContrast === 'enable' && this.initialized) {
                 this.accessibility.$body.removeClass('accessibility-bright-contrast');
             } else {
                 this.removeAllContrasts();
                 this.accessibility.$body.addClass('accessibility-bright-contrast');
             }
 
-            this.setState('brightContrast', !this.states.brightContrast);
-            return this.states.brightContrast;
+            var state = this.initialized && this.states.brightContrast === 'enable' ? 'disable' : 'enable';
+            this.setState('brightContrast', state);
+            return state === 'enable' ? 'brightContrast' : 'disable';
         }
 
         /**
          *
-         * @returns {boolean}
+         * @returns string
          */
 
     }, {
         key: 'highlightLinks',
         value: function highlightLinks() {
-            if (this.states.highlightLinks) {
+            if (this.states.highlightLinks === 'enable' && this.initialized) {
                 this.accessibility.$body.removeClass('accessibility-highlight-link');
             } else {
                 this.accessibility.$body.addClass('accessibility-highlight-link');
             }
 
-            this.setState('highlightLinks', !this.states.highlightLinks);
+            var state = this.initialized && this.states.highlightLinks === 'enable' ? 'disable' : 'enable';
+            this.setState('highlightLinks', state);
             return this.states.highlightLinks;
         }
 
         /**
          *
-         * @returns {boolean}
+         * @returns string
          */
 
     }, {
         key: 'highlightTitles',
         value: function highlightTitles() {
-            if (this.states.highlightTitles) {
+            if (this.states.highlightTitles === 'enable' && this.initialized) {
                 this.accessibility.$body.removeClass('accessibility-highlight-titles');
             } else {
                 this.accessibility.$body.addClass('accessibility-highlight-titles');
             }
 
-            this.setState('highlightTitles', !this.states.highlightTitles);
+            var state = this.initialized && this.states.highlightTitles === 'enable' ? 'disable' : 'enable';
+            this.setState('highlightTitles', state);
             return this.states.highlightTitles;
         }
 
         /**
          *
-         * @returns {boolean}
+         * @returns string
          */
 
     }, {
         key: 'fontFamily',
         value: function fontFamily() {
-            if (this.states.fontFamily) {
+            if (this.states.fontFamily === 'enable' && this.initialized) {
                 this.accessibility.$body.removeClass('accessibility-readable-font-family');
             } else {
                 this.accessibility.$body.addClass('accessibility-readable-font-family');
             }
 
-            this.setState('fontFamily', !this.states.fontFamily);
+            var state = this.initialized && this.states.fontFamily === 'enable' ? 'disable' : 'enable';
+            this.setState('fontFamily', state);
             return this.states.fontFamily;
         }
+
+        /**
+         *
+         * @returns string
+         */
+
     }, {
         key: 'zoom',
         value: function zoom() {
-            if (this.states.zoom) {
+            if (this.states.zoom === 'enable' && this.initialized) {
                 this.accessibility.$body.removeClass('accessibility-body-zoomed');
             } else {
                 this.accessibility.$body.addClass('accessibility-body-zoomed');
             }
 
-            this.setState('zoom', !this.states.zoom);
+            var state = this.initialized && this.states.zoom === 'enable' ? 'disable' : 'enable';
+            this.setState('zoom', state);
             return this.states.zoom;
+        }
+
+        /**
+         *
+         * @returns string
+         */
+
+    }, {
+        key: 'disableTransitions',
+        value: function disableTransitions() {
+            if (this.states.disableTransitions === 'enable' && this.initialized) {
+                this.accessibility.$body.removeClass('accessibility-transitions-disabled');
+            } else {
+                this.accessibility.$body.addClass('accessibility-transitions-disabled');
+            }
+
+            var state = this.initialized && this.states.disableTransitions === 'enable' ? 'disable' : 'enable';
+            this.setState('disableTransitions', state);
+            return this.states.disableTransitions;
         }
 
         /**
@@ -11537,13 +12374,14 @@ var _class = function () {
     }, {
         key: 'altDescription',
         value: function altDescription() {
-            if (this.states.altDescription) {
+            if (this.states.altDescription === 'enable' && this.initialized) {
                 this.setImageAltDescription(false);
             } else {
                 this.setImageAltDescription(true);
             }
 
-            this.setState('altDescription', !this.states.altDescription);
+            var state = this.initialized && this.states.altDescription === 'enable' ? 'disable' : 'enable';
+            this.setState('altDescription', state);
             return this.states.altDescription;
         }
 
@@ -11554,12 +12392,12 @@ var _class = function () {
     }, {
         key: 'increaseFontSize',
         value: function increaseFontSize() {
-            if (this.states.fontSize.current >= 1.5) return null;
+            if (this.states.fontSize.current >= this.states.fontSize.max) return this.states.fontSize.current;
 
             this.states.fontSize.current += 0.1;
 
             this.updateBodyElements();
-            return null;
+            return this.states.fontSize.current;
         }
 
         /**
@@ -11574,7 +12412,64 @@ var _class = function () {
             this.states.fontSize.current -= 0.1;
 
             this.updateBodyElements();
-            return null;
+            return this.states.fontSize.current <= 1 ? 'disable' : this.states.fontSize.current;
+        }
+
+        /**
+         * Toggle Quick Navigation
+         */
+
+    }, {
+        key: 'quickNavigation',
+        value: function quickNavigation() {
+            if (typeof this.states.quickNavigation === 'undefined') return;
+
+            if (this.states.quickNavigation.state === 'enable' && this.initialized) {
+                this.disableQuickNavigation();
+                return this.states.quickNavigation.state;
+            }
+
+            this.enableQuickNavigation();
+            return this.states.quickNavigation.state;
+        }
+
+        /**
+         * Enable Quick Navigation
+         */
+
+    }, {
+        key: 'enableQuickNavigation',
+        value: function enableQuickNavigation() {
+            if (this.states.quickNavigation.state === 'enable') {
+                return;
+            }
+
+            this.accessibility.$body.addClass('accessibility-quick-navigation-enabled');
+            this.accessibility.$body.scrollTop(0);
+
+            this.states.quickNavigation.state = 'enable';
+            this.states.quickNavigation.$el.find('button').focus();
+
+            this.quickNavigationHandler.initialize();
+        }
+
+        /**
+         * Disable Quick Navigation
+         */
+
+    }, {
+        key: 'disableQuickNavigation',
+        value: function disableQuickNavigation() {
+            if (this.states.quickNavigation.state === 'disable') {
+                return;
+            }
+
+            this.accessibility.$body.removeClass('accessibility-quick-navigation-enabled');
+            this.accessibility.$body.scrollTop(0);
+
+            this.states.quickNavigation.state = 'disable';
+
+            this.quickNavigationHandler.destroy();
         }
 
         /**
@@ -11586,6 +12481,8 @@ var _class = function () {
         key: 'updateBodyElements',
         value: function updateBodyElements() {
             var self = this;
+
+            this.states.fontSize.current = Number(this.states.fontSize.current.toFixed(2));
 
             this.states.fontSize.$in.find(this.fontElements()).each(function () {
                 var currentFontSize = parseFloat($(this).css('font-size'));
@@ -11660,6 +12557,40 @@ var _class = function () {
         }
 
         /**
+         *
+         */
+
+    }, {
+        key: 'reset',
+        value: function reset() {
+            var self = this;
+
+            $.each(this.states, function (key) {
+                if (this !== 'enable') {
+                    return;
+                }
+
+                if (typeof self[key] === 'undefined') {
+                    return;
+                }
+
+                self[key]();
+            });
+
+            if (this.states.fontSize.current > 1) {
+                this.states.fontSize.current = 1;
+                this.updateBodyElements();
+            }
+
+            if (this.states.quickNavigation.state === 'enable') {
+                this.quickNavigation();
+            }
+
+            this.accessibility.accessibilityStorage.resetStorage();
+            return null;
+        }
+
+        /**
          * Update Feature State
          *
          * @param type
@@ -11673,21 +12604,109 @@ var _class = function () {
         }
 
         /**
+         *
+         * @param type
+         * @returns {null}
+         */
+
+    }, {
+        key: 'getState',
+        value: function getState(type) {
+            if (typeof this.states[type] !== 'undefined') {
+                return this.states[type];
+            }
+
+            var camelCase = this.accessibility.camelCase(type);
+
+            return typeof this.states[camelCase] !== 'undefined' ? this.states[camelCase] : null;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'getAccessibilityFeature',
+        value: function getAccessibilityFeature(featureKey) {
+            var featureName = AccessibilityForAll.snakeCase(featureKey);
+            return this.accessibility.getFeatureBy(featureName);
+        }
+
+        /**
+         *
+         * @param featureName
+         * @returns {*}
+         */
+
+    }, {
+        key: 'mapFeatureToStorage',
+        value: function mapFeatureToStorage(featureName) {
+            var mappingTypeToState = {
+                cursorBb: 'cursorPointer',
+                cursorBw: 'cursorPointer',
+                monochrome: 'colorContrast',
+                darkContrast: 'colorContrast',
+                brightContrast: 'colorContrast',
+                increaseFontSize: 'fontSize',
+                decreaseFontSize: 'fontSize'
+            };
+
+            return mappingTypeToState[featureName] ? mappingTypeToState[featureName] : featureName;
+        }
+
+        /**
+         *
+         * @param storageStates
+         * @returns {*}
+         */
+
+    }, {
+        key: 'mapStorageKeyObj',
+        value: function mapStorageKeyObj(storageStates) {
+            var mappingValueToAction = ['colorContrast', 'cursorPointer'];
+
+            if (typeof storageStates.quickNavigation !== 'undefined') {
+                storageStates.quickNavigation = { state: storageStates.quickNavigation };
+            }
+
+            if (typeof storageStates.fontSize !== 'undefined') {
+                storageStates.fontSize = {
+                    $in: $('html'),
+                    search: ['*'],
+                    current: Number(storageStates.fontSize),
+                    exclude: ['svg', '.accessibility', 'head']
+                };
+            }
+
+            $.each(mappingValueToAction, function () {
+                if (typeof storageStates[this] === 'undefined') {
+                    return;
+                }
+
+                storageStates[storageStates[this]] = 'enable';
+                delete storageStates[this];
+            });
+
+            return storageStates;
+        }
+
+        /**
          * Remove All Enabled Features Contrasts
          */
 
     }, {
         key: 'removeAllContrasts',
         value: function removeAllContrasts() {
-            if (this.states.darkContrast) {
+            if (this.states.darkContrast === 'enable' && this.initialized) {
                 this.darkContrast();
             }
 
-            if (this.states.brightContrast) {
+            if (this.states.brightContrast === 'enable' && this.initialized) {
                 this.brightContrast();
             }
 
-            if (this.states.monochrome) {
+            if (this.states.monochrome === 'enable' && this.initialized) {
                 this.monochrome();
             }
         }
@@ -11699,11 +12718,11 @@ var _class = function () {
     }, {
         key: 'removeAllCursors',
         value: function removeAllCursors() {
-            if (this.states.cursorBb) {
+            if (this.states.cursorBb === 'enable' && this.initialized) {
                 this.cursorBb();
             }
 
-            if (this.states.cursorBw) {
+            if (this.states.cursorBw === 'enable' && this.initialized) {
                 this.cursorBw();
             }
         }
@@ -11715,7 +12734,78 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 10 */
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _class = function () {
+    /**
+     *
+     * @param accessibility
+     */
+    function _class(accessibility) {
+        _classCallCheck(this, _class);
+
+        this.accessibility = accessibility;
+    }
+
+    /**
+     *
+     */
+
+
+    _createClass(_class, [{
+        key: 'initialize',
+        value: function initialize() {
+            this.focusQuickNavigationListener();
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'destroy',
+        value: function destroy() {
+            this.accessibility.$body.off('keyup.accessibility.quick-navigation-focus-key');
+            this.accessibility.$body.off('keydown.accessibility.quick-navigation-focus-key');
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'focusQuickNavigationListener',
+        value: function focusQuickNavigationListener() {
+            var self = this,
+                keys = [];
+
+            this.accessibility.$body.on('keydown.accessibility.quick-navigation-focus-key', function (e) {
+                keys.push(e.which);
+            });
+
+            this.accessibility.$body.on('keyup.accessibility.quick-navigation-focus-key', function (e) {
+                if (keys.indexOf(120) >= 0 && keys.indexOf(17) >= 0) {
+                    self.accessibility.accessibilityNavigation.$quickNavigation.find('button').first().focus();
+                }
+
+                keys = [];
+            });
+        }
+    }]);
+
+    return _class;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (_class);
+
+/***/ }),
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11843,7 +12933,7 @@ var _class = function () {
     }, {
         key: 'positionBox',
         value: function positionBox(event) {
-            this.accessibility.preventDefault(event);
+            AccessibilityForAll.preventDefault(event);
 
             var elWidth = this.$el.width(),
                 pX = event.clientX - elWidth / 2,
@@ -11871,7 +12961,7 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

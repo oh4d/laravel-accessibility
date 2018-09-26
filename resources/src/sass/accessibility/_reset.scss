@@ -4,7 +4,7 @@ body > .accessibility {
   position: absolute;
 
   :focus {
-    outline: rgb(77, 144, 254) auto  1px;
+    outline: none;
   }
 
   * {
@@ -12,8 +12,14 @@ body > .accessibility {
     font-family: Arial, sans-serif;
   }
 
+  a {
+    color: #000000;
+    text-decoration: none;
+  }
+
   button {
     border: none;
+    color: #000000;
     cursor: pointer;
     background: transparent;
     -webkit-appearance: none;
@@ -39,7 +45,7 @@ body > .accessibility {
       border-radius: .3em;
       color: #000000;
       border-color: #ddd #bbb #777 #999;
-      background-color: #fff!important;
+      background-color: #fff !important;
       font-family: monospace;
       background-image: linear-gradient(to bottom left,#eee,#fff,#eee);
       padding: .1em .3em;
@@ -47,4 +53,6 @@ body > .accessibility {
       vertical-align: bottom;
     }
   }
+
+
 }

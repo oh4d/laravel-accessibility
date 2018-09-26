@@ -2,6 +2,7 @@
 
 namespace Oh4d\Accessibility\Http\Middleware;
 
+use Illuminate\Http\Request;
 use Oh4d\Accessibility\LaravelAccessibility;
 use Illuminate\Contracts\Foundation\Application;
 
@@ -45,7 +46,7 @@ class InjectMenu
      * Handle an incoming request.
      *
      * @param Request $request
-     * @param Closure $next
+     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, \Closure $next)

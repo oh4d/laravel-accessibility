@@ -36,6 +36,11 @@ html body {
     }
   }
 
+  &.accessibility-transitions-disabled * {
+    transition: none !important;
+    animation: none !important;
+  }
+
   &.accessibility-dark-contrast {
     color: #ffffff;
     background-color: #000000;
@@ -120,16 +125,16 @@ html body {
     > :not(.accessibility) a:hover,
     > :not(.accessibility) a:hover *,
     > :not(.accessibility):not([tabindex="-1"]):focus,
-    > :not(.accessibility):not([tabindex="-1"]):focus,
+    > :not(.accessibility) :not([tabindex="-1"]):focus,
     > :not(.accessibility):not([tabindex="-1"]):focus *,
-    > :not(.accessibility):not([tabindex="-1"]):focus * {
-      color: #000000;
+    > :not(.accessibility) :not([tabindex="-1"]):focus * {
       fill: #000000;
+      color: #000000;
       stroke: #000000;
-      background-color: #fffacd;
       font-weight: bold;
-      transition: color 0.3s ease-in, fill 0.3s ease-in;
       filter: contrast(1);
+      background-color: #fffacd;
+      transition: color 0.3s ease-in, fill 0.3s ease-in;
     }
   }
 
@@ -227,6 +232,24 @@ html body {
     [role="spinbutton"],
     [role="tab"] {
       cursor: url('images/bighandwhite.cur'), auto;
+    }
+  }
+
+  &.accessibility-quick-navigation-enabled {
+    padding-top: 55px;
+
+    [tabindex]:hover,
+    [tabindex]:hover {
+      box-shadow: 0 0 6px 3px Blue, 0 0 2px #333 inset !important;
+    }
+
+    .accessibility-quick-navigation {
+      visibility: visible;
+      transform: translate(-50%, 0);
+    }
+
+    .accessibility-quick-access {
+      visibility: hidden;
     }
   }
 }
