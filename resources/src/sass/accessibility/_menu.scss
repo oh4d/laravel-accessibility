@@ -1,192 +1,200 @@
-.accessibility-menu {
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 350px;
-  position: fixed;
-  transform: translateX(-100%);
-  background: $menu-background;
-  transition: transform .3s ease;
-  border-right: 1px solid $primary-app-color;
-
-  .accessibility-menu-trigger {
-    top: 50px;
-    left: 100%;
-    color: #ffffff;
-    position: absolute;
-    border-radius: 0 50% 50% 0;
-    border: 2px solid #ffffff;
-    border-left: none;
-    padding: 15px 25px 15px 10px;
-    background: $primary-app-color;
-
-    i {
-      font-size: 2.7rem;
-    }
-  }
-
-  .accessibility-menu-container {
+html > body > .accessibility {
+  .accessibility-menu {
     top: 0;
     left: 0;
-    right: 0;
     bottom: 0;
-    overflow: auto;
-    max-height: 100%;
-    visibility: hidden;
-    position: absolute;
-    padding: 55px 10px 90px;
+    width: 350px;
+    position: fixed;
+    transform: translateX(-100%);
+    background: $menu-background;
+    transition: transform .3s ease;
+    border-right: 1px solid $primary-app-color;
 
-    :focus {
-      outline: rgb(77, 144, 254) auto  1px;
-    }
+    > .accessibility-menu-trigger {
+      top: 50px;
+      left: 100%;
+      color: #ffffff;
+      position: absolute;
+      border-radius: 0 50% 50% 0;
+      border: 2px solid #ffffff;
+      border-left: none;
+      padding: 15px 25px 15px 10px;
+      background: $primary-app-color;
 
-    .accessibility-feature {
-      button {
-        span {
-          font-size: 13px;
-        }
+      i {
+        font-size: 2.7rem;
       }
 
-      &.accessibility-feature-activated {
-        button {
-          font-weight: bold;
-        }
+      &:focus {
+        color: #bf1722;
+        background: #ffffcc;
+        border-color: #bf1722;
       }
     }
 
-    .accessibility-menu-header {
+    .accessibility-menu-container {
       top: 0;
       left: 0;
       right: 0;
+      bottom: 0;
+      overflow: auto;
+      max-height: 100%;
+      visibility: hidden;
       position: absolute;
-      padding: 10px 30px;
-      background: #000000;
-      text-align: center;
+      padding: 55px 10px 90px;
 
-      h3 {
-        margin: 0;
-        color: #ffffff;
-        display: inline-block;
+      :focus {
+        outline: rgb(77, 144, 254) auto  1px;
       }
 
-      .accessibility-menu-close-trigger {
-        top: 10px;
-        left: 5px;
-        color: #ffffff;
-        position: absolute;
-
-        i {
-          font-size: 1rem;
+      .accessibility-feature {
+        button {
+          span {
+            font-size: 13px;
+          }
         }
-      }
-    }
 
-    .accessibility-menu-body {
-      background: $menu-background;
-
-      .accessibility-features-row {
-        padding: 6px 0;
-        border-bottom: 1px solid #d1d2d3;
-      }
-
-      .accessibility-layout-features {
-
-        .accessibility-feature {
-          padding: 5px 0;
-          border-bottom: 1px solid #d1d2d3;
-
+        &.accessibility-feature-activated {
           button {
-            width: 100%;
-            padding: 10px;
-            display: block;
-            text-align: left;
-
-            i {
-              margin-right: 10px;
-            }
-
-            i, span {
-              display: inline-block;
-              vertical-align: middle;
-            }
+            font-weight: bold;
           }
         }
       }
 
-      .accessibility-features {
+      .accessibility-menu-header {
+        top: 0;
+        left: 0;
+        right: 0;
+        position: absolute;
+        padding: 10px 30px;
+        background: #000000;
+        text-align: center;
+
+        h3 {
+          margin: 0;
+          color: #ffffff;
+          display: inline-block;
+        }
+
+        .accessibility-menu-close-trigger {
+          top: 10px;
+          left: 5px;
+          color: #ffffff;
+          position: absolute;
+
+          i {
+            font-size: 1rem;
+          }
+        }
+      }
+
+      .accessibility-menu-body {
+        background: $menu-background;
 
         .accessibility-features-row {
-          font-size: 0;
+          padding: 6px 0;
+          border-bottom: 1px solid #d1d2d3;
+        }
+
+        .accessibility-layout-features {
 
           .accessibility-feature {
-            width: 33.3%;
-            vertical-align: top;
-            display: inline-block;
-
-            &:not(:last-of-type) {
-              border-right: 1px solid #d1d2d3;
-            }
+            padding: 5px 0;
+            border-bottom: 1px solid #d1d2d3;
 
             button {
               width: 100%;
               padding: 10px;
               display: block;
-              text-align: center;
-            }
+              text-align: left;
 
-            span {
-              display: block;
-              margin-top: 10px;
-              text-align: center;
+              i {
+                margin-right: 10px;
+              }
+
+              i, span {
+                display: inline-block;
+                vertical-align: middle;
+              }
             }
           }
         }
+
+        .accessibility-features {
+
+          .accessibility-features-row {
+            font-size: 0;
+
+            .accessibility-feature {
+              width: 33.3%;
+              vertical-align: top;
+              display: inline-block;
+
+              &:not(:last-of-type) {
+                border-right: 1px solid #d1d2d3;
+              }
+
+              button {
+                width: 100%;
+                padding: 10px;
+                display: block;
+                text-align: center;
+              }
+
+              span {
+                display: block;
+                margin-top: 10px;
+                text-align: center;
+              }
+            }
+          }
+        }
+
+        button:hover {
+          background: #ddeeff;
+        }
+
+        button:focus {
+          background: #ddeeff;
+          outline: rgb(77, 144, 254) auto  1px;
+        }
       }
 
-      button:hover {
-        background: #ddeeff;
-      }
-
-      button:focus {
-        background: #ddeeff;
-        outline: rgb(77, 144, 254) auto  1px;
-      }
-    }
-
-    .accessibility-menu-footer {
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
-      text-align: center;
-      background: #ffffff;
-      box-shadow: 1px 0 3px rgba(0,0,0,.6);
-
-      button {
+      .accessibility-menu-footer {
+        left: 0;
+        right: 0;
+        bottom: 0;
         padding: 10px;
+        position: absolute;
         text-align: center;
-        display: inline-block;
-        vertical-align: middle;
+        background: #ffffff;
+        box-shadow: 1px 0 3px rgba(0,0,0,.6);
 
-        span {
-          display: block;
-          margin-top: 10px;
+        button {
+          padding: 10px;
+          text-align: center;
+          display: inline-block;
+          vertical-align: middle;
+
+          span {
+            display: block;
+            margin-top: 10px;
+          }
         }
       }
     }
-  }
 
-  &.accessibility-menu-opened {
-    transform: translateX(0);
+    &.accessibility-menu-opened {
+      transform: translateX(0);
 
-    .accessibility-menu-container {
-      visibility: visible;
-    }
+      .accessibility-menu-container {
+        visibility: visible;
+      }
 
-    .accessibility-menu-trigger {
-      left: 0;
-      display: none;
+      .accessibility-menu-trigger {
+        left: 0;
+        display: none;
+      }
     }
   }
 }

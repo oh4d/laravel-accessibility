@@ -67,7 +67,7 @@ export default class {
         }
 
         this.$menuHeader = $('<div class="accessibility-menu-header"/>');
-        this.$menuHeader.append('<h3 tabindex="0">' + this.accessibility.$i18n.trans('accessibility') + '</h3>');
+        this.$menuHeader.append('<h3 tabindex="0">' + this.accessibility.$i18n.trans('accessibility-menu') + '</h3>');
         this.$menuHeader.append(this.getCloseTrigger());
         return this.$menuHeader;
     }
@@ -99,7 +99,10 @@ export default class {
 
         this.$trigger.append('<i/>');
         this.$trigger.find('i').addClass('accessibility icon-accessibility');
-        this.$trigger.append(AccessibilityForAll.renderToolTipEl('Accessibility Menu', 'accessibilityTriggerButtonTt'));
+
+        this.accessibility.renderToolTipEl(this.$trigger,
+            this.accessibility.$i18n.trans('accessibility-menu'), 'accessibilityTriggerButtonTt', this.accessibility.options.getConfig('direction') === 'rtl' ? 'right' : null
+        );
 
         return this.$trigger;
     }
@@ -133,7 +136,7 @@ export default class {
 
         let features = this.accessibility.getHelperFeatures();
 
-        this.$footerFeatures.append(this.createFeaturesEl(features));
+        this.$footerFeatures.append(this.createFeaturesEl(features, 'helper'));
 
         return this.$footerFeatures;
     }
@@ -151,7 +154,7 @@ export default class {
 
         let features = this.accessibility.getLayoutFeatures();
 
-        this.$layoutFeatures.append(this.createFeaturesEl(features));
+        this.$layoutFeatures.append(this.createFeaturesEl(features, 'layout'));
 
         return this.$layoutFeatures;
     }
@@ -169,7 +172,7 @@ export default class {
         this.$viewFeatures = $('<div class="accessibility-features"/>');
 
         for (let row = 0; row < features.length; row++) {
-            this.$viewFeatures.append(this.createFeaturesEl(features[row], $('<div class="accessibility-features-row"/>')));
+            this.$viewFeatures.append(this.createFeaturesEl(features[row], 'view', $('<div class="accessibility-features-row"/>')));
         }
 
         return this.$viewFeatures;
@@ -178,25 +181,38 @@ export default class {
     /**
      *
      * @param features
+     * @param featuresType
      * @param $append
      */
-    createFeaturesEl(features, $append = null) {
+    createFeaturesEl(features, featuresType = 'view', $append = null) {
         if (! features) {
             return null;
         }
 
         let self = this,
-            $container = '';
+            $container = [];
 
-        $.each(features, function() {
+        $.each(features, function(index) {
+            // console.log(self.accessibility.options.getConfig('features.'+self.accessibility.camelCase(this.type)), this.type);
+
+            if (! this.enable) {
+                return;
+            }
+
             let $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
 
             $feature.append('<button type="button" data-feature="'+this.type+'"><i></i><span></span></button>');
 
             let featureState = self.accessibility.accessibilityFeatures.getState(this.type);
 
-            if (featureState === 'enable') {
-                $feature.addClass('accessibility-feature-activated');
+            if (featureState !== null) {
+                if (featureState === 'enable') {
+                    $feature.addClass('accessibility-feature-activated');
+                }
+
+                if (typeof featureState === 'object' && featureState.state === 'enable') {
+                    $feature.addClass('accessibility-feature-activated');
+                }
             }
 
             $feature.find('i').addClass(this.icon);
@@ -206,10 +222,10 @@ export default class {
                 $append.append($feature);
             }
 
-            $container += $feature.prop('outerHTML');
+            $container.push($feature);
 
             // Appending feature trigger $el to features object
-            // self.accessibility.appendFeatureEl(this.type, $feature);
+            self.accessibility.appendFeatureEl(this.type, $feature, featuresType);
         });
 
         return ($append) ? $append : $container;
@@ -295,17 +311,17 @@ export default class {
 
         // View Feature Clicked
         this.$viewFeatures.find('.accessibility-feature button').on('click', function() {
-            self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'));
+            self.accessibility.initFeatureListener($(this).data('feature'));
         });
 
         // Layout Feature Clicked
         this.$layoutFeatures.find('.accessibility-feature button').on('click', function() {
-            self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'), 'layout');
+            self.accessibility.initFeatureListener($(this).data('feature'), 'layout');
         });
 
         // Footer Feature Clicked
         this.$footerFeatures.find('.accessibility-feature button').on('click', function() {
-            self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'), 'helper');
+            self.accessibility.initFeatureListener($(this).data('feature'), 'helper');
         });
     }
 
@@ -329,11 +345,11 @@ export default class {
     closeMenu(e) {
         AccessibilityForAll.preventDefault(e);
 
-        this.$el.removeClass('accessibility-menu-opened');
-        this.$container.attr('aria-hidden', true);
-
         this.closeMenuListeners(false);
 
         this.accessibility.focusLastEl();
+        this.$container.attr('aria-hidden', true);
+
+        this.$el.removeClass('accessibility-menu-opened');
     }
 }

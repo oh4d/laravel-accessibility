@@ -68,9 +68,13 @@ export default class {
         let self = this;
 
         $.each(this.states, function(key) {
+            if (this !== 'enable') {
+                return;
+            }
+
             let feature = self.getAccessibilityFeature(key);
 
-            if (this !== 'enable' || ! feature.enable) {
+            if (! feature.enable) {
                 return;
             }
 
@@ -341,7 +345,7 @@ export default class {
         this.accessibility.$body.scrollTop(0);
 
         this.states.quickNavigation.state = 'enable';
-        this.states.quickNavigation.$el.find('button').focus();
+        this.accessibility.accessibilityMenu.closeMenu();
 
         this.quickNavigationHandler.initialize();
     }
@@ -369,6 +373,10 @@ export default class {
     updateBodyElements() {
         let self = this;
 
+        if (! this.states.fontSize.initialized) {
+            this.initializeOriginalFontSize();
+        }
+
         this.states.fontSize.current = Number(this.states.fontSize.current.toFixed(2));
 
         this.states.fontSize.$in.find(this.fontElements()).each(function() {
@@ -378,16 +386,33 @@ export default class {
                 return;
             }
 
-            // Set The Default Font Size Per El
-            if (! $(this).data('original-font-size')) {
-                $(this).data('original-font-size', currentFontSize);
-            }
-
             let defaultFontSize = $(this).data('original-font-size'),
                 updateFontSize = (defaultFontSize * self.states.fontSize.current).toFixed(1) + 'px';
 
             $(this).css('font-size', updateFontSize);
         });
+    }
+
+    /**
+     * Initialize Font Size
+     * Loop On Element That Will
+     * Handle There Font Size, And Set
+     * There Original Font Size For Later Calculate
+     * This Is Mandatory Loop Before The Change Take Effect
+     * For Proper Handling Font Size Like 'rem', 'em'
+     */
+    initializeOriginalFontSize() {
+        this.states.fontSize.$in.find(this.fontElements()).each(function() {
+            let elFontSize = parseFloat($(this).css('font-size'));
+
+            if (! elFontSize) {
+                return;
+            }
+
+            $(this).data('original-font-size', elFontSize);
+        });
+
+        this.states.fontSize.initialized = true;
     }
 
     /**
@@ -425,6 +450,7 @@ export default class {
     setImageAltDescription(enable = true) {
         if (! enable) {
             $(document).off('mouseenter.accessibility.image-hover-description');
+            this.imgAltDescription.destroy();
             return;
         }
 
@@ -451,6 +477,12 @@ export default class {
             }
 
             self[key]();
+
+            let feature = self.accessibility.getFeatureBy(AccessibilityForAll.snakeCase(key), null);
+
+            if (feature) {
+                self.featureDeActivated(feature);
+            }
         });
 
         if (this.states.fontSize.current > 1) {
@@ -460,6 +492,9 @@ export default class {
 
         if (this.states.quickNavigation.state === 'enable') {
             this.quickNavigation();
+
+            let feature = self.accessibility.getFeatureBy(AccessibilityForAll.snakeCase('quick-navigation'), 'layout');
+            this.featureDeActivated(feature);
         }
 
         this.accessibility.accessibilityStorage.resetStorage();
@@ -557,15 +592,15 @@ export default class {
      */
     removeAllContrasts() {
         if (this.states.darkContrast === 'enable' && this.initialized) {
-            this.darkContrast();
+            this.accessibility.initFeatureListener('dark-contrast');
         }
 
         if (this.states.brightContrast === 'enable' && this.initialized) {
-            this.brightContrast();
+            this.accessibility.initFeatureListener('bright-contrast');
         }
 
         if (this.states.monochrome === 'enable' && this.initialized) {
-            this.monochrome();
+            this.accessibility.initFeatureListener('monochrome');
         }
     }
 
@@ -574,11 +609,11 @@ export default class {
      */
     removeAllCursors() {
         if (this.states.cursorBb === 'enable' && this.initialized) {
-            this.cursorBb();
+            this.accessibility.initFeatureListener('cursor-bb');
         }
 
         if (this.states.cursorBw === 'enable' && this.initialized) {
-            this.cursorBw();
+            this.accessibility.initFeatureListener('cursor-bw');
         }
     }
 }

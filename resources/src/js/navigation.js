@@ -32,10 +32,11 @@ export default class {
         if (! this.isQuickNavigationEnable())
             return;
 
-        let feature = this.accessibility.getFeatureBy('quick-navigation', 'layout');
-
-        if (! feature.enable)
-            return;
+        if (! this.navigationConfig.items) {
+            // Todo no item init
+            // this.accessibility.options.extendConfig({navigation: {enable: false}});
+            // return;
+        }
 
         let initializedState = this.accessibility.accessibilityFeatures.getState('quickNavigation'),
             quickNavigation = {
@@ -74,7 +75,9 @@ export default class {
         $infoButton.append('<i class="accessibility icon-info"></i>');
 
         let info = this.accessibility.$i18n.trans('info-enable-quick-navigation', '<span class="keyboard"><kbd>Ctrl</kbd> + <kbd>F9</kbd></span>');
-        $infoButton.append(AccessibilityForAll.renderToolTipEl(info));
+
+        this.accessibility.renderToolTipEl($infoButton, info);
+        // $infoButton.append();
 
         $container.append($infoButton);
         $container.append(this.createQuickNavigationItems());
@@ -107,8 +110,10 @@ export default class {
         $.each(this.accessibility.accessibilityFeatures.states.quickNavigation.items, function() {
             let $item = $('<li/>');
 
-            $item.append('<a href="javascript:void(0)" tabindex="1">'+this.text+'</a>');
+            $item.append('<a href="javascript:void(0)" tabindex="1">'+this.title+'</a>');
             $items.append($item);
+
+            this.$trigger = $item;
         });
 
         return $items;
@@ -252,7 +257,7 @@ export default class {
      * @returns {boolean}
      */
     isQuickNavigationEnable() {
-        this.navigationConfig = this.navigationConfig ? this.navigationConfig : this.accessibility.options.getConfig('navigation');
+        this.navigationConfig = this.navigationConfig ? this.navigationConfig : this.accessibility.options.getConfig('quickNavigation');
         return (this.navigationConfig && this.navigationConfig.enable);
     }
 
@@ -261,8 +266,40 @@ export default class {
      * @returns {*[]}
      */
     bindQuickNavigationItems() {
-        return [
-            {text: 'Test', action: ''}
-        ];
+        if (! this.navigationConfig) {
+            if (! this.isQuickNavigationEnable())
+                return [];
+        }
+
+        if (! this.navigationConfig.items) {
+            return [];
+        }
+
+        let items = [];
+
+        $.each(this.navigationConfig.items, function() {
+            if (! this.$el)
+                return;
+
+            let item = {
+                $el: $(this.$el),
+                title: this.title
+            };
+
+            if (! item.$el.length)
+                return;
+
+            items.push(item);
+        });
+
+
+        items.push({
+            tabIndex: 1,
+            action: this.openAccessibilityMenu.bind(this),
+            $el: this.accessibility.accessibilityMenu.$el,
+            title: this.accessibility.$i18n.trans('accessibility-menu')
+        });
+
+        return items;
     }
 }

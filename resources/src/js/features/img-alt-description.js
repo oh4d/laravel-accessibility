@@ -54,7 +54,6 @@ export default class {
 
     /**
      *
-     * @param $el
      */
     mouseOut() {
         this.visible(false);
@@ -81,7 +80,6 @@ export default class {
 
     /**
      *
-     * @param $el
      * @param alt
      * @param event
      */
@@ -117,5 +115,15 @@ export default class {
         }
 
         this.$el.css({'left': pX, 'top': pY});
+    }
+
+    /**
+     *
+     */
+    destroy() {
+        if (! this.$hoverImg)
+            return;
+
+        this.mouseOut();
     }
 }

@@ -2,9 +2,9 @@
   font-family: 'laravel-accessibility';
   src:  url('fonts/laravel-accessibility.eot?ep306j');
   src:  url('fonts/laravel-accessibility.eot?ep306j#iefix') format('embedded-opentype'),
-    url('fonts/laravel-accessibility.ttf?ep306j') format('truetype'),
-    url('fonts/laravel-accessibility.woff?ep306j') format('woff'),
-    url('fonts/laravel-accessibility.svg?ep306j#laravel-accessibility') format('svg');
+  url('fonts/laravel-accessibility.ttf?ep306j') format('truetype'),
+  url('fonts/laravel-accessibility.woff?ep306j') format('woff'),
+  url('fonts/laravel-accessibility.svg?ep306j#laravel-accessibility') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,73 +24,82 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-accessibility:before {
-  content: "\E908";
-}
-.icon-alt-description:before {
-  content: "\E900";
-}
-.icon-bright-contrast:before {
-  content: "\E901";
-}
-.icon-cursor-bb:before {
-  content: "\E902";
-}
-.icon-cursor-bw:before {
-  content: "\E903";
-}
-.icon-dark-contrast:before {
-  content: "\E904";
-}
-.icon-decrease-font-size:before {
-  content: "\E905";
-}
-.icon-font-family:before {
-  content: "\E906";
-}
-.icon-highlight-links:before {
-  content: "\E907";
-}
-.icon-highlight-titles:before {
+.icon-search:before {
   content: "\E909";
 }
-.icon-increase-font-size:before {
-  content: "\E90A";
-}
-.icon-monochrome:before {
-  content: "\E90B";
-}
-.icon-zoom:before {
-  content: "\E90C";
+.icon-accessibility:before {
+  content: "\E908";
 }
 .icon-cancel:before {
   content: "\E90D";
 }
-.icon-info:before {
-  content: "\EA0C";
+.icon-decrease-font-size:before {
+  content: "\E902";
 }
-body > .accessibility {
+.icon-increase-font-size:before {
+  content: "\E90E";
+}
+.icon-bright-contrast:before {
+  content: "\E90C";
+}
+.icon-info:before {
+  content: "\E900";
+}
+.icon-disable-transitions:before {
+  content: "\E901";
+}
+.icon-quick-navigation:before {
+  content: "\1F322";
+}
+.icon-reset:before {
+  content: "\E903";
+}
+.icon-highlight-links:before {
+  content: "\E904";
+}
+.icon-highlight-titles:before {
+  content: "\E905";
+}
+.icon-alt-description:before {
+  content: "\E906";
+}
+.icon-cursor-bb:before {
+  content: "\E907";
+}
+.icon-cursor-bw:before {
+  content: "\E90A";
+}
+.icon-font-family:before {
+  content: "\E90B";
+}
+.icon-dark-contrast:before {
+  content: "\E912";
+}
+.icon-monochrome:before {
+  content: "\E913";
+}
+html > body > .accessibility {
   z-index: 999999;
   font-size: 16px;
   position: absolute;
 }
 
-body > .accessibility :focus {
+html > body > .accessibility :focus {
   outline: none;
 }
 
-body > .accessibility * {
+html > body > .accessibility * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
 
-body > .accessibility a {
+html > body > .accessibility a {
   color: #000000;
   text-decoration: none;
 }
 
-body > .accessibility button {
+html > body > .accessibility button {
   border: none;
   color: #000000;
   cursor: pointer;
@@ -98,22 +107,22 @@ body > .accessibility button {
   -webkit-appearance: none;
 }
 
-body > .accessibility button i {
+html > body > .accessibility button i {
   font-size: 2rem;
 }
 
-body > .accessibility ul {
+html > body > .accessibility ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-body > .accessibility span.keyboard {
+html > body > .accessibility span.keyboard {
   display: inline-block;
   vertical-align: middle;
 }
 
-body > .accessibility span.keyboard kbd {
+html > body > .accessibility span.keyboard kbd {
   display: inline-block;
   border: .2em solid;
   border-radius: .3em;
@@ -128,7 +137,7 @@ body > .accessibility span.keyboard kbd {
   vertical-align: bottom;
 }
 
-.accessibility-menu {
+html > body > .accessibility .accessibility-menu {
   top: 0;
   left: 0;
   bottom: 0;
@@ -144,7 +153,7 @@ body > .accessibility span.keyboard kbd {
   border-right: 1px solid #000000;
 }
 
-.accessibility-menu .accessibility-menu-trigger {
+html > body > .accessibility .accessibility-menu > .accessibility-menu-trigger {
   top: 50px;
   left: 100%;
   color: #ffffff;
@@ -156,11 +165,17 @@ body > .accessibility span.keyboard kbd {
   background: #000000;
 }
 
-.accessibility-menu .accessibility-menu-trigger i {
+html > body > .accessibility .accessibility-menu > .accessibility-menu-trigger i {
   font-size: 2.7rem;
 }
 
-.accessibility-menu .accessibility-menu-container {
+html > body > .accessibility .accessibility-menu > .accessibility-menu-trigger:focus {
+  color: #bf1722;
+  background: #ffffcc;
+  border-color: #bf1722;
+}
+
+html > body > .accessibility .accessibility-menu .accessibility-menu-container {
   top: 0;
   left: 0;
   right: 0;
@@ -172,19 +187,19 @@ body > .accessibility span.keyboard kbd {
   padding: 55px 10px 90px;
 }
 
-.accessibility-menu .accessibility-menu-container :focus {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container :focus {
   outline: #4d90fe auto 1px;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-feature button span {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-feature button span {
   font-size: 13px;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-feature.accessibility-feature-activated button {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-feature.accessibility-feature-activated button {
   font-weight: bold;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-header {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-header {
   top: 0;
   left: 0;
   right: 0;
@@ -194,90 +209,90 @@ body > .accessibility span.keyboard kbd {
   text-align: center;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-header h3 {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-header h3 {
   margin: 0;
   color: #ffffff;
   display: inline-block;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-header .accessibility-menu-close-trigger {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-header .accessibility-menu-close-trigger {
   top: 10px;
   left: 5px;
   color: #ffffff;
   position: absolute;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-header .accessibility-menu-close-trigger i {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-header .accessibility-menu-close-trigger i {
   font-size: 1rem;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body {
   background: #ffffff;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features-row {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features-row {
   padding: 6px 0;
   border-bottom: 1px solid #d1d2d3;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature {
   padding: 5px 0;
   border-bottom: 1px solid #d1d2d3;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button {
   width: 100%;
   padding: 10px;
   display: block;
   text-align: left;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button i {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button i {
   margin-right: 10px;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button i, .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button span {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button i, html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button span {
   display: inline-block;
   vertical-align: middle;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row {
   font-size: 0;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature {
   width: 33.3%;
   vertical-align: top;
   display: inline-block;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature:not(:last-of-type) {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature:not(:last-of-type) {
   border-right: 1px solid #d1d2d3;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature button {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature button {
   width: 100%;
   padding: 10px;
   display: block;
   text-align: center;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature span {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature span {
   display: block;
   margin-top: 10px;
   text-align: center;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body button:hover {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body button:hover {
   background: #ddeeff;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-body button:focus {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body button:focus {
   background: #ddeeff;
   outline: #4d90fe auto 1px;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-footer {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-footer {
   left: 0;
   right: 0;
   bottom: 0;
@@ -289,39 +304,51 @@ body > .accessibility span.keyboard kbd {
           box-shadow: 1px 0 3px rgba(0, 0, 0, 0.6);
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-footer button {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-footer button {
   padding: 10px;
   text-align: center;
   display: inline-block;
   vertical-align: middle;
 }
 
-.accessibility-menu .accessibility-menu-container .accessibility-menu-footer button span {
+html > body > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-footer button span {
   display: block;
   margin-top: 10px;
 }
 
-.accessibility-menu.accessibility-menu-opened {
+html > body > .accessibility .accessibility-menu.accessibility-menu-opened {
   -webkit-transform: translateX(0);
           transform: translateX(0);
 }
 
-.accessibility-menu.accessibility-menu-opened .accessibility-menu-container {
+html > body > .accessibility .accessibility-menu.accessibility-menu-opened .accessibility-menu-container {
   visibility: visible;
 }
 
-.accessibility-menu.accessibility-menu-opened .accessibility-menu-trigger {
+html > body > .accessibility .accessibility-menu.accessibility-menu-opened .accessibility-menu-trigger {
   left: 0;
   display: none;
 }
 
-html body .accessibility .accessibility-img-alt-description {
+html > body .accessibility-item-focused {
+  background-color: #ffffcc !important;
+  color: #bf1722 !important;
+  border-radius: 5px !important;
+  outline: none !important;
+  text-shadow: #bbb 1px 1px 1px;
+  -webkit-transition: color 0.2s ease-in, text-shadow 0.2s ease-in;
+  transition: color 0.2s ease-in, text-shadow 0.2s ease-in;
+  -webkit-box-shadow: 0 0 6px 3px #ffff00, 0 0 2px #333 inset !important;
+          box-shadow: 0 0 6px 3px #ffff00, 0 0 2px #333 inset !important;
+}
+
+html > body > .accessibility .accessibility-img-alt-description {
   display: none;
   position: fixed;
   visibility: hidden;
 }
 
-html body .accessibility .accessibility-img-alt-description span {
+html > body > .accessibility .accessibility-img-alt-description span {
   padding: 10px;
   display: block;
   color: #ffffff;
@@ -329,120 +356,120 @@ html body .accessibility .accessibility-img-alt-description span {
   background: rgba(0, 0, 0, 0.8);
 }
 
-html body .accessibility .accessibility-img-alt-description.accessibility-img-description-block {
+html > body > .accessibility .accessibility-img-alt-description.accessibility-img-description-block {
   display: block;
 }
 
-html body .accessibility .accessibility-img-alt-description.accessibility-img-mouse-in {
+html > body > .accessibility .accessibility-img-alt-description.accessibility-img-mouse-in {
   visibility: visible;
 }
 
-html body.accessibility-body-zoomed > :not(.accessibility) {
+html > body.accessibility-body-zoomed > :not(.accessibility) {
   zoom: 1.5;
 }
 
-html body.accessibility-monochrome > *:not(.accessibility) {
+html > body.accessibility-monochrome > *:not(.accessibility) {
   -webkit-filter: grayscale(1);
           filter: grayscale(1);
 }
 
-html body.accessibility-transitions-disabled * {
+html > body.accessibility-transitions-disabled * {
   -webkit-transition: none !important;
   transition: none !important;
   -webkit-animation: none !important;
           animation: none !important;
 }
 
-html body.accessibility-dark-contrast {
+html > body.accessibility-dark-contrast {
   color: #ffffff;
   background-color: #000000;
 }
 
-html body.accessibility-dark-contrast > :not(.accessibility),
-html body.accessibility-dark-contrast > :not(.accessibility) :not(img):not(video) {
+html > body.accessibility-dark-contrast > :not(.accessibility),
+html > body.accessibility-dark-contrast > :not(.accessibility) :not(img):not(video) {
   color: #ffffff;
   background-color: #000000;
 }
 
-html body.accessibility-dark-contrast > :not(.accessibility) img,
-html body.accessibility-dark-contrast > :not(.accessibility) video,
-html body.accessibility-dark-contrast > :not(.accessibility) input[type="image"] {
+html > body.accessibility-dark-contrast > :not(.accessibility) img,
+html > body.accessibility-dark-contrast > :not(.accessibility) video,
+html > body.accessibility-dark-contrast > :not(.accessibility) input[type="image"] {
   -webkit-filter: invert(1);
           filter: invert(1);
 }
 
-html body.accessibility-dark-contrast > a,
-html body.accessibility-dark-contrast > [role="link"],
-html body.accessibility-dark-contrast > :not(.accessibility) a,
-html body.accessibility-dark-contrast > :not(.accessibility) [role="link"] {
+html > body.accessibility-dark-contrast > a,
+html > body.accessibility-dark-contrast > [role="link"],
+html > body.accessibility-dark-contrast > :not(.accessibility) a,
+html > body.accessibility-dark-contrast > :not(.accessibility) [role="link"] {
   color: #ffd700;
   border-color: #ffd700;
 }
 
-html body.accessibility-dark-contrast > a,
-html body.accessibility-dark-contrast > :not(.accessibility) a {
+html > body.accessibility-dark-contrast > a,
+html > body.accessibility-dark-contrast > :not(.accessibility) a {
   outline: 1px dashed #ffd700;
 }
 
-html body.accessibility-dark-contrast :placeholder-shown {
+html > body.accessibility-dark-contrast :placeholder-shown {
   background-color: #000000;
 }
 
-html body.accessibility-dark-contrast > .accessibility .accessibility-img-alt-description span {
+html > body.accessibility-dark-contrast > .accessibility .accessibility-img-alt-description span {
   color: #000000;
   background: rgba(255, 255, 255, 0.9);
 }
 
-html body.accessibility-bright-contrast {
+html > body.accessibility-bright-contrast {
   color: #000000;
   background-color: #ffffff;
 }
 
-html body.accessibility-bright-contrast > :not(.accessibility),
-html body.accessibility-bright-contrast > :not(.accessibility) :not(img):not(video) {
+html > body.accessibility-bright-contrast > :not(.accessibility),
+html > body.accessibility-bright-contrast > :not(.accessibility) :not(img):not(video) {
   color: #000000;
   background-color: #ffffff;
 }
 
-html body.accessibility-bright-contrast > :not(.accessibility) img,
-html body.accessibility-bright-contrast > :not(.accessibility) video,
-html body.accessibility-bright-contrast > :not(.accessibility) input[type="image"] {
+html > body.accessibility-bright-contrast > :not(.accessibility) img,
+html > body.accessibility-bright-contrast > :not(.accessibility) video,
+html > body.accessibility-bright-contrast > :not(.accessibility) input[type="image"] {
   -webkit-filter: contrast(1.5);
           filter: contrast(1.5);
 }
 
-html body.accessibility-bright-contrast > a,
-html body.accessibility-bright-contrast > [role="link"],
-html body.accessibility-bright-contrast > :not(.accessibility) a,
-html body.accessibility-bright-contrast > :not(.accessibility) [role="link"] {
+html > body.accessibility-bright-contrast > a,
+html > body.accessibility-bright-contrast > [role="link"],
+html > body.accessibility-bright-contrast > :not(.accessibility) a,
+html > body.accessibility-bright-contrast > :not(.accessibility) [role="link"] {
   color: #000000;
   border-color: #000000;
 }
 
-html body.accessibility-bright-contrast > a,
-html body.accessibility-bright-contrast > :not(.accessibility) a {
+html > body.accessibility-bright-contrast > a,
+html > body.accessibility-bright-contrast > :not(.accessibility) a {
   outline: 1px dashed #000000;
 }
 
-html body.accessibility-bright-contrast :placeholder-shown {
+html > body.accessibility-bright-contrast :placeholder-shown {
   background-color: #ffffff;
 }
 
-html body.accessibility-dark-contrast a:hover,
-html body.accessibility-dark-contrast a:hover *,
-html body.accessibility-dark-contrast > :not(.accessibility) a:hover,
-html body.accessibility-dark-contrast > :not(.accessibility) a:hover *,
-html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
-html body.accessibility-dark-contrast > :not(.accessibility) :not([tabindex="-1"]):focus,
-html body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus *,
-html body.accessibility-dark-contrast > :not(.accessibility) :not([tabindex="-1"]):focus *, html body.accessibility-bright-contrast a:hover,
-html body.accessibility-bright-contrast a:hover *,
-html body.accessibility-bright-contrast > :not(.accessibility) a:hover,
-html body.accessibility-bright-contrast > :not(.accessibility) a:hover *,
-html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
-html body.accessibility-bright-contrast > :not(.accessibility) :not([tabindex="-1"]):focus,
-html body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus *,
-html body.accessibility-bright-contrast > :not(.accessibility) :not([tabindex="-1"]):focus * {
+html > body.accessibility-dark-contrast a:hover,
+html > body.accessibility-dark-contrast a:hover *,
+html > body.accessibility-dark-contrast > :not(.accessibility) a:hover,
+html > body.accessibility-dark-contrast > :not(.accessibility) a:hover *,
+html > body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
+html > body.accessibility-dark-contrast > :not(.accessibility) :not([tabindex="-1"]):focus,
+html > body.accessibility-dark-contrast > :not(.accessibility):not([tabindex="-1"]):focus *,
+html > body.accessibility-dark-contrast > :not(.accessibility) :not([tabindex="-1"]):focus *, html > body.accessibility-bright-contrast a:hover,
+html > body.accessibility-bright-contrast a:hover *,
+html > body.accessibility-bright-contrast > :not(.accessibility) a:hover,
+html > body.accessibility-bright-contrast > :not(.accessibility) a:hover *,
+html > body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus,
+html > body.accessibility-bright-contrast > :not(.accessibility) :not([tabindex="-1"]):focus,
+html > body.accessibility-bright-contrast > :not(.accessibility):not([tabindex="-1"]):focus *,
+html > body.accessibility-bright-contrast > :not(.accessibility) :not([tabindex="-1"]):focus * {
   fill: #000000;
   color: #000000;
   stroke: #000000;
@@ -454,120 +481,120 @@ html body.accessibility-bright-contrast > :not(.accessibility) :not([tabindex="-
   transition: color 0.3s ease-in, fill 0.3s ease-in;
 }
 
-html body.accessibility-readable-font-family {
+html > body.accessibility-readable-font-family {
   font-family: 'Arial';
 }
 
-html body.accessibility-readable-font-family > :not(.accessibility):not(i),
-html body.accessibility-readable-font-family > :not(.accessibility) *:not(i) {
+html > body.accessibility-readable-font-family > :not(.accessibility):not(i),
+html > body.accessibility-readable-font-family > :not(.accessibility) *:not(i) {
   font-family: 'Arial';
 }
 
-html body.accessibility-highlight-titles > h1,
-html body.accessibility-highlight-titles > h2,
-html body.accessibility-highlight-titles > h3,
-html body.accessibility-highlight-titles > h4,
-html body.accessibility-highlight-titles > h5,
-html body.accessibility-highlight-titles > h6,
-html body.accessibility-highlight-titles > [role=heading],
-html body.accessibility-highlight-titles > :not(.accessibility) h1,
-html body.accessibility-highlight-titles > :not(.accessibility) h2,
-html body.accessibility-highlight-titles > :not(.accessibility) h3,
-html body.accessibility-highlight-titles > :not(.accessibility) h4,
-html body.accessibility-highlight-titles > :not(.accessibility) h5,
-html body.accessibility-highlight-titles > :not(.accessibility) h6,
-html body.accessibility-highlight-titles > :not(.accessibility) [role=heading] {
+html > body.accessibility-highlight-titles > h1,
+html > body.accessibility-highlight-titles > h2,
+html > body.accessibility-highlight-titles > h3,
+html > body.accessibility-highlight-titles > h4,
+html > body.accessibility-highlight-titles > h5,
+html > body.accessibility-highlight-titles > h6,
+html > body.accessibility-highlight-titles > [role=heading],
+html > body.accessibility-highlight-titles > :not(.accessibility) h1,
+html > body.accessibility-highlight-titles > :not(.accessibility) h2,
+html > body.accessibility-highlight-titles > :not(.accessibility) h3,
+html > body.accessibility-highlight-titles > :not(.accessibility) h4,
+html > body.accessibility-highlight-titles > :not(.accessibility) h5,
+html > body.accessibility-highlight-titles > :not(.accessibility) h6,
+html > body.accessibility-highlight-titles > :not(.accessibility) [role=heading] {
   border-bottom: 2px solid yellow;
 }
 
-html body.accessibility-highlight-link > a,
-html body.accessibility-highlight-link > [role=link],
-html body.accessibility-highlight-link > :not(.accessibility) a,
-html body.accessibility-highlight-link > :not(.accessibility) [role=link] {
+html > body.accessibility-highlight-link > a,
+html > body.accessibility-highlight-link > [role=link],
+html > body.accessibility-highlight-link > :not(.accessibility) a,
+html > body.accessibility-highlight-link > :not(.accessibility) [role=link] {
   color: red;
   text-decoration: none;
   border-bottom: 2px solid red;
 }
 
-html body.accessibility-big-black-cursor {
-  cursor: url("images/bigcursorblack.cur"), auto;
+html > body.accessibility-big-black-cursor {
+  cursor: url("images/bigcursorblack.cur"), auto !important;
 }
 
-html body.accessibility-big-black-cursor a,
-html body.accessibility-big-black-cursor [role="link"],
-html body.accessibility-big-black-cursor area,
-html body.accessibility-big-black-cursor label,
-html body.accessibility-big-black-cursor audio,
-html body.accessibility-big-black-cursor video,
-html body.accessibility-big-black-cursor button,
-html body.accessibility-big-black-cursor [role="button"],
-html body.accessibility-big-black-cursor [type="button"],
-html body.accessibility-big-black-cursor [type="submit"],
-html body.accessibility-big-black-cursor [type="image"],
-html body.accessibility-big-black-cursor [role="radio"],
-html body.accessibility-big-black-cursor [type="radio"],
-html body.accessibility-big-black-cursor [role="checkbox"],
-html body.accessibility-big-black-cursor [type="checkbox"],
-html body.accessibility-big-black-cursor select,
-html body.accessibility-big-black-cursor [role="combobox"],
-html body.accessibility-big-black-cursor [role="option"],
-html body.accessibility-big-black-cursor [role="slider"],
-html body.accessibility-big-black-cursor [role="scrollbar"],
-html body.accessibility-big-black-cursor [role="spinbutton"],
-html body.accessibility-big-black-cursor [role="tab"] {
-  cursor: url("images/bighandblack.cur"), auto;
+html > body.accessibility-big-black-cursor a,
+html > body.accessibility-big-black-cursor [role="link"],
+html > body.accessibility-big-black-cursor area,
+html > body.accessibility-big-black-cursor label,
+html > body.accessibility-big-black-cursor audio,
+html > body.accessibility-big-black-cursor video,
+html > body.accessibility-big-black-cursor button,
+html > body.accessibility-big-black-cursor [role="button"],
+html > body.accessibility-big-black-cursor [type="button"],
+html > body.accessibility-big-black-cursor [type="submit"],
+html > body.accessibility-big-black-cursor [type="image"],
+html > body.accessibility-big-black-cursor [role="radio"],
+html > body.accessibility-big-black-cursor [type="radio"],
+html > body.accessibility-big-black-cursor [role="checkbox"],
+html > body.accessibility-big-black-cursor [type="checkbox"],
+html > body.accessibility-big-black-cursor select,
+html > body.accessibility-big-black-cursor [role="combobox"],
+html > body.accessibility-big-black-cursor [role="option"],
+html > body.accessibility-big-black-cursor [role="slider"],
+html > body.accessibility-big-black-cursor [role="scrollbar"],
+html > body.accessibility-big-black-cursor [role="spinbutton"],
+html > body.accessibility-big-black-cursor [role="tab"] {
+  cursor: url("images/bighandblack.cur"), auto !important;
 }
 
-html body.accessibility-big-white-cursor {
-  cursor: url("images/bigcursorwhite.cur"), auto;
+html > body.accessibility-big-white-cursor {
+  cursor: url("images/bigcursorwhite.cur"), auto !important;
 }
 
-html body.accessibility-big-white-cursor a,
-html body.accessibility-big-white-cursor [role="link"],
-html body.accessibility-big-white-cursor area,
-html body.accessibility-big-white-cursor label,
-html body.accessibility-big-white-cursor audio,
-html body.accessibility-big-white-cursor video,
-html body.accessibility-big-white-cursor button,
-html body.accessibility-big-white-cursor [role="button"],
-html body.accessibility-big-white-cursor [type="button"],
-html body.accessibility-big-white-cursor [type="submit"],
-html body.accessibility-big-white-cursor [type="image"],
-html body.accessibility-big-white-cursor [role="radio"],
-html body.accessibility-big-white-cursor [type="radio"],
-html body.accessibility-big-white-cursor [role="checkbox"],
-html body.accessibility-big-white-cursor [type="checkbox"],
-html body.accessibility-big-white-cursor select,
-html body.accessibility-big-white-cursor [role="combobox"],
-html body.accessibility-big-white-cursor [role="option"],
-html body.accessibility-big-white-cursor [role="slider"],
-html body.accessibility-big-white-cursor [role="scrollbar"],
-html body.accessibility-big-white-cursor [role="spinbutton"],
-html body.accessibility-big-white-cursor [role="tab"] {
-  cursor: url("images/bighandwhite.cur"), auto;
+html > body.accessibility-big-white-cursor a,
+html > body.accessibility-big-white-cursor [role="link"],
+html > body.accessibility-big-white-cursor area,
+html > body.accessibility-big-white-cursor label,
+html > body.accessibility-big-white-cursor audio,
+html > body.accessibility-big-white-cursor video,
+html > body.accessibility-big-white-cursor button,
+html > body.accessibility-big-white-cursor [role="button"],
+html > body.accessibility-big-white-cursor [type="button"],
+html > body.accessibility-big-white-cursor [type="submit"],
+html > body.accessibility-big-white-cursor [type="image"],
+html > body.accessibility-big-white-cursor [role="radio"],
+html > body.accessibility-big-white-cursor [type="radio"],
+html > body.accessibility-big-white-cursor [role="checkbox"],
+html > body.accessibility-big-white-cursor [type="checkbox"],
+html > body.accessibility-big-white-cursor select,
+html > body.accessibility-big-white-cursor [role="combobox"],
+html > body.accessibility-big-white-cursor [role="option"],
+html > body.accessibility-big-white-cursor [role="slider"],
+html > body.accessibility-big-white-cursor [role="scrollbar"],
+html > body.accessibility-big-white-cursor [role="spinbutton"],
+html > body.accessibility-big-white-cursor [role="tab"] {
+  cursor: url("images/bighandwhite.cur"), auto !important;
 }
 
-html body.accessibility-quick-navigation-enabled {
+html > body.accessibility-quick-navigation-enabled {
   padding-top: 55px;
 }
 
-html body.accessibility-quick-navigation-enabled [tabindex]:hover,
-html body.accessibility-quick-navigation-enabled [tabindex]:hover {
+html > body.accessibility-quick-navigation-enabled [tabindex]:hover,
+html > body.accessibility-quick-navigation-enabled [tabindex]:hover {
   -webkit-box-shadow: 0 0 6px 3px Blue, 0 0 2px #333 inset !important;
           box-shadow: 0 0 6px 3px Blue, 0 0 2px #333 inset !important;
 }
 
-html body.accessibility-quick-navigation-enabled .accessibility-quick-navigation {
+html > body.accessibility-quick-navigation-enabled > .accessibility .accessibility-navigation .accessibility-quick-navigation {
   visibility: visible;
   -webkit-transform: translate(-50%, 0);
           transform: translate(-50%, 0);
 }
 
-html body.accessibility-quick-navigation-enabled .accessibility-quick-access {
+html > body.accessibility-quick-navigation-enabled > .accessibility .accessibility-navigation .accessibility-quick-access {
   visibility: hidden;
 }
 
-.accessibility-navigation .accessibility-quick-access button {
+html > body > .accessibility .accessibility-navigation .accessibility-quick-access button {
   top: 0;
   color: #fff;
   position: fixed;
@@ -582,13 +609,13 @@ html body.accessibility-quick-navigation-enabled .accessibility-quick-access {
           transform: translateY(-100%);
 }
 
-.accessibility-navigation .accessibility-quick-access button:focus {
+html > body > .accessibility .accessibility-navigation .accessibility-quick-access button:focus {
   z-index: 999;
   -webkit-transform: translateY(0);
           transform: translateY(0);
 }
 
-.accessibility-navigation .accessibility-quick-navigation {
+html > body > .accessibility .accessibility-navigation .accessibility-quick-navigation {
   top: 0;
   left: 50%;
   position: fixed;
@@ -602,69 +629,129 @@ html body.accessibility-quick-navigation-enabled .accessibility-quick-access {
   transition: transform .3s ease, -webkit-transform .3s ease;
 }
 
-.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container {
+html > body > .accessibility .accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container {
   background: #ffffff;
   border: 5px solid rgba(0, 0, 0, 0.7);
   border-top: 0;
   border-radius: 0 0 10px 10px;
 }
 
-.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul,
-.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul li,
-.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > button {
+html > body > .accessibility .accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > button i {
+  font-size: 20px;
+}
+
+html > body > .accessibility .accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul,
+html > body > .accessibility .accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul li,
+html > body > .accessibility .accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > button {
   display: inline-block;
   vertical-align: middle;
 }
 
-.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul li a {
+html > body > .accessibility .accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul li a {
   display: block;
 }
 
-.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul li a,
-.accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container button {
+html > body > .accessibility .accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container > ul li a,
+html > body > .accessibility .accessibility-navigation .accessibility-quick-navigation .accessibility-quick-navigation-container button {
   padding: 10px;
 }
 
-body > .accessibility [role=tooltip],
-body > .accessibility [aria-labelledby] {
-  position: relative;
+html > body {
+  /*[role=tooltip],
+  [aria-labelledby] {
+    position: relative;
+
+    &:hover,
+    &:focus {
+      .accessibility-index-tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }*/
 }
 
-body > .accessibility [role=tooltip] .accessibility-index-tooltip,
-body > .accessibility [aria-labelledby] .accessibility-index-tooltip {
-  top: 100%;
-  opacity: 0;
+html > body .accessibility-index-tooltip {
   padding: 10px;
+  z-index: 1000;
   color: #ffffff;
+  position: fixed;
+  max-width: 300px;
   border-radius: 5px;
-  visibility: hidden;
-  position: absolute;
-  -webkit-transition: opacity .3s ease;
-  transition: opacity .3s ease;
-  background: rgba(0, 0, 0, 0.7);
-  margin-top: 11px;
-  width: 300px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  -webkit-box-shadow: 0 0 2px #fff;
+          box-shadow: 0 0 2px #fff;
 }
 
-body > .accessibility [role=tooltip] .accessibility-index-tooltip:after,
-body > .accessibility [aria-labelledby] .accessibility-index-tooltip:after {
+html > body .accessibility-index-tooltip:after {
   left: 0;
   right: 0;
   content: '';
   width: 0;
+  height: 0;
   margin: auto;
   bottom: 100%;
   position: absolute;
   border: 10px solid transparent;
-  border-bottom-color: rgba(0, 0, 0, 0.7);
+  border-bottom-color: rgba(0, 0, 0, 0.8);
 }
 
-body > .accessibility [role=tooltip]:hover .accessibility-index-tooltip, body > .accessibility [role=tooltip]:focus .accessibility-index-tooltip,
-body > .accessibility [aria-labelledby]:hover .accessibility-index-tooltip,
-body > .accessibility [aria-labelledby]:focus .accessibility-index-tooltip {
-  opacity: 1;
-  visibility: visible;
+html > body .accessibility-index-tooltip[data-tooltip-position=right] {
+  /*top: 50%;
+      left: auto;
+      right: 100%;
+      margin-top: 0;
+      margin-right: 11px;
+      transform: translate(0, -50%);*/
+}
+
+html > body .accessibility-index-tooltip[data-tooltip-position=right]:after {
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  right: auto;
+  border: 10px solid transparent;
+  border-left-color: rgba(0, 0, 0, 0.8);
+}
+
+html > body.accessibility-rtl-direction > .accessibility .accessibility-menu {
+  right: 0;
+  left: auto;
+  border-right: none;
+  -webkit-transform: translateX(100%);
+          transform: translateX(100%);
+  border-left: 1px solid #000000;
+}
+
+html > body.accessibility-rtl-direction > .accessibility .accessibility-menu > .accessibility-menu-trigger {
+  left: auto;
+  right: 100%;
+  border-radius: 50% 0 0 50%;
+  border: 2px solid #ffffff;
+  border-right: none;
+  padding: 15px 10px 15px 25px;
+}
+
+html > body.accessibility-rtl-direction > .accessibility .accessibility-menu.accessibility-menu-opened {
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+}
+
+html > body.accessibility-rtl-direction > .accessibility .accessibility-menu.accessibility-menu-opened > .accessibility-menu-trigger {
+  right: 0;
+  left: auto;
+}
+
+html > body.accessibility-rtl-direction > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button {
+  text-align: right;
+}
+
+html > body.accessibility-rtl-direction > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-layout-features .accessibility-feature button i {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+html > body.accessibility-rtl-direction > .accessibility .accessibility-menu .accessibility-menu-container .accessibility-menu-body .accessibility-features .accessibility-features-row .accessibility-feature:not(:last-of-type) {
+  border-right: none;
+  border-left: 1px solid #d1d2d3;
 }

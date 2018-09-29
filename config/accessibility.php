@@ -16,6 +16,7 @@ return [
 
     'except' => [
         // '_debugbar/*'
+        'admin/*'
     ],
 
     /*
@@ -39,6 +40,15 @@ return [
         'highlightLinks'            => true, // Highlight Links
         'highlightTitles'           => true, // Highlight Titles
         'altDescription'            => true, // Alt Description Box
+        'disableTransitions'        => true, // Disable Transitions
+    ],
+
+    'quickNavigation' => [
+        'enable' => true,
+        'items' => [
+            ['$el' => '#wrapper', 'title' => 'Main'],
+            ['$el' => '.links', 'title' => 'Links']
+        ]
     ],
 
     'route_prefix' => '__accessibility'

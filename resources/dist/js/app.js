@@ -60,61 +60,35 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var map = {
-	"./en.js": 6,
-	"./he.js": 7
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 0;
+__webpack_require__(1);
+module.exports = __webpack_require__(13);
+
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(2);
-module.exports = __webpack_require__(14);
-
-
-/***/ }),
-/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__i18n__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__navigation__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__accessibility_storage__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__accessibility_options__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__accessibility_features__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__i18n__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__navigation__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__accessibility_storage__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__accessibility_options__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__accessibility_features__ = __webpack_require__(10);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-
-window.$ = window.jQuery = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a;
+// import jQuery from 'jquery';
+window.$ = window.jQuery = __webpack_require__(2);
 
 
 
@@ -138,6 +112,8 @@ window.AccessibilityForAll = function () {
         this.getMainWrap();
 
         this.render();
+
+        this.initialized = true;
     }
 
     /**
@@ -148,15 +124,22 @@ window.AccessibilityForAll = function () {
     _createClass(_class, [{
         key: 'initializeParams',
         value: function initializeParams(options) {
-            this.$body = $('body');
+            if (this.initialized) {
+                return;
+            }
 
-            this.options = new __WEBPACK_IMPORTED_MODULE_5__accessibility_options__["a" /* default */](options);
+            this.$html = $('html');
 
-            this.features = [{ type: 'monochrome', enable: this.options.getConfig('features.monochrome'), icon: 'accessibility icon-monochrome' }, { type: 'dark-contrast', enable: this.options.getConfig('features.darkContrast'), icon: 'accessibility icon-dark-contrast' }, { type: 'bright-contrast', enable: this.options.getConfig('features.brightContrast'), icon: 'accessibility icon-bright-contrast' }, { type: 'decrease-font-size', enable: this.options.getConfig('features.decreaseFontSize'), icon: 'accessibility icon-decrease-font-size' }, { type: 'increase-font-size', enable: this.options.getConfig('features.increaseFontSize'), icon: 'accessibility icon-increase-font-size' }, { type: 'font-family', enable: this.options.getConfig('features.fontFamily'), icon: 'accessibility icon-font-family' }, { type: 'cursor-bw', enable: this.options.getConfig('features.cursorBw'), icon: 'accessibility icon-cursor-bw' }, { type: 'cursor-bb', enable: this.options.getConfig('features.cursorBb'), icon: 'accessibility icon-cursor-bb' }, { type: 'zoom', enable: this.options.getConfig('features.zoom'), icon: 'accessibility icon-zoom' }, { type: 'highlight-links', enable: this.options.getConfig('features.highlightLinks'), icon: 'accessibility icon-highlight-links' }, { type: 'highlight-titles', enable: this.options.getConfig('features.highlightTitles'), icon: 'accessibility icon-highlight-titles' }, { type: 'alt-description', enable: this.options.getConfig('features.altDescription'), icon: 'accessibility icon-alt-description' }];
+            this.$body = this.$html.find('body');
 
-            this.layoutFeatures = [{ type: 'quick-navigation', enable: this.options.getConfig('navigation.enable'), icon: 'accessibility icon-zoom' }, { type: 'disable-transitions', enable: this.options.getConfig('features.disableTransitions'), icon: 'accessibility icon-zoom' }];
+            this.options = new __WEBPACK_IMPORTED_MODULE_4__accessibility_options__["a" /* default */](options);
 
-            this.helperFeatures = [{ type: 'reset', enable: this.options.getConfig('menu.footer.reset'), icon: 'accessibility icon-alt-description' }];
+            // Todo Move All Features To AccessibilityOptions
+            this.features = [{ type: 'monochrome', enable: this.options.getConfig('features.monochrome'), icon: 'accessibility icon-monochrome' }, { type: 'dark-contrast', enable: this.options.getConfig('features.darkContrast'), icon: 'accessibility icon-dark-contrast' }, { type: 'bright-contrast', enable: this.options.getConfig('features.brightContrast'), icon: 'accessibility icon-bright-contrast' }, { type: 'decrease-font-size', enable: this.options.getConfig('features.decreaseFontSize'), icon: 'accessibility icon-decrease-font-size' }, { type: 'increase-font-size', enable: this.options.getConfig('features.increaseFontSize'), icon: 'accessibility icon-increase-font-size' }, { type: 'font-family', enable: this.options.getConfig('features.fontFamily'), icon: 'accessibility icon-font-family' }, { type: 'cursor-bw', enable: this.options.getConfig('features.cursorBw'), icon: 'accessibility icon-cursor-bw' }, { type: 'cursor-bb', enable: this.options.getConfig('features.cursorBb'), icon: 'accessibility icon-cursor-bb' }, { type: 'zoom', enable: this.options.getConfig('features.zoom'), icon: 'accessibility icon-search' }, { type: 'highlight-links', enable: this.options.getConfig('features.highlightLinks'), icon: 'accessibility icon-highlight-links' }, { type: 'highlight-titles', enable: this.options.getConfig('features.highlightTitles'), icon: 'accessibility icon-highlight-titles' }, { type: 'alt-description', enable: this.options.getConfig('features.altDescription'), icon: 'accessibility icon-alt-description' }];
+
+            this.layoutFeatures = [{ type: 'quick-navigation', enable: this.options.getConfig('quickNavigation.enable'), icon: 'accessibility icon-quick-navigation' }, { type: 'disable-transitions', enable: this.options.getConfig('features.disableTransitions'), icon: 'accessibility icon-disable-transitions' }];
+
+            this.helperFeatures = [{ type: 'reset', enable: this.options.getConfig('menu.footer.reset'), icon: 'accessibility icon-reset' }];
         }
 
         /**
@@ -168,6 +151,10 @@ window.AccessibilityForAll = function () {
     }, {
         key: 'getMainWrap',
         value: function getMainWrap() {
+            if (this.initialized) {
+                return;
+            }
+
             if (typeof this.$el !== 'undefined') {
                 return this.$el;
             }
@@ -185,48 +172,59 @@ window.AccessibilityForAll = function () {
     }, {
         key: 'render',
         value: function render() {
-            this.$i18n = new __WEBPACK_IMPORTED_MODULE_2__i18n__["a" /* default */]('en');
+            if (this.initialized) {
+                return;
+            }
 
-            this.accessibilityStorage = new __WEBPACK_IMPORTED_MODULE_4__accessibility_storage__["a" /* default */](this);
+            this.$i18n = new __WEBPACK_IMPORTED_MODULE_1__i18n__["a" /* default */](this.options.getConfig('locale'));
 
-            this.accessibilityFeatures = new __WEBPACK_IMPORTED_MODULE_6__accessibility_features__["a" /* default */](this);
+            this.accessibilityStorage = new __WEBPACK_IMPORTED_MODULE_3__accessibility_storage__["a" /* default */](this);
 
-            this.accessibilityNavigation = new __WEBPACK_IMPORTED_MODULE_3__navigation__["a" /* default */](this);
+            this.accessibilityFeatures = new __WEBPACK_IMPORTED_MODULE_5__accessibility_features__["a" /* default */](this);
 
-            this.accessibilityMenu = new __WEBPACK_IMPORTED_MODULE_1__menu__["a" /* default */](this);
+            this.accessibilityMenu = new __WEBPACK_IMPORTED_MODULE_0__menu__["a" /* default */](this);
+
+            this.accessibilityNavigation = new __WEBPACK_IMPORTED_MODULE_2__navigation__["a" /* default */](this);
+
+            this.toolTipListener();
+
+            this.$html.attr({
+                'lang': this.options.getConfig('locale'),
+                'dir': this.options.getConfig('direction')
+            });
+
+            if (this.options.getConfig('direction') === 'rtl') {
+                this.$body.addClass('accessibility-rtl-direction');
+            }
         }
 
         /**
          *
-         * @param $el
          * @param feature
          * @param type
          */
 
     }, {
         key: 'initFeatureListener',
-        value: function initFeatureListener($el, feature) {
-            var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'view';
+        value: function initFeatureListener(feature) {
+            var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'view';
 
             feature = this.getFeatureBy(feature, type);
 
             if (!feature || !feature.enable) return;
 
-            this.featureListener($el, feature);
+            this.featureListener(feature);
         }
 
         /**
          *
-         * @param $el
          * @param feature
          */
 
     }, {
         key: 'featureListener',
-        value: function featureListener($el, feature) {
+        value: function featureListener(feature) {
             if (!feature || !feature.enable) return;
-
-            feature.$el = $el;
 
             var featureHandler = this.camelCase(feature.type);
 
@@ -246,6 +244,73 @@ window.AccessibilityForAll = function () {
             if (isNaN(activated)) {
                 this.accessibilityFeatures.featureActivated(feature);
             }
+        }
+    }, {
+        key: 'toolTipListener',
+        value: function toolTipListener() {
+            var self = this;
+
+            this.$body.on('mouseenter.accessibility.tooltip-visible, focus.accessibility.tooltip-visible', '.accessibility-tooltip-element', function () {
+                var $toolTip = $(this).data('tooltip-element'),
+                    position = $(this).offset();
+
+                var style = {
+                    top: !$toolTip.data('tooltip-position') ? position.top + $(this).outerHeight() + 20 : position.top
+                };
+
+                if (!$toolTip.data('tooltip-position')) {
+                    style.transform = 'translateX(-50%)';
+                    style.left = position.left + $(this).outerWidth() / 2;
+                } else if ($toolTip.data('tooltip-position') === 'right') {
+                    style[$toolTip.data('tooltip-position')] = self.$body.width() - (position.left - 20);
+                }
+
+                $toolTip.css(style);
+                $toolTip.stop().fadeIn();
+            });
+
+            this.$body.on('mouseleave.accessibility.tooltip-hide, blur.accessibility.tooltip-visible', '.accessibility-tooltip-element', function () {
+                if ($(this).is(':focus')) return;
+
+                var $toolTip = $(this).data('tooltip-element');
+
+                $toolTip.stop().fadeOut();
+            });
+        }
+
+        /**
+         *
+         * @param $trigger
+         * @param content
+         * @param id
+         * @param position
+         * @returns {*|jQuery|HTMLElement}
+         */
+
+    }, {
+        key: 'renderToolTipEl',
+        value: function renderToolTipEl($trigger, content) {
+            var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+            var position = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+            var $el = $('<div class="accessibility-index-tooltip"/>');
+
+            if (id) {
+                $el.attr('id', id);
+            }
+
+            if (position) {
+                $el.attr('data-tooltip-position', position);
+            }
+
+            $el.html(content);
+            $el.css({ 'display': 'none' });
+
+            $trigger.addClass('accessibility-tooltip-element');
+            $trigger.data('tooltip-element', $el);
+
+            this.getMainWrap().append($el);
+            return $el;
         }
 
         /**
@@ -292,10 +357,17 @@ window.AccessibilityForAll = function () {
     }, {
         key: 'getFeatureBy',
         value: function getFeatureBy(type) {
-            var featuresType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'view';
+            var featuresType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-            var features = featuresType === 'layout' ? this.getLayoutFeatures() : featuresType === 'helper' ? this.getHelperFeatures() : this.getFeatures(),
-                feature = false;
+            var features = [];
+
+            if (featuresType === null) {
+                features = features.concat(this.getFeatures(), this.getLayoutFeatures(), this.getHelperFeatures());
+            } else {
+                features = featuresType === 'layout' ? this.getLayoutFeatures() : featuresType === 'helper' ? this.getHelperFeatures() : this.getFeatures();
+            }
+
+            var feature = false;
 
             $.each(features, function () {
                 if (this.type === type) {
@@ -311,19 +383,26 @@ window.AccessibilityForAll = function () {
          *
          * @param type
          * @param $el
+         * @param featuresType
          */
 
     }, {
         key: 'appendFeatureEl',
         value: function appendFeatureEl(type, $el) {
-            for (var i = 0; i < this.features.length; i++) {
-                if (this.features[i].type !== type) continue;
+            var featuresType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'view';
 
-                if (!this.features[i].$el) {
-                    this.features[i].$el = [];
-                }
+            var features = 'features';
 
-                this.features[i].$el.push($el);
+            if (featuresType === 'layout') {
+                features = 'layoutFeatures';
+            } else if (featuresType === 'helper') {
+                features = 'helperFeatures';
+            }
+
+            for (var i = 0; i < this[features].length; i++) {
+                if (this[features][i].type !== type) continue;
+
+                this[features][i].$el = $el;
             }
         }
 
@@ -448,35 +527,13 @@ window.AccessibilityForAll = function () {
             e.preventDefault();
             e.stopPropagation();
         }
-
-        /**
-         *
-         * @param content
-         * @param id
-         * @returns {*|jQuery|HTMLElement}
-         */
-
-    }, {
-        key: 'renderToolTipEl',
-        value: function renderToolTipEl(content) {
-            var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-            var $el = $('<div class="accessibility-index-tooltip"/>');
-
-            if (id) {
-                $el.attr('id', id);
-            }
-
-            $el.html(content);
-            return $el;
-        }
     }]);
 
     return _class;
 }();
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10847,10 +10904,12 @@ return jQuery;
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10939,7 +10998,7 @@ var _class = function () {
             }
 
             this.$menuHeader = $('<div class="accessibility-menu-header"/>');
-            this.$menuHeader.append('<h3 tabindex="0">' + this.accessibility.$i18n.trans('accessibility') + '</h3>');
+            this.$menuHeader.append('<h3 tabindex="0">' + this.accessibility.$i18n.trans('accessibility-menu') + '</h3>');
             this.$menuHeader.append(this.getCloseTrigger());
             return this.$menuHeader;
         }
@@ -10977,7 +11036,8 @@ var _class = function () {
 
             this.$trigger.append('<i/>');
             this.$trigger.find('i').addClass('accessibility icon-accessibility');
-            this.$trigger.append(AccessibilityForAll.renderToolTipEl('Accessibility Menu', 'accessibilityTriggerButtonTt'));
+
+            this.accessibility.renderToolTipEl(this.$trigger, this.accessibility.$i18n.trans('accessibility-menu'), 'accessibilityTriggerButtonTt', this.accessibility.options.getConfig('direction') === 'rtl' ? 'right' : null);
 
             return this.$trigger;
         }
@@ -11017,7 +11077,7 @@ var _class = function () {
 
             var features = this.accessibility.getHelperFeatures();
 
-            this.$footerFeatures.append(this.createFeaturesEl(features));
+            this.$footerFeatures.append(this.createFeaturesEl(features, 'helper'));
 
             return this.$footerFeatures;
         }
@@ -11038,7 +11098,7 @@ var _class = function () {
 
             var features = this.accessibility.getLayoutFeatures();
 
-            this.$layoutFeatures.append(this.createFeaturesEl(features));
+            this.$layoutFeatures.append(this.createFeaturesEl(features, 'layout'));
 
             return this.$layoutFeatures;
         }
@@ -11059,7 +11119,7 @@ var _class = function () {
             this.$viewFeatures = $('<div class="accessibility-features"/>');
 
             for (var row = 0; row < features.length; row++) {
-                this.$viewFeatures.append(this.createFeaturesEl(features[row], $('<div class="accessibility-features-row"/>')));
+                this.$viewFeatures.append(this.createFeaturesEl(features[row], 'view', $('<div class="accessibility-features-row"/>')));
             }
 
             return this.$viewFeatures;
@@ -11068,30 +11128,44 @@ var _class = function () {
         /**
          *
          * @param features
+         * @param featuresType
          * @param $append
          */
 
     }, {
         key: 'createFeaturesEl',
         value: function createFeaturesEl(features) {
-            var $append = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+            var featuresType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'view';
+            var $append = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
             if (!features) {
                 return null;
             }
 
             var self = this,
-                $container = '';
+                $container = [];
 
-            $.each(features, function () {
+            $.each(features, function (index) {
+                // console.log(self.accessibility.options.getConfig('features.'+self.accessibility.camelCase(this.type)), this.type);
+
+                if (!this.enable) {
+                    return;
+                }
+
                 var $feature = $('<div class="accessibility-feature"/>').addClass(this.type);
 
                 $feature.append('<button type="button" data-feature="' + this.type + '"><i></i><span></span></button>');
 
                 var featureState = self.accessibility.accessibilityFeatures.getState(this.type);
 
-                if (featureState === 'enable') {
-                    $feature.addClass('accessibility-feature-activated');
+                if (featureState !== null) {
+                    if (featureState === 'enable') {
+                        $feature.addClass('accessibility-feature-activated');
+                    }
+
+                    if ((typeof featureState === 'undefined' ? 'undefined' : _typeof(featureState)) === 'object' && featureState.state === 'enable') {
+                        $feature.addClass('accessibility-feature-activated');
+                    }
                 }
 
                 $feature.find('i').addClass(this.icon);
@@ -11101,10 +11175,10 @@ var _class = function () {
                     $append.append($feature);
                 }
 
-                $container += $feature.prop('outerHTML');
+                $container.push($feature);
 
                 // Appending feature trigger $el to features object
-                // self.accessibility.appendFeatureEl(this.type, $feature);
+                self.accessibility.appendFeatureEl(this.type, $feature, featuresType);
             });
 
             return $append ? $append : $container;
@@ -11196,17 +11270,17 @@ var _class = function () {
 
             // View Feature Clicked
             this.$viewFeatures.find('.accessibility-feature button').on('click', function () {
-                self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'));
+                self.accessibility.initFeatureListener($(this).data('feature'));
             });
 
             // Layout Feature Clicked
             this.$layoutFeatures.find('.accessibility-feature button').on('click', function () {
-                self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'), 'layout');
+                self.accessibility.initFeatureListener($(this).data('feature'), 'layout');
             });
 
             // Footer Feature Clicked
             this.$footerFeatures.find('.accessibility-feature button').on('click', function () {
-                self.accessibility.initFeatureListener($(this).parent(), $(this).data('feature'), 'helper');
+                self.accessibility.initFeatureListener($(this).data('feature'), 'helper');
             });
         }
 
@@ -11236,12 +11310,12 @@ var _class = function () {
         value: function closeMenu(e) {
             AccessibilityForAll.preventDefault(e);
 
-            this.$el.removeClass('accessibility-menu-opened');
-            this.$container.attr('aria-hidden', true);
-
             this.closeMenuListeners(false);
 
             this.accessibility.focusLastEl();
+            this.$container.attr('aria-hidden', true);
+
+            this.$el.removeClass('accessibility-menu-opened');
         }
     }]);
 
@@ -11251,13 +11325,18 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__trans_he__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trans_en__ = __webpack_require__(6);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
 
 var _class = function () {
     /**
@@ -11271,6 +11350,8 @@ var _class = function () {
 
         this.locale = locale;
         this.defaultLocale = 'en';
+
+        this.setTrans();
 
         this.setLocale();
     }
@@ -11288,10 +11369,10 @@ var _class = function () {
         value: function trans(key) {
             var attributes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-            if (!this.translations) return '';
+            if (!this.translates) return '';
 
-            for (var _key in this.translations) {
-                if (_key === key) return attributes ? this.bindAttributes(this.translations[key], attributes) : this.translations[key];
+            for (var _key in this.translates) {
+                if (_key === key) return attributes ? this.bindAttributes(this.translates[key], attributes) : this.translates[key];
             }
         }
 
@@ -11325,6 +11406,19 @@ var _class = function () {
         }
 
         /**
+         *
+         */
+
+    }, {
+        key: 'setTrans',
+        value: function setTrans() {
+            this.translations = {
+                en: __WEBPACK_IMPORTED_MODULE_1__trans_en__["a" /* default */],
+                he: __WEBPACK_IMPORTED_MODULE_0__trans_he__["a" /* default */]
+            };
+        }
+
+        /**
          * Set Locale
          *
          * @param locale
@@ -11339,16 +11433,19 @@ var _class = function () {
 
             this.locale = locale;
 
-            try {
-                trans = __webpack_require__(0)("./" + locale + '.js');
-            } catch (e) {
+            /*try {
+                trans = require('./trans/' + locale + '.js');
+            } catch(e) {
                 this.locale = this.defaultLocale;
-                trans = __webpack_require__(0)("./" + this.defaultLocale + '.js');
-            }
+                trans = require('./trans/' + this.defaultLocale + '.js');
+            }*/
 
-            if (!trans.default) return;
+            /*if (! trans.default)
+                return;*/
 
-            this.translations = trans.default;
+            var translates = this.translations[locale.toLowerCase()] ? this.translations[locale.toLowerCase()] : this.translations[this.defaultLocale];
+
+            this.translates = $.extend(this.translations[this.defaultLocale], translates);
         }
     }]);
 
@@ -11358,13 +11455,39 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    'accessibility-menu': 'תפריט נגישות',
+    'monochrome': 'מונוכרום',
+    'dark-contrast': 'ניגודיות גבוהה',
+    'bright-contrast': 'ניגודיות בהירה',
+    'decrease-font-size': 'הקטנת גופן',
+    'increase-font-size': 'הגדלת גופן',
+    'font-family': 'גופן קריא',
+    'cursor-bw': 'סמן גדול לבן',
+    'cursor-bb': 'סמן גדול שחור',
+    'zoom': 'הגדלת תצוגה',
+    'highlight-links': 'הדגשת קישורים',
+    'highlight-titles': 'הדגשת כותרות',
+    'alt-description': 'הצגת תאור לתמונות',
+    'reset': 'איפוס',
+    'disable-transitions': 'כיבוי אנימציות',
+    'quick-navigation': 'הפעלת תפריט ניווט מקלדת',
+    'info-enable-quick-navigation': 'בכל שלב ניתן ללחוץ (:a) כדי לחזור לתפריט הניווט',
+    'press-to-open-menu': 'לחץ (:a) לפתוח תפריט נגישות',
+    'press-to-enable-quick-navigation': 'לחץ (:a) להפעלת תפריט ניווט מקלדת'
+});
+
+/***/ }),
 /* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = ({
-    'accessibility': 'Accessibility',
+/* harmony default export */ __webpack_exports__["a"] = ({
+    'accessibility-menu': 'Accessibility Menu',
     'monochrome': 'Monochrome',
     'dark-contrast': 'Dark Contrast',
     'bright-contrast': 'Bright Contrast',
@@ -11387,16 +11510,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = ({
-    'accessibility': 'נגישות'
-});
-
-/***/ }),
-/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11446,9 +11559,11 @@ var _class = function () {
         value: function renderQuickNavigation() {
             if (!this.isQuickNavigationEnable()) return;
 
-            var feature = this.accessibility.getFeatureBy('quick-navigation', 'layout');
-
-            if (!feature.enable) return;
+            if (!this.navigationConfig.items) {
+                // Todo no item init
+                // this.accessibility.options.extendConfig({navigation: {enable: false}});
+                // return;
+            }
 
             var initializedState = this.accessibility.accessibilityFeatures.getState('quickNavigation'),
                 quickNavigation = {
@@ -11490,7 +11605,9 @@ var _class = function () {
             $infoButton.append('<i class="accessibility icon-info"></i>');
 
             var info = this.accessibility.$i18n.trans('info-enable-quick-navigation', '<span class="keyboard"><kbd>Ctrl</kbd> + <kbd>F9</kbd></span>');
-            $infoButton.append(AccessibilityForAll.renderToolTipEl(info));
+
+            this.accessibility.renderToolTipEl($infoButton, info);
+            // $infoButton.append();
 
             $container.append($infoButton);
             $container.append(this.createQuickNavigationItems());
@@ -11529,8 +11646,10 @@ var _class = function () {
             $.each(this.accessibility.accessibilityFeatures.states.quickNavigation.items, function () {
                 var $item = $('<li/>');
 
-                $item.append('<a href="javascript:void(0)" tabindex="1">' + this.text + '</a>');
+                $item.append('<a href="javascript:void(0)" tabindex="1">' + this.title + '</a>');
                 $items.append($item);
+
+                this.$trigger = $item;
             });
 
             return $items;
@@ -11692,7 +11811,7 @@ var _class = function () {
     }, {
         key: 'isQuickNavigationEnable',
         value: function isQuickNavigationEnable() {
-            this.navigationConfig = this.navigationConfig ? this.navigationConfig : this.accessibility.options.getConfig('navigation');
+            this.navigationConfig = this.navigationConfig ? this.navigationConfig : this.accessibility.options.getConfig('quickNavigation');
             return this.navigationConfig && this.navigationConfig.enable;
         }
 
@@ -11704,7 +11823,37 @@ var _class = function () {
     }, {
         key: 'bindQuickNavigationItems',
         value: function bindQuickNavigationItems() {
-            return [{ text: 'Test', action: '' }];
+            if (!this.navigationConfig) {
+                if (!this.isQuickNavigationEnable()) return [];
+            }
+
+            if (!this.navigationConfig.items) {
+                return [];
+            }
+
+            var items = [];
+
+            $.each(this.navigationConfig.items, function () {
+                if (!this.$el) return;
+
+                var item = {
+                    $el: $(this.$el),
+                    title: this.title
+                };
+
+                if (!item.$el.length) return;
+
+                items.push(item);
+            });
+
+            items.push({
+                tabIndex: 1,
+                action: this.openAccessibilityMenu.bind(this),
+                $el: this.accessibility.accessibilityMenu.$el,
+                title: this.accessibility.$i18n.trans('accessibility-menu')
+            });
+
+            return items;
         }
     }]);
 
@@ -11714,7 +11863,7 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11933,7 +12082,7 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11947,7 +12096,7 @@ var _class = function () {
     function _class(options) {
         _classCallCheck(this, _class);
 
-        this.config = this.setConfig(options);
+        this.config = this.initializeConfig(options);
     }
 
     /**
@@ -11957,11 +12106,11 @@ var _class = function () {
 
 
     _createClass(_class, [{
-        key: 'setConfig',
-        value: function setConfig(options) {
+        key: 'initializeConfig',
+        value: function initializeConfig(options) {
             var config = $.extend({
-                locale: 'en',
-                direction: 'ltr',
+                locale: this.setLocale(options.locale),
+                direction: this.setDirection(options.direction),
                 storage: 'cookies'
             }, options);
 
@@ -11969,7 +12118,7 @@ var _class = function () {
                 footer: {
                     reset: true
                 }
-            }, config.menu);
+            }, options.menu);
 
             config.features = $.extend({
                 monochrome: true,
@@ -11985,13 +12134,61 @@ var _class = function () {
                 highlightTitles: true,
                 altDescription: true,
                 disableTransitions: true
-            }, config.features);
+            }, options.features);
 
-            config.navigation = $.extend({
+            config.quickNavigation = $.extend({
                 enable: true
-            }, config.navigation);
+            }, options.quickNavigation);
 
             return config;
+        }
+
+        /**
+         *
+         * @param options
+         * @returns {Browsersync.config|*|Config}
+         */
+
+    }, {
+        key: 'extendConfig',
+        value: function extendConfig(options) {
+            this.config = $.extend(this.config, options);
+            return this.config;
+        }
+
+        /**
+         *
+         * @param direction
+         */
+
+    }, {
+        key: 'setDirection',
+        value: function setDirection() {
+            var direction = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (direction) {
+                return direction;
+            }
+
+            return document.dir === 'rtl' ? 'rtl' : 'ltr';
+        }
+
+        /**
+         *
+         * @param locale
+         * @returns string
+         */
+
+    }, {
+        key: 'setLocale',
+        value: function setLocale() {
+            var locale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (locale) {
+                return locale;
+            }
+
+            return this.accessibility.$html.attr('lang') ? this.accessibility.$html.attr('lang') : 'en';
         }
 
         /**
@@ -12011,7 +12208,7 @@ var _class = function () {
 
             if (!key[0]) return null;
 
-            if (!config[key[0]]) return null;
+            if (typeof config[key[0]] === 'undefined') return null;
 
             if (key.length === 1) return config[key[0]];
 
@@ -12037,12 +12234,12 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__features_quick_navigation__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__features_img_alt_description__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__features_quick_navigation__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__features_img_alt_description__ = __webpack_require__(12);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12129,9 +12326,13 @@ var _class = function () {
             var self = this;
 
             $.each(this.states, function (key) {
+                if (this !== 'enable') {
+                    return;
+                }
+
                 var feature = self.getAccessibilityFeature(key);
 
-                if (this !== 'enable' || !feature.enable) {
+                if (!feature.enable) {
                     return;
                 }
 
@@ -12448,7 +12649,7 @@ var _class = function () {
             this.accessibility.$body.scrollTop(0);
 
             this.states.quickNavigation.state = 'enable';
-            this.states.quickNavigation.$el.find('button').focus();
+            this.accessibility.accessibilityMenu.closeMenu();
 
             this.quickNavigationHandler.initialize();
         }
@@ -12482,6 +12683,10 @@ var _class = function () {
         value: function updateBodyElements() {
             var self = this;
 
+            if (!this.states.fontSize.initialized) {
+                this.initializeOriginalFontSize();
+            }
+
             this.states.fontSize.current = Number(this.states.fontSize.current.toFixed(2));
 
             this.states.fontSize.$in.find(this.fontElements()).each(function () {
@@ -12491,16 +12696,36 @@ var _class = function () {
                     return;
                 }
 
-                // Set The Default Font Size Per El
-                if (!$(this).data('original-font-size')) {
-                    $(this).data('original-font-size', currentFontSize);
-                }
-
                 var defaultFontSize = $(this).data('original-font-size'),
                     updateFontSize = (defaultFontSize * self.states.fontSize.current).toFixed(1) + 'px';
 
                 $(this).css('font-size', updateFontSize);
             });
+        }
+
+        /**
+         * Initialize Font Size
+         * Loop On Element That Will
+         * Handle There Font Size, And Set
+         * There Original Font Size For Later Calculate
+         * This Is Mandatory Loop Before The Change Take Effect
+         * For Proper Handling Font Size Like 'rem', 'em'
+         */
+
+    }, {
+        key: 'initializeOriginalFontSize',
+        value: function initializeOriginalFontSize() {
+            this.states.fontSize.$in.find(this.fontElements()).each(function () {
+                var elFontSize = parseFloat($(this).css('font-size'));
+
+                if (!elFontSize) {
+                    return;
+                }
+
+                $(this).data('original-font-size', elFontSize);
+            });
+
+            this.states.fontSize.initialized = true;
         }
 
         /**
@@ -12546,6 +12771,7 @@ var _class = function () {
 
             if (!enable) {
                 $(document).off('mouseenter.accessibility.image-hover-description');
+                this.imgAltDescription.destroy();
                 return;
             }
 
@@ -12575,6 +12801,12 @@ var _class = function () {
                 }
 
                 self[key]();
+
+                var feature = self.accessibility.getFeatureBy(AccessibilityForAll.snakeCase(key), null);
+
+                if (feature) {
+                    self.featureDeActivated(feature);
+                }
             });
 
             if (this.states.fontSize.current > 1) {
@@ -12584,6 +12816,9 @@ var _class = function () {
 
             if (this.states.quickNavigation.state === 'enable') {
                 this.quickNavigation();
+
+                var feature = self.accessibility.getFeatureBy(AccessibilityForAll.snakeCase('quick-navigation'), 'layout');
+                this.featureDeActivated(feature);
             }
 
             this.accessibility.accessibilityStorage.resetStorage();
@@ -12699,15 +12934,15 @@ var _class = function () {
         key: 'removeAllContrasts',
         value: function removeAllContrasts() {
             if (this.states.darkContrast === 'enable' && this.initialized) {
-                this.darkContrast();
+                this.accessibility.initFeatureListener('dark-contrast');
             }
 
             if (this.states.brightContrast === 'enable' && this.initialized) {
-                this.brightContrast();
+                this.accessibility.initFeatureListener('bright-contrast');
             }
 
             if (this.states.monochrome === 'enable' && this.initialized) {
-                this.monochrome();
+                this.accessibility.initFeatureListener('monochrome');
             }
         }
 
@@ -12719,11 +12954,11 @@ var _class = function () {
         key: 'removeAllCursors',
         value: function removeAllCursors() {
             if (this.states.cursorBb === 'enable' && this.initialized) {
-                this.cursorBb();
+                this.accessibility.initFeatureListener('cursor-bb');
             }
 
             if (this.states.cursorBw === 'enable' && this.initialized) {
-                this.cursorBw();
+                this.accessibility.initFeatureListener('cursor-bw');
             }
         }
     }]);
@@ -12734,7 +12969,7 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12751,6 +12986,8 @@ var _class = function () {
         _classCallCheck(this, _class);
 
         this.accessibility = accessibility;
+
+        this.elementType = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'a'];
     }
 
     /**
@@ -12761,7 +12998,67 @@ var _class = function () {
     _createClass(_class, [{
         key: 'initialize',
         value: function initialize() {
+            this.resetTabsIndexes();
+
+            this.gatherItems();
+
             this.focusQuickNavigationListener();
+
+            this.navigationListener();
+
+            if (this.accessibility.accessibilityFeatures.getState('disable-transitions') === 'enable') {
+                this.navigation.$el.find('button').focus();
+                return;
+            }
+
+            var self = this;
+
+            this.accessibility.$body.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd', function () {
+                self.navigation.$el.find('button').focus();
+            });
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'gatherItems',
+        value: function gatherItems() {
+            var currentTabIndex = this.tabIndexStarter,
+                itemsType = this.elementType.join(', '),
+                state = this.accessibility.accessibilityFeatures.getState('quickNavigation');
+
+            var self = this,
+                navigation = {};
+
+            $.each(state.items, function () {
+                this.$tabs = this.$el.find(itemsType);
+
+                this.tabIndex = this.tabIndex ? this.tabIndex : currentTabIndex;
+
+                this.$tabs.attr('tabindex', this.tabIndex);
+                this.$trigger.find('a').attr('data-tab-href', this.tabIndex);
+
+                navigation[this.tabIndex] = this;
+
+                if (this.tabIndex === currentTabIndex) {
+                    currentTabIndex += self.tabIndexExtend;
+                }
+            });
+
+            this.navigation = $.extend(state, { items: navigation });
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'resetTabsIndexes',
+        value: function resetTabsIndexes() {
+            this.tabIndexExtend = 10;
+            this.tabIndexStarter = 20;
         }
 
         /**
@@ -12771,8 +13068,18 @@ var _class = function () {
     }, {
         key: 'destroy',
         value: function destroy() {
+            $.each(this.navigation.items, function () {
+                this.$tabs.attr('tabindex', null);
+            });
+
+            this.navigation.$el.find('ul > li > a').off('click.accessibility.quick-navigation-navigate');
+            delete this.navigation;
+
+            this.itemFocused();
+
             this.accessibility.$body.off('keyup.accessibility.quick-navigation-focus-key');
             this.accessibility.$body.off('keydown.accessibility.quick-navigation-focus-key');
+            this.accessibility.$body.off('focus.accessibility.quick-navigation-item-focused', this.elementType.join(', '));
         }
 
         /**
@@ -12796,6 +13103,72 @@ var _class = function () {
 
                 keys = [];
             });
+
+            this.accessibility.$body.on('focus.accessibility.quick-navigation-item-focused', this.elementType.join(', '), function () {
+                if ($(this).is(self.accessibility.accessibilityMenu.getTrigger())) return;
+
+                self.itemFocused($(this));
+            });
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'navigationListener',
+        value: function navigationListener() {
+            var self = this;
+
+            this.navigation.$el.find('ul > li > a').on('click.accessibility.quick-navigation-navigate', function (e) {
+                var focusTab = $(this).attr('data-tab-href'),
+                    item = self.getNavigationTabIndexGroup(focusTab);
+
+                if (!item || !item.action) {
+                    $('[tabindex=' + focusTab + ']').first().focus();
+                    return;
+                }
+
+                if (item.action) {
+                    item.action(e);
+                }
+            });
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'itemFocused',
+        value: function itemFocused() {
+            var $el = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (this.$focused) {
+                this.$focused.removeClass('accessibility-item-focused');
+            }
+
+            this.$focused = $el;
+
+            if (!$el) {
+                return;
+            }
+
+            $el.addClass('accessibility-item-focused');
+        }
+
+        /**
+         *
+         * @param tabIndex
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'getNavigationTabIndexGroup',
+        value: function getNavigationTabIndexGroup(tabIndex) {
+            if (!this.navigation || !this.navigation.items) return false;
+
+            return this.navigation.items[tabIndex] ? this.navigation.items[tabIndex] : false;
         }
     }]);
 
@@ -12805,7 +13178,7 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12875,7 +13248,6 @@ var _class = function () {
 
         /**
          *
-         * @param $el
          */
 
     }, {
@@ -12910,7 +13282,6 @@ var _class = function () {
 
         /**
          *
-         * @param $el
          * @param alt
          * @param event
          */
@@ -12953,6 +13324,18 @@ var _class = function () {
 
             this.$el.css({ 'left': pX, 'top': pY });
         }
+
+        /**
+         *
+         */
+
+    }, {
+        key: 'destroy',
+        value: function destroy() {
+            if (!this.$hoverImg) return;
+
+            this.mouseOut();
+        }
     }]);
 
     return _class;
@@ -12961,7 +13344,7 @@ var _class = function () {
 /* harmony default export */ __webpack_exports__["a"] = (_class);
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

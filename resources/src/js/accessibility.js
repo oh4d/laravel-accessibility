@@ -1,5 +1,5 @@
-import jQuery from 'jquery';
-window.$ = window.jQuery = jQuery;
+// import jQuery from 'jquery';
+window.$ = window.jQuery = require('jquery');
 
 import AccessibilityMenu from './menu';
 import AccessibilityTrans from './i18n';
@@ -19,16 +19,25 @@ window.AccessibilityForAll = class {
         this.getMainWrap();
 
         this.render();
+
+        this.initialized = true;
     }
 
     /**
      *
      */
     initializeParams(options) {
-        this.$body = $('body');
+        if (this.initialized) {
+            return;
+        }
+
+        this.$html = $('html');
+
+        this.$body = this.$html.find('body');
 
         this.options = new AccessibilityOptions(options);
 
+        // Todo Move All Features To AccessibilityOptions
         this.features = [
             {type: 'monochrome', enable: this.options.getConfig('features.monochrome'), icon: 'accessibility icon-monochrome'},
             {type: 'dark-contrast', enable: this.options.getConfig('features.darkContrast'), icon: 'accessibility icon-dark-contrast'},
@@ -38,19 +47,19 @@ window.AccessibilityForAll = class {
             {type: 'font-family', enable: this.options.getConfig('features.fontFamily'), icon: 'accessibility icon-font-family'},
             {type: 'cursor-bw', enable: this.options.getConfig('features.cursorBw'), icon: 'accessibility icon-cursor-bw'},
             {type: 'cursor-bb', enable: this.options.getConfig('features.cursorBb'), icon: 'accessibility icon-cursor-bb'},
-            {type: 'zoom', enable: this.options.getConfig('features.zoom'), icon: 'accessibility icon-zoom'},
+            {type: 'zoom', enable: this.options.getConfig('features.zoom'), icon: 'accessibility icon-search'},
             {type: 'highlight-links', enable: this.options.getConfig('features.highlightLinks'), icon: 'accessibility icon-highlight-links'},
             {type: 'highlight-titles', enable: this.options.getConfig('features.highlightTitles'), icon: 'accessibility icon-highlight-titles'},
             {type: 'alt-description', enable: this.options.getConfig('features.altDescription'), icon: 'accessibility icon-alt-description'}
         ];
 
         this.layoutFeatures = [
-            {type: 'quick-navigation', enable: this.options.getConfig('navigation.enable'), icon: 'accessibility icon-zoom'},
-            {type: 'disable-transitions', enable: this.options.getConfig('features.disableTransitions'), icon: 'accessibility icon-zoom'}
+            {type: 'quick-navigation', enable: this.options.getConfig('quickNavigation.enable'), icon: 'accessibility icon-quick-navigation'},
+            {type: 'disable-transitions', enable: this.options.getConfig('features.disableTransitions'), icon: 'accessibility icon-disable-transitions'}
         ];
 
         this.helperFeatures = [
-            {type: 'reset', enable: this.options.getConfig('menu.footer.reset'), icon: 'accessibility icon-alt-description'}
+            {type: 'reset', enable: this.options.getConfig('menu.footer.reset'), icon: 'accessibility icon-reset'}
         ];
     }
 
@@ -60,6 +69,10 @@ window.AccessibilityForAll = class {
      * @returns {*|jQuery|HTMLElement}
      */
     getMainWrap() {
+        if (this.initialized) {
+            return;
+        }
+
         if (typeof this.$el !== 'undefined') {
             return this.$el;
         }
@@ -74,42 +87,53 @@ window.AccessibilityForAll = class {
      *
      */
     render() {
-        this.$i18n = new AccessibilityTrans('en');
+        if (this.initialized) {
+            return;
+        }
+
+        this.$i18n = new AccessibilityTrans(this.options.getConfig('locale'));
 
         this.accessibilityStorage = new AccessibilityStorage(this);
 
         this.accessibilityFeatures = new AccessibilityFeatures(this);
 
+        this.accessibilityMenu = new AccessibilityMenu(this);
+
         this.accessibilityNavigation = new AccessibilityNavigation(this);
 
-        this.accessibilityMenu = new AccessibilityMenu(this);
+        this.toolTipListener();
+
+        this.$html.attr({
+            'lang': this.options.getConfig('locale'),
+            'dir': this.options.getConfig('direction')
+        });
+
+        if (this.options.getConfig('direction') === 'rtl') {
+            this.$body.addClass('accessibility-rtl-direction')
+        }
     }
 
     /**
      *
-     * @param $el
      * @param feature
      * @param type
      */
-    initFeatureListener($el, feature, type = 'view') {
+    initFeatureListener(feature, type = 'view') {
         feature = this.getFeatureBy(feature, type);
 
         if (! feature || ! feature.enable)
             return;
 
-        this.featureListener($el, feature);
+        this.featureListener(feature);
     }
 
     /**
      *
-     * @param $el
      * @param feature
      */
-    featureListener($el, feature) {
+    featureListener(feature) {
         if (! feature || ! feature.enable)
             return;
-
-        feature.$el = $el;
 
         let featureHandler = this.camelCase(feature.type);
 
@@ -131,6 +155,67 @@ window.AccessibilityForAll = class {
         if (isNaN(activated)) {
             this.accessibilityFeatures.featureActivated(feature);
         }
+    }
+
+    toolTipListener() {
+        let self = this;
+
+        this.$body.on('mouseenter.accessibility.tooltip-visible, focus.accessibility.tooltip-visible', '.accessibility-tooltip-element', function() {
+            let $toolTip = $(this).data('tooltip-element'),
+                position = $(this).offset();
+
+            let style = {
+                top: (! $toolTip.data('tooltip-position')) ? position.top + $(this).outerHeight() + 20 : position.top
+            };
+
+            if (! $toolTip.data('tooltip-position')) {
+                style.transform = 'translateX(-50%)';
+                style.left = position.left + ($(this).outerWidth() / 2);
+            } else if ($toolTip.data('tooltip-position') === 'right') {
+                style[$toolTip.data('tooltip-position')] = self.$body.width() - (position.left - 20);
+            }
+
+            $toolTip.css(style);
+            $toolTip.stop().fadeIn();
+        });
+
+        this.$body.on('mouseleave.accessibility.tooltip-hide, blur.accessibility.tooltip-visible', '.accessibility-tooltip-element', function() {
+            if ($(this).is(':focus'))
+                return;
+
+            let $toolTip = $(this).data('tooltip-element');
+
+            $toolTip.stop().fadeOut();
+        });
+    }
+
+    /**
+     *
+     * @param $trigger
+     * @param content
+     * @param id
+     * @param position
+     * @returns {*|jQuery|HTMLElement}
+     */
+    renderToolTipEl($trigger, content, id = null, position = null) {
+        let $el = $('<div class="accessibility-index-tooltip"/>');
+
+        if (id) {
+            $el.attr('id', id);
+        }
+
+        if (position) {
+            $el.attr('data-tooltip-position', position);
+        }
+
+        $el.html(content);
+        $el.css({'display': 'none'});
+
+        $trigger.addClass('accessibility-tooltip-element');
+        $trigger.data('tooltip-element', $el);
+
+        this.getMainWrap().append($el);
+        return $el;
     }
 
     /**
@@ -164,9 +249,16 @@ window.AccessibilityForAll = class {
      * @param featuresType
      * @returns {boolean}
      */
-    getFeatureBy(type, featuresType = 'view') {
-        let features = (featuresType === 'layout') ? this.getLayoutFeatures() : (featuresType === 'helper' ? this.getHelperFeatures() : this.getFeatures()),
-            feature = false;
+    getFeatureBy(type, featuresType = null) {
+        let features = [];
+
+        if (featuresType === null) {
+            features = features.concat(this.getFeatures(), this.getLayoutFeatures(), this.getHelperFeatures());
+        } else {
+            features = (featuresType === 'layout') ? this.getLayoutFeatures() : (featuresType === 'helper' ? this.getHelperFeatures() : this.getFeatures());
+        }
+
+        let feature = false;
 
         $.each(features, function() {
             if (this.type === type) {
@@ -182,17 +274,22 @@ window.AccessibilityForAll = class {
      *
      * @param type
      * @param $el
+     * @param featuresType
      */
-    appendFeatureEl(type, $el) {
-        for (let i = 0; i < this.features.length; i++) {
-            if (this.features[i].type !== type)
+    appendFeatureEl(type, $el, featuresType = 'view') {
+        let features = 'features';
+
+        if (featuresType === 'layout') {
+            features = 'layoutFeatures';
+        } else if (featuresType === 'helper') {
+            features = 'helperFeatures';
+        }
+
+        for (let i = 0; i < this[features].length; i++) {
+            if (this[features][i].type !== type)
                 continue;
 
-            if (! this.features[i].$el) {
-                this.features[i].$el = [];
-            }
-
-            this.features[i].$el.push($el);
+            this[features][i].$el = $el;
         }
     }
 
@@ -295,22 +392,5 @@ window.AccessibilityForAll = class {
 
         e.preventDefault();
         e.stopPropagation();
-    }
-
-    /**
-     *
-     * @param content
-     * @param id
-     * @returns {*|jQuery|HTMLElement}
-     */
-    static renderToolTipEl(content, id = null) {
-        let $el = $('<div class="accessibility-index-tooltip"/>');
-
-        if (id) {
-            $el.attr('id', id);
-        }
-
-        $el.html(content);
-        return $el;
     }
 };

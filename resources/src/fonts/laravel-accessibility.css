@@ -2,9 +2,9 @@
   font-family: 'laravel-accessibility';
   src:  url('fonts/laravel-accessibility.eot?ep306j');
   src:  url('fonts/laravel-accessibility.eot?ep306j#iefix') format('embedded-opentype'),
-    url('fonts/laravel-accessibility.ttf?ep306j') format('truetype'),
-    url('fonts/laravel-accessibility.woff?ep306j') format('woff'),
-    url('fonts/laravel-accessibility.svg?ep306j#laravel-accessibility') format('svg');
+  url('fonts/laravel-accessibility.ttf?ep306j') format('truetype'),
+  url('fonts/laravel-accessibility.woff?ep306j') format('woff'),
+  url('fonts/laravel-accessibility.svg?ep306j#laravel-accessibility') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,48 +24,57 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-accessibility:before {
-  content: "\e908";
-}
-.icon-alt-description:before {
-  content: "\e900";
-}
-.icon-bright-contrast:before {
-  content: "\e901";
-}
-.icon-cursor-bb:before {
-  content: "\e902";
-}
-.icon-cursor-bw:before {
-  content: "\e903";
-}
-.icon-dark-contrast:before {
-  content: "\e904";
-}
-.icon-decrease-font-size:before {
-  content: "\e905";
-}
-.icon-font-family:before {
-  content: "\e906";
-}
-.icon-highlight-links:before {
-  content: "\e907";
-}
-.icon-highlight-titles:before {
+.icon-search:before {
   content: "\e909";
 }
-.icon-increase-font-size:before {
-  content: "\e90a";
-}
-.icon-monochrome:before {
-  content: "\e90b";
-}
-.icon-zoom:before {
-  content: "\e90c";
+.icon-accessibility:before {
+  content: "\e908";
 }
 .icon-cancel:before {
   content: "\e90d";
 }
+.icon-decrease-font-size:before {
+  content: "\e902";
+}
+.icon-increase-font-size:before {
+  content: "\e90e";
+}
+.icon-bright-contrast:before {
+  content: "\e90c";
+}
 .icon-info:before {
-  content: "\ea0c";
+  content: "\e900";
+}
+.icon-disable-transitions:before {
+  content: "\e901";
+}
+.icon-quick-navigation:before {
+  content: "\1f322";
+}
+.icon-reset:before {
+  content: "\e903";
+}
+.icon-highlight-links:before {
+  content: "\e904";
+}
+.icon-highlight-titles:before {
+  content: "\e905";
+}
+.icon-alt-description:before {
+  content: "\e906";
+}
+.icon-cursor-bb:before {
+  content: "\e907";
+}
+.icon-cursor-bw:before {
+  content: "\e90a";
+}
+.icon-font-family:before {
+  content: "\e90b";
+}
+.icon-dark-contrast:before {
+  content: "\e912";
+}
+.icon-monochrome:before {
+  content: "\e913";
 }

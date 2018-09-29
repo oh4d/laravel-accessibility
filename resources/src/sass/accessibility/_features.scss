@@ -1,6 +1,15 @@
-html body {
+html > body {
+  .accessibility-item-focused {
+    background-color: #ffffcc !important;
+    color: #bf1722 !important;
+    border-radius: 5px !important;
+    outline: none !important;
+    text-shadow: #bbb 1px 1px 1px;
+    transition: color 0.2s ease-in, text-shadow 0.2s ease-in;
+    box-shadow: 0 0 6px 3px #ffff00, 0 0 2px #333 inset !important;
+  }
 
-  .accessibility {
+  > .accessibility {
     .accessibility-img-alt-description {
       display: none;
       position: fixed;
@@ -178,7 +187,7 @@ html body {
   }
 
   &.accessibility-big-black-cursor {
-    cursor: url('images/bigcursorblack.cur'), auto;
+    cursor: url('images/bigcursorblack.cur'), auto !important;
 
     a,
     [role="link"],
@@ -202,12 +211,12 @@ html body {
     [role="scrollbar"],
     [role="spinbutton"],
     [role="tab"] {
-      cursor: url('images/bighandblack.cur'), auto;
+      cursor: url('images/bighandblack.cur'), auto !important;
     }
   }
 
   &.accessibility-big-white-cursor {
-    cursor: url('images/bigcursorwhite.cur'), auto;
+    cursor: url('images/bigcursorwhite.cur'), auto !important;
 
     a,
     [role="link"],
@@ -231,7 +240,7 @@ html body {
     [role="scrollbar"],
     [role="spinbutton"],
     [role="tab"] {
-      cursor: url('images/bighandwhite.cur'), auto;
+      cursor: url('images/bighandwhite.cur'), auto !important;
     }
   }
 
@@ -243,13 +252,17 @@ html body {
       box-shadow: 0 0 6px 3px Blue, 0 0 2px #333 inset !important;
     }
 
-    .accessibility-quick-navigation {
-      visibility: visible;
-      transform: translate(-50%, 0);
-    }
+    > .accessibility {
+      .accessibility-navigation {
+        .accessibility-quick-navigation {
+          visibility: visible;
+          transform: translate(-50%, 0);
+        }
 
-    .accessibility-quick-access {
-      visibility: hidden;
+        .accessibility-quick-access {
+          visibility: hidden;
+        }
+      }
     }
   }
 }

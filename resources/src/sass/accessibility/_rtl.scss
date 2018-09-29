@@ -1,0 +1,64 @@
+html > body.accessibility-rtl-direction {
+
+  > .accessibility {
+
+    .accessibility-menu {
+      right: 0;
+      left: auto;
+      border-right: none;
+      transform: translateX(100%);
+      border-left: 1px solid #000000;
+
+      > .accessibility-menu-trigger {
+        left: auto;
+        right: 100%;
+        border-radius: 50% 0 0 50%;
+        border: 2px solid #ffffff;
+        border-right: none;
+        padding: 15px 10px 15px 25px;
+      }
+
+      &.accessibility-menu-opened {
+        transform: translateX(0);
+
+        > .accessibility-menu-trigger {
+          right: 0;
+          left: auto;
+        }
+      }
+
+      .accessibility-menu-container {
+        .accessibility-menu-header {
+
+        }
+
+        .accessibility-menu-body {
+          .accessibility-layout-features {
+            .accessibility-feature {
+              button {
+                text-align: right;
+
+                i {
+                  margin-right: 0;
+                  margin-left: 10px;
+                }
+              }
+            }
+          }
+
+          .accessibility-features {
+            .accessibility-features-row {
+              .accessibility-feature {
+                &:not(:last-of-type) {
+                  border-right: none;
+                  border-left: 1px solid #d1d2d3;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+}

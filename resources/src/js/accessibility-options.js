@@ -1,17 +1,17 @@
 export default class {
 
     constructor(options) {
-        this.config = this.setConfig(options);
+        this.config = this.initializeConfig(options);
     }
 
     /**
      *
      * @param options
      */
-    setConfig(options) {
+    initializeConfig(options) {
         let config = $.extend({
-            locale: 'en',
-            direction: 'ltr',
+            locale: this.setLocale(options.locale),
+            direction: this.setDirection(options.direction),
             storage: 'cookies',
         }, options);
 
@@ -19,7 +19,7 @@ export default class {
             footer: {
                 reset: true
             }
-        }, config.menu);
+        }, options.menu);
 
         config.features = $.extend({
             monochrome: true,
@@ -35,13 +35,48 @@ export default class {
             highlightTitles: true,
             altDescription: true,
             disableTransitions: true,
-        }, config.features);
+        }, options.features);
 
-        config.navigation = $.extend({
+        config.quickNavigation = $.extend({
             enable: true
-        }, config.navigation);
+        }, options.quickNavigation);
 
         return config;
+    }
+
+    /**
+     *
+     * @param options
+     * @returns {Browsersync.config|*|Config}
+     */
+    extendConfig(options) {
+        this.config = $.extend(this.config, options);
+        return this.config;
+    }
+
+    /**
+     *
+     * @param direction
+     */
+    setDirection(direction = null) {
+        if (direction) {
+            return direction;
+        }
+
+        return (document.dir === 'rtl') ? 'rtl' : 'ltr';
+    }
+
+    /**
+     *
+     * @param locale
+     * @returns string
+     */
+    setLocale(locale = null) {
+        if (locale) {
+            return locale;
+        }
+
+        return (this.accessibility.$html.attr('lang')) ? this.accessibility.$html.attr('lang') : 'en';
     }
 
     /**
@@ -57,7 +92,7 @@ export default class {
         if (! key[0])
             return null;
 
-        if (! config[key[0]])
+        if (typeof config[key[0]] === 'undefined')
             return null;
 
         if (key.length === 1)

@@ -1,3 +1,6 @@
+import TransHE from './trans/he'
+import TransEN from './trans/en'
+
 export default class {
     /**
      *
@@ -6,6 +9,8 @@ export default class {
     constructor(locale = 'en') {
         this.locale = locale;
         this.defaultLocale = 'en';
+
+        this.setTrans();
 
         this.setLocale();
     }
@@ -17,12 +22,12 @@ export default class {
      * @param attributes
      */
     trans(key, attributes = null) {
-        if (! this.translations)
+        if (! this.translates)
             return '';
 
-        for (let _key in this.translations) {
+        for (let _key in this.translates) {
             if (_key === key)
-                return (attributes) ? this.bindAttributes(this.translations[key], attributes) : this.translations[key];
+                return (attributes) ? this.bindAttributes(this.translates[key], attributes) : this.translates[key];
         }
     }
 
@@ -54,6 +59,16 @@ export default class {
     }
 
     /**
+     *
+     */
+    setTrans() {
+        this.translations = {
+            en: TransEN,
+            he: TransHE
+        };
+    }
+
+    /**
      * Set Locale
      *
      * @param locale
@@ -66,16 +81,18 @@ export default class {
 
         this.locale = locale;
 
-        try {
+        /*try {
             trans = require('./trans/' + locale + '.js');
         } catch(e) {
             this.locale = this.defaultLocale;
             trans = require('./trans/' + this.defaultLocale + '.js');
-        }
+        }*/
 
-        if (! trans.default)
-            return;
+        /*if (! trans.default)
+            return;*/
 
-        this.translations = trans.default;
+        let translates = (this.translations[locale.toLowerCase()]) ? this.translations[locale.toLowerCase()] : this.translations[this.defaultLocale];
+
+        this.translates = $.extend(this.translations[this.defaultLocale], translates);
     }
 }

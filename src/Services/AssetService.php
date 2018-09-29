@@ -14,6 +14,8 @@ class AssetService
 
     protected $imagesFiles = [];
 
+    protected $enableJqueryNoConflict = true;
+
     /**
      * @var LaravelAccessibility
      */
@@ -32,6 +34,16 @@ class AssetService
     }
 
     /**
+     * Checks if jQuery.noConflict() will be called
+     *
+     * @return boolean
+     */
+    public function isJqueryNoConflictEnabled()
+    {
+        return $this->enableJqueryNoConflict;
+    }
+
+    /**
      * @param $type
      * @param $filePath
      * @return string
@@ -41,7 +53,7 @@ class AssetService
         $content = '';
         $files = $this->{$type.'Files'};
 
-        $content .= $this->appendCustomAssetProps($type);
+        // $content .= $this->appendCustomAssetProps($type);
 
         foreach ($files as $file) {
             if (is_null($filePath)) {
@@ -72,13 +84,11 @@ class AssetService
         $html  = "<link rel='stylesheet' type='text/css' property='stylesheet' href='{$cssRoute}'>";
         $html .= "<script type='text/javascript' src='{$jsRoute}'></script>";
 
-        /*if ($this->isJqueryNoConflictEnabled()) {
+        if ($this->isJqueryNoConflictEnabled()) {
             $html .= '<script type="text/javascript">jQuery.noConflict(true);</script>' . "\n";
-        }*/
+        }
 
         // $html .= $this->getInlineHtml();
-
-
         return $html;
     }
 
@@ -91,7 +101,10 @@ class AssetService
     public function renderConfig()
     {
         $config = [
-            'features' => config('accessibility.features')
+            'locale' => config('app.locale'),
+            'features' => config('accessibility.features'),
+            'translates' => trans('accessibility::global'),
+            'quickNavigation' => config('accessibility.quickNavigation', false),
         ];
 
         return json_encode($config);
@@ -141,7 +154,7 @@ class AssetService
         $content = '';
 
         if ($type == 'js') {
-            $content .= sprintf('var trans = %s;', json_encode(trans('accessibility::main'))) . "\n";
+            $content .= sprintf('var trans = %s;', json_encode(trans('accessibility::global'))) . "\n";
         }
 
         return $content;

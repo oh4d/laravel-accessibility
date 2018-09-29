@@ -1,5 +1,5 @@
 export default {
-    'accessibility':                                'Accessibility',
+    'accessibility-menu':                           'Accessibility Menu',
     'monochrome':                                   'Monochrome',
     'dark-contrast':                                'Dark Contrast',
     'bright-contrast':                              'Bright Contrast',
