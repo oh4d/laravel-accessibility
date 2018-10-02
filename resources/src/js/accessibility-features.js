@@ -36,6 +36,7 @@ export default class {
             disableTransitions: 'disable',
 
             fontSize: {
+                max: 1.5,
                 current: 1,
                 search: ['*'],
                 $in: $('html'),
@@ -568,8 +569,9 @@ export default class {
 
         if (typeof storageStates.fontSize !== 'undefined') {
             storageStates.fontSize = {
-                $in: $('html'),
+                max: 1.5,
                 search: ['*'],
+                $in: $('html'),
                 current: Number(storageStates.fontSize),
                 exclude: ['svg', '.accessibility', 'head']
             }

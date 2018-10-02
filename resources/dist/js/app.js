@@ -77,18 +77,20 @@ module.exports = __webpack_require__(13);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__i18n__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__navigation__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__accessibility_storage__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__accessibility_options__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__accessibility_features__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__i18n__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__navigation__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__accessibility_storage__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__accessibility_options__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__accessibility_features__ = __webpack_require__(10);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// import jQuery from 'jquery';
-window.$ = window.jQuery = __webpack_require__(2);
+
+window.jQuery = window.$ = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a;
 
 
 
@@ -132,7 +134,7 @@ window.AccessibilityForAll = function () {
 
             this.$body = this.$html.find('body');
 
-            this.options = new __WEBPACK_IMPORTED_MODULE_4__accessibility_options__["a" /* default */](options);
+            this.options = new __WEBPACK_IMPORTED_MODULE_5__accessibility_options__["a" /* default */](options);
 
             // Todo Move All Features To AccessibilityOptions
             this.features = [{ type: 'monochrome', enable: this.options.getConfig('features.monochrome'), icon: 'accessibility icon-monochrome' }, { type: 'dark-contrast', enable: this.options.getConfig('features.darkContrast'), icon: 'accessibility icon-dark-contrast' }, { type: 'bright-contrast', enable: this.options.getConfig('features.brightContrast'), icon: 'accessibility icon-bright-contrast' }, { type: 'decrease-font-size', enable: this.options.getConfig('features.decreaseFontSize'), icon: 'accessibility icon-decrease-font-size' }, { type: 'increase-font-size', enable: this.options.getConfig('features.increaseFontSize'), icon: 'accessibility icon-increase-font-size' }, { type: 'font-family', enable: this.options.getConfig('features.fontFamily'), icon: 'accessibility icon-font-family' }, { type: 'cursor-bw', enable: this.options.getConfig('features.cursorBw'), icon: 'accessibility icon-cursor-bw' }, { type: 'cursor-bb', enable: this.options.getConfig('features.cursorBb'), icon: 'accessibility icon-cursor-bb' }, { type: 'zoom', enable: this.options.getConfig('features.zoom'), icon: 'accessibility icon-search' }, { type: 'highlight-links', enable: this.options.getConfig('features.highlightLinks'), icon: 'accessibility icon-highlight-links' }, { type: 'highlight-titles', enable: this.options.getConfig('features.highlightTitles'), icon: 'accessibility icon-highlight-titles' }, { type: 'alt-description', enable: this.options.getConfig('features.altDescription'), icon: 'accessibility icon-alt-description' }];
@@ -176,15 +178,15 @@ window.AccessibilityForAll = function () {
                 return;
             }
 
-            this.$i18n = new __WEBPACK_IMPORTED_MODULE_1__i18n__["a" /* default */](this.options.getConfig('locale'));
+            this.$i18n = new __WEBPACK_IMPORTED_MODULE_2__i18n__["a" /* default */](this.options.getConfig('locale'));
 
-            this.accessibilityStorage = new __WEBPACK_IMPORTED_MODULE_3__accessibility_storage__["a" /* default */](this);
+            this.accessibilityStorage = new __WEBPACK_IMPORTED_MODULE_4__accessibility_storage__["a" /* default */](this);
 
-            this.accessibilityFeatures = new __WEBPACK_IMPORTED_MODULE_5__accessibility_features__["a" /* default */](this);
+            this.accessibilityFeatures = new __WEBPACK_IMPORTED_MODULE_6__accessibility_features__["a" /* default */](this);
 
-            this.accessibilityMenu = new __WEBPACK_IMPORTED_MODULE_0__menu__["a" /* default */](this);
+            this.accessibilityMenu = new __WEBPACK_IMPORTED_MODULE_1__menu__["a" /* default */](this);
 
-            this.accessibilityNavigation = new __WEBPACK_IMPORTED_MODULE_2__navigation__["a" /* default */](this);
+            this.accessibilityNavigation = new __WEBPACK_IMPORTED_MODULE_3__navigation__["a" /* default */](this);
 
             this.toolTipListener();
 
@@ -12288,6 +12290,7 @@ var _class = function () {
                 disableTransitions: 'disable',
 
                 fontSize: {
+                    max: 1.5,
                     current: 1,
                     search: ['*'],
                     $in: $('html'),
@@ -12907,8 +12910,9 @@ var _class = function () {
 
             if (typeof storageStates.fontSize !== 'undefined') {
                 storageStates.fontSize = {
-                    $in: $('html'),
+                    max: 1.5,
                     search: ['*'],
+                    $in: $('html'),
                     current: Number(storageStates.fontSize),
                     exclude: ['svg', '.accessibility', 'head']
                 };

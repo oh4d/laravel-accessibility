@@ -1,5 +1,5 @@
-// import jQuery from 'jquery';
-window.$ = window.jQuery = require('jquery');
+import jQuery from 'jquery';
+window.jQuery = window.$ = jQuery;
 
 import AccessibilityMenu from './menu';
 import AccessibilityTrans from './i18n';
