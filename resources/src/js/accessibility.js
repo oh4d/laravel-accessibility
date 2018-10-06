@@ -1,4 +1,5 @@
 import jQuery from 'jquery';
+
 window.jQuery = window.$ = jQuery;
 
 import AccessibilityMenu from './menu';
@@ -14,6 +15,8 @@ window.AccessibilityForAll = class {
      * Accessibility For All
      */
     constructor(options = {}) {
+        this.$ = this.jQuery = jQuery;
+
         this.initializeParams(options);
 
         this.getMainWrap();
@@ -31,11 +34,11 @@ window.AccessibilityForAll = class {
             return;
         }
 
-        this.$html = $('html');
+        this.$html = this.jQuery('html');
 
         this.$body = this.$html.find('body');
 
-        this.options = new AccessibilityOptions(options);
+        this.options = new AccessibilityOptions(this, options);
 
         // Todo Move All Features To AccessibilityOptions
         this.features = [
@@ -77,7 +80,7 @@ window.AccessibilityForAll = class {
             return this.$el;
         }
 
-        this.$el = $('<div class="accessibility"/>');
+        this.$el = this.jQuery('<div class="accessibility"/>');
         this.$body.prepend(this.$el);
 
         return this.$el;
@@ -91,7 +94,7 @@ window.AccessibilityForAll = class {
             return;
         }
 
-        this.$i18n = new AccessibilityTrans(this.options.getConfig('locale'));
+        this.$i18n = new AccessibilityTrans(this, this.options.getConfig('locale'));
 
         this.accessibilityStorage = new AccessibilityStorage(this);
 
@@ -161,16 +164,16 @@ window.AccessibilityForAll = class {
         let self = this;
 
         this.$body.on('mouseenter.accessibility.tooltip-visible, focus.accessibility.tooltip-visible', '.accessibility-tooltip-element', function() {
-            let $toolTip = $(this).data('tooltip-element'),
-                position = $(this).offset();
+            let $toolTip = self.jQuery(this).data('tooltip-element'),
+                position = self.jQuery(this).offset();
 
             let style = {
-                top: (! $toolTip.data('tooltip-position')) ? position.top + $(this).outerHeight() + 20 : position.top
+                top: (! $toolTip.data('tooltip-position')) ? position.top + self.jQuery(this).outerHeight() + 20 : position.top
             };
 
             if (! $toolTip.data('tooltip-position')) {
                 style.transform = 'translateX(-50%)';
-                style.left = position.left + ($(this).outerWidth() / 2);
+                style.left = position.left + (self.jQuery(this).outerWidth() / 2);
             } else if ($toolTip.data('tooltip-position') === 'right') {
                 style[$toolTip.data('tooltip-position')] = self.$body.width() - (position.left - 20);
             }
@@ -180,10 +183,10 @@ window.AccessibilityForAll = class {
         });
 
         this.$body.on('mouseleave.accessibility.tooltip-hide, blur.accessibility.tooltip-visible', '.accessibility-tooltip-element', function() {
-            if ($(this).is(':focus'))
+            if (self.jQuery(this).is(':focus'))
                 return;
 
-            let $toolTip = $(this).data('tooltip-element');
+            let $toolTip = self.jQuery(this).data('tooltip-element');
 
             $toolTip.stop().fadeOut();
         });
@@ -198,7 +201,7 @@ window.AccessibilityForAll = class {
      * @returns {*|jQuery|HTMLElement}
      */
     renderToolTipEl($trigger, content, id = null, position = null) {
-        let $el = $('<div class="accessibility-index-tooltip"/>');
+        let $el = this.jQuery('<div class="accessibility-index-tooltip"/>');
 
         if (id) {
             $el.attr('id', id);
@@ -260,7 +263,7 @@ window.AccessibilityForAll = class {
 
         let feature = false;
 
-        $.each(features, function() {
+        this.jQuery.each(features, function() {
             if (this.type === type) {
                 feature = this;
                 return false;
@@ -340,7 +343,7 @@ window.AccessibilityForAll = class {
         if (typeof search === 'string')
             return target.split(search).join(replacement);
 
-        $.each(search, function() {
+        this.jQuery.each(search, function() {
             target = target.split(this).join(replacement);
         });
 

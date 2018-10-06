@@ -7,7 +7,7 @@ export default class {
      */
     constructor(accessibility) {
         this.accessibility = accessibility;
-        this.$el = $('<div class="accessibility-navigation"/>');
+        this.$el = this.accessibility.jQuery('<div class="accessibility-navigation"/>');
 
         this.render();
 
@@ -67,10 +67,10 @@ export default class {
             return this.$quickNavigation;
         }
 
-        this.$quickNavigation = $('<div class="accessibility-quick-navigation"/>');
+        this.$quickNavigation = this.accessibility.jQuery('<div class="accessibility-quick-navigation"/>');
 
-        let $container = $('<div class="accessibility-quick-navigation-container"/>'),
-            $infoButton = $('<button tabindex="1" role="tooltip"/>');
+        let $container = this.accessibility.jQuery('<div class="accessibility-quick-navigation-container"/>'),
+            $infoButton = this.accessibility.jQuery('<button tabindex="1" role="tooltip"/>');
 
         $infoButton.append('<i class="accessibility icon-info"></i>');
 
@@ -95,7 +95,7 @@ export default class {
             return this.$quickAccess;
         }
 
-        this.$quickAccess = $('<div class="accessibility-quick-access"/>');
+        this.$quickAccess = this.accessibility.jQuery('<div class="accessibility-quick-access"/>');
         this.$quickAccess.append(this.createQuickAccessItems());
 
         return this.$quickAccess;
@@ -105,10 +105,11 @@ export default class {
      *
      */
     createQuickNavigationItems() {
-        let $items = $('<ul/>');
+        let self = this,
+            $items = this.accessibility.jQuery('<ul/>');
 
-        $.each(this.accessibility.accessibilityFeatures.states.quickNavigation.items, function() {
-            let $item = $('<li/>');
+        this.accessibility.jQuery.each(this.accessibility.accessibilityFeatures.states.quickNavigation.items, function() {
+            let $item = self.accessibility.jQuery('<li/>');
 
             $item.append('<a href="javascript:void(0)" tabindex="1">'+this.title+'</a>');
             $items.append($item);
@@ -131,10 +132,11 @@ export default class {
             this.items.push({text: this.accessibility.$i18n.trans('press-to-enable-quick-navigation', '<span class="keyboard"><kbd>Enter ↵</kbd></span>'), keyListener: 13, action: this.enableQuickNavigation.bind(this)})
         }
 
-        let $itemsWrap = $('<ul/>');
+        let self = this,
+            $itemsWrap = this.accessibility.jQuery('<ul/>');
 
-        $.each(this.items, function() {
-            let $item = $('<li/>');
+        this.accessibility.jQuery.each(this.items, function() {
+            let $item = self.accessibility.jQuery('<li/>');
 
             $item.append('<button type="button" tabindex="1"/>');
             $item.find('button').append(this.text);
@@ -154,8 +156,8 @@ export default class {
     focusListener() {
         let self = this;
 
-        $(document).on('focus', '.accessibility-navigation button', function() {
-            let item = self.getButtonItemParams($(this));
+        this.accessibility.jQuery(document).on('focus', '.accessibility-navigation button', function() {
+            let item = self.getButtonItemParams(self.accessibility.jQuery(this));
 
             if (! item)
                 return;
@@ -168,8 +170,8 @@ export default class {
             item.action(item, 'focus');
         });
 
-        $(document).on('blur', '.accessibility-navigation button', function() {
-            let item = self.getButtonItemParams($(this));
+        this.accessibility.jQuery(document).on('blur', '.accessibility-navigation button', function() {
+            let item = self.getButtonItemParams(self.accessibility.jQuery(this));
 
             if (! item)
                 return;
@@ -194,7 +196,7 @@ export default class {
         let self = this;
 
         if (buttonState === 'focus') {
-            $(document).on('keypress.accessibility.navigation-focus-item-listener', function(e) {
+            this.accessibility.jQuery(document).on('keypress.accessibility.navigation-focus-item-listener', function(e) {
                 if (e.which === key) {
                     item.action(e);
                     item.$button.blur();
@@ -204,7 +206,7 @@ export default class {
             return;
         }
 
-        $(document).off('keypress.accessibility.navigation-focus-item-listener');
+        this.accessibility.jQuery(document).off('keypress.accessibility.navigation-focus-item-listener');
     }
 
     /**
@@ -215,7 +217,7 @@ export default class {
     getButtonItemParams($el) {
         let item = false;
 
-        $.each(this.items, function() {
+        this.accessibility.jQuery.each(this.items, function() {
             if (! $el.is(this.$button))
                 return;
 
@@ -275,14 +277,15 @@ export default class {
             return [];
         }
 
-        let items = [];
+        let self = this,
+            items = [];
 
-        $.each(this.navigationConfig.items, function() {
+        this.accessibility.jQuery.each(this.navigationConfig.items, function() {
             if (! this.$el)
                 return;
 
             let item = {
-                $el: $(this.$el),
+                $el: self.accessibility.jQuery(this.$el),
                 title: this.title
             };
 

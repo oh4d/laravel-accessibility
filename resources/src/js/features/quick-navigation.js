@@ -44,7 +44,7 @@ export default class {
         let self = this,
             navigation = {};
 
-        $.each(state.items, function() {
+        this.accessibility.jQuery.each(state.items, function() {
             this.$tabs = this.$el.find(itemsType);
 
             this.tabIndex = this.tabIndex ? this.tabIndex : currentTabIndex;
@@ -59,7 +59,7 @@ export default class {
             }
         });
 
-        this.navigation = $.extend(state, {items: navigation});
+        this.navigation = this.accessibility.jQuery.extend(state, {items: navigation});
     }
 
     /**
@@ -74,7 +74,7 @@ export default class {
      *
      */
     destroy() {
-        $.each(this.navigation.items, function() {
+        this.accessibility.jQuery.each(this.navigation.items, function() {
             this.$tabs.attr('tabindex', null);
         });
 
@@ -108,10 +108,10 @@ export default class {
         });
 
         this.accessibility.$body.on('focus.accessibility.quick-navigation-item-focused', this.elementType.join(', '), function() {
-            if ($(this).is(self.accessibility.accessibilityMenu.getTrigger()))
+            if (self.accessibility.jQuery(this).is(self.accessibility.accessibilityMenu.getTrigger()))
                 return;
 
-            self.itemFocused($(this));
+            self.itemFocused(self.accessibility.jQuery(this));
         });
     }
 
@@ -122,11 +122,11 @@ export default class {
         let self = this;
 
         this.navigation.$el.find('ul > li > a').on('click.accessibility.quick-navigation-navigate', function(e) {
-            let focusTab = $(this).attr('data-tab-href'),
+            let focusTab = self.accessibility.jQuery(this).attr('data-tab-href'),
                 item = self.getNavigationTabIndexGroup(focusTab);
 
             if (! item || ! item.action) {
-                $('[tabindex='+focusTab+']').first().focus();
+                self.accessibility.jQuery('[tabindex='+focusTab+']').first().focus();
                 return;
             }
 

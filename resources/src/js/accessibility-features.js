@@ -22,7 +22,7 @@ export default class {
     initStates() {
         let storageStates = this.accessibility.accessibilityStorage.initializeFromStorage();
 
-        this.states = $.extend({
+        this.states = this.accessibility.jQuery.extend({
             monochrome: 'disable',
             darkContrast: 'disable',
             brightContrast: 'disable',
@@ -39,7 +39,7 @@ export default class {
                 max: 1.5,
                 current: 1,
                 search: ['*'],
-                $in: $('html'),
+                $in: this.accessibility.jQuery('html'),
                 exclude: ['svg', '.accessibility', 'head']
             },
 
@@ -54,7 +54,7 @@ export default class {
      * @param object
      */
     extendStates(object) {
-        this.states = $.extend(this.states, object);
+        this.states = this.accessibility.jQuery.extend(this.states, object);
     }
 
     /**
@@ -68,7 +68,7 @@ export default class {
 
         let self = this;
 
-        $.each(this.states, function(key) {
+        this.accessibility.jQuery.each(this.states, function(key) {
             if (this !== 'enable') {
                 return;
             }
@@ -381,16 +381,16 @@ export default class {
         this.states.fontSize.current = Number(this.states.fontSize.current.toFixed(2));
 
         this.states.fontSize.$in.find(this.fontElements()).each(function() {
-            let currentFontSize = parseFloat($(this).css('font-size'));
+            let currentFontSize = parseFloat(self.accessibility.jQuery(this).css('font-size'));
 
             if (!currentFontSize) {
                 return;
             }
 
-            let defaultFontSize = $(this).data('original-font-size'),
+            let defaultFontSize = self.accessibility.jQuery(this).data('original-font-size'),
                 updateFontSize = (defaultFontSize * self.states.fontSize.current).toFixed(1) + 'px';
 
-            $(this).css('font-size', updateFontSize);
+            self.accessibility.jQuery(this).css('font-size', updateFontSize);
         });
     }
 
@@ -403,14 +403,16 @@ export default class {
      * For Proper Handling Font Size Like 'rem', 'em'
      */
     initializeOriginalFontSize() {
+        let self = this;
+
         this.states.fontSize.$in.find(this.fontElements()).each(function() {
-            let elFontSize = parseFloat($(this).css('font-size'));
+            let elFontSize = parseFloat(self.accessibility.jQuery(this).css('font-size'));
 
             if (! elFontSize) {
                 return;
             }
 
-            $(this).data('original-font-size', elFontSize);
+            self.accessibility.jQuery(this).data('original-font-size', elFontSize);
         });
 
         this.states.fontSize.initialized = true;
@@ -450,15 +452,15 @@ export default class {
      */
     setImageAltDescription(enable = true) {
         if (! enable) {
-            $(document).off('mouseenter.accessibility.image-hover-description');
+            this.accessibility.jQuery(document).off('mouseenter.accessibility.image-hover-description');
             this.imgAltDescription.destroy();
             return;
         }
 
         let self = this;
 
-        $(document).on('mouseenter.accessibility.image-hover-description', 'body > img, body > :not(.accessibility) img', function(e) {
-            self.imgAltDescription.mouseIn($(this), e);
+        this.accessibility.jQuery(document).on('mouseenter.accessibility.image-hover-description', 'body > img, body > :not(.accessibility) img', function(e) {
+            self.imgAltDescription.mouseIn(self.accessibility.jQuery(this), e);
         });
     }
 
@@ -468,7 +470,7 @@ export default class {
     reset() {
         let self = this;
 
-        $.each(this.states, function(key) {
+        this.accessibility.jQuery.each(this.states, function(key) {
             if (this !== 'enable') {
                 return;
             }
@@ -571,13 +573,13 @@ export default class {
             storageStates.fontSize = {
                 max: 1.5,
                 search: ['*'],
-                $in: $('html'),
+                $in: this.accessibility.jQuery('html'),
                 current: Number(storageStates.fontSize),
                 exclude: ['svg', '.accessibility', 'head']
             }
         }
 
-        $.each(mappingValueToAction, function() {
+        this.accessibility.jQuery.each(mappingValueToAction, function() {
             if (typeof storageStates[this] === 'undefined') {
                 return;
             }

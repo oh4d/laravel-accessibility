@@ -116,6 +116,7 @@ class AssetService
     public function render()
     {
         $js = '';
+        // $js .= sprintf("var %s = new %s(%s);\n", 'accessibility', 'AccessibilityForAll', $this->renderConfig());
         $js .= sprintf("var %s = new %s(%s);\n", 'accessibility', 'AccessibilityForAll', $this->renderConfig());
 
         return "<script type=\"text/javascript\">\n$js\n</script>\n";

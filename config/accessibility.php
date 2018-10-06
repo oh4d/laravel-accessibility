@@ -14,7 +14,7 @@ return [
 
     'enabled' => env('ACCESSIBILITY_ENABLED', true),
 
-    'enableJqueryNoConflict' => false,
+    'enableJqueryNoConflict' => true,
 
     'except' => [
         // '_debugbar/*'

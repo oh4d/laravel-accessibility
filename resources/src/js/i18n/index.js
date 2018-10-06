@@ -4,9 +4,12 @@ import TransEN from './trans/en'
 export default class {
     /**
      *
+     * @param accessibility
      * @param locale
      */
-    constructor(locale = 'en') {
+    constructor(accessibility, locale = 'en') {
+        this.accessibility = accessibility;
+
         this.locale = locale;
         this.defaultLocale = 'en';
 
@@ -93,6 +96,6 @@ export default class {
 
         let translates = (this.translations[locale.toLowerCase()]) ? this.translations[locale.toLowerCase()] : this.translations[this.defaultLocale];
 
-        this.translates = $.extend(this.translations[this.defaultLocale], translates);
+        this.translates = this.accessibility.jQuery.extend(this.translations[this.defaultLocale], translates);
     }
 }

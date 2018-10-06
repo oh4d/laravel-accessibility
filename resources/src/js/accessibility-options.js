@@ -1,6 +1,8 @@
 export default class {
 
-    constructor(options) {
+    constructor(accessibility, options = {}) {
+        this.accessibility = accessibility;
+
         this.config = this.initializeConfig(options);
     }
 
@@ -9,19 +11,19 @@ export default class {
      * @param options
      */
     initializeConfig(options) {
-        let config = $.extend({
+        let config = this.accessibility.jQuery.extend({
             locale: this.setLocale(options.locale),
             direction: this.setDirection(options.direction),
             storage: 'cookies',
         }, options);
 
-        config.menu = $.extend({
+        config.menu = this.accessibility.jQuery.extend({
             footer: {
                 reset: true
             }
         }, options.menu);
 
-        config.features = $.extend({
+        config.features = this.accessibility.jQuery.extend({
             monochrome: true,
             darkContrast: true,
             brightContrast: true,
@@ -37,7 +39,7 @@ export default class {
             disableTransitions: true,
         }, options.features);
 
-        config.quickNavigation = $.extend({
+        config.quickNavigation = this.accessibility.jQuery.extend({
             enable: true
         }, options.quickNavigation);
 
@@ -50,7 +52,7 @@ export default class {
      * @returns {Browsersync.config|*|Config}
      */
     extendConfig(options) {
-        this.config = $.extend(this.config, options);
+        this.config = this.accessibility.jQuery.extend(this.config, options);
         return this.config;
     }
 

@@ -15,7 +15,7 @@ export default class {
             return this.$el;
         }
 
-        this.$el = $('<div class="accessibility-img-alt-description"/>');
+        this.$el = this.accessibility.jQuery('<div class="accessibility-img-alt-description"/>');
         this.accessibility.getMainWrap().append(this.$el);
         return this.$el;
     }
@@ -84,7 +84,7 @@ export default class {
      * @param event
      */
     renderAltDescription(alt, event) {
-        let $box = $('<span/>');
+        let $box = this.accessibility.jQuery('<span/>');
         $box.html(alt);
 
         this.prepare().html($box);

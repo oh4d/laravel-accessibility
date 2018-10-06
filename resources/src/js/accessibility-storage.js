@@ -101,7 +101,7 @@ export default class {
         if (! cookie)
             return this.convertObjToString(obj, ',');
 
-        let cookieObj = $.extend(this.convertStringToObj(cookie), obj);
+        let cookieObj = this.accessibility.jQuery.extend(this.convertStringToObj(cookie), obj);
 
         return this.convertObjToString(cookieObj, ',');
     }
@@ -138,7 +138,7 @@ export default class {
     convertObjToString(obj, separator = ';') {
         let string = '';
 
-        $.each(obj, function(key) {
+        this.accessibility.jQuery.each(obj, function(key) {
             if (! this && typeof this !== 'string')
                 return;
 
