@@ -19,7 +19,7 @@ class AssetsController extends BaseController
         $content = $assetService->assetToString('css');
 
         $response = new Response($content, 200, ['Content-Type' => 'text/css']);
-        return $this->cacheResponse($response);
+        return $this->cacheResponse($response, true);
     }
 
     /**
@@ -34,7 +34,7 @@ class AssetsController extends BaseController
         $content = $assetService->assetToString('js');
 
         $response = new Response($content, 200, ['Content-Type' => 'text/javascript']);
-        return $this->cacheResponse($response);
+        return $this->cacheResponse($response, true);
     }
 
     /**
@@ -52,7 +52,7 @@ class AssetsController extends BaseController
         $type = File::mimeType($file);
 
         $response = new Response($content, 200, ['Content-Type' => $type]);
-        return $this->cacheResponse($response);
+        return $this->cacheResponse($response, true);
     }
 
     /**
@@ -70,14 +70,22 @@ class AssetsController extends BaseController
         $type = File::mimeType($file);
 
         $response = new Response($content, 200, ['Content-Type' => $type]);
-        return $this->cacheResponse($response);
+        return $this->cacheResponse($response, true);
     }
 
     /**
      * Cache the response 1 year (31536000 sec)
+     *
+     * @param Response $response
+     * @param $cache
+     * @return Response
      */
-    protected function cacheResponse(Response $response)
+    protected function cacheResponse(Response $response, $cache = false)
     {
+        if (!$cache) {
+            return $response;
+        }
+
         $response->setSharedMaxAge(31536000);
         $response->setMaxAge(31536000);
         $response->setExpires(new \DateTime('+1 year'));

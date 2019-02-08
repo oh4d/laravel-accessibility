@@ -94,7 +94,7 @@ window.AccessibilityForAll = class {
             return;
         }
 
-        this.$i18n = new AccessibilityTrans(this, this.options.getConfig('locale'));
+        this.$i18n = new AccessibilityTrans(this);
 
         this.accessibilityStorage = new AccessibilityStorage(this);
 

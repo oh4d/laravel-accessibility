@@ -149,7 +149,7 @@ class AssetService
         $this->imagesFiles[] = $this->accessibility->getBasePath("resources/src/images/bigcursorblack.cur");
         $this->imagesFiles[] = $this->accessibility->getBasePath("resources/src/images/bigcursorwhite.cur");
 
-        $this->enableJqueryNoConflict = config('accessibility.enableJqueryNoConflict', true);;
+        $this->enableJqueryNoConflict = config('accessibility.enableJqueryNoConflict', true);
     }
 
     protected function appendCustomAssetProps($type)

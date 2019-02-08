@@ -36,6 +36,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             __DIR__ . '/../resources/lang' => resource_path('lang/vendor/accessibility'),
         ]);
 
+        $this->publishes([__DIR__ . '/../config/accessibility.php' => config_path('accessibility.php')], 'config');
+
         // Escape case plugin is disabled
         if (!$this->app['accessibility']->isEnabled())
             return;

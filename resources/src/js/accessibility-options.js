@@ -43,6 +43,7 @@ export default class {
             enable: true
         }, options.quickNavigation);
 
+        config.translates = options.translates ? options.translates : false;
         return config;
     }
 

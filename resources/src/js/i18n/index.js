@@ -5,12 +5,11 @@ export default class {
     /**
      *
      * @param accessibility
-     * @param locale
      */
-    constructor(accessibility, locale = 'en') {
+    constructor(accessibility) {
         this.accessibility = accessibility;
 
-        this.locale = locale;
+        this.locale = this.accessibility.options.getConfig('locale');
         this.defaultLocale = 'en';
 
         this.setTrans();
@@ -94,7 +93,11 @@ export default class {
         /*if (! trans.default)
             return;*/
 
-        let translates = (this.translations[locale.toLowerCase()]) ? this.translations[locale.toLowerCase()] : this.translations[this.defaultLocale];
+        let translates = this.accessibility.options.getConfig('translates');
+
+        if (!translates) {
+            translates = (this.translations[locale.toLowerCase()]) ? this.translations[locale.toLowerCase()] : this.translations[this.defaultLocale];
+        }
 
         this.translates = this.accessibility.jQuery.extend(this.translations[this.defaultLocale], translates);
     }
