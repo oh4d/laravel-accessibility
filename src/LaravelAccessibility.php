@@ -38,12 +38,12 @@ class LaravelAccessibility
     /**
      * @param Application $app
      */
-    public function __construct($app = null)
+    public function __construct(Request $request, $app = null)
     {
         $this->app = ($app) ?: app();
         $this->basePath = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
 
-        $this->registerBaseConfig();
+        $this->registerBaseConfig($request);
     }
 
     /**
@@ -111,9 +111,9 @@ class LaravelAccessibility
     /**
      *
      */
-    protected function registerBaseConfig()
+    protected function registerBaseConfig(Request $request)
     {
-        $url = Request::getRequestUri();
+        $url = $request->url();
         $contains = Str::contains($url, ['/admin']);
         if($contains) {
             $this->enabled = false;
