@@ -54,7 +54,7 @@ class LaravelAccessibility
         
         $segment = $request->url();
         
-        if((strpos($segment, "/admin/") !== false)) {
+        if((strpos($segment, "/admin") !== false)) {
             return false;
         } else {
             return $this->enabled;
