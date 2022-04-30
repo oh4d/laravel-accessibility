@@ -18,7 +18,9 @@ return [
 
     'except' => [
         // '_debugbar/*'
-        'admin/*'
+        'admin/*',
+        '/admin/*',
+
     ],
 
     /*
