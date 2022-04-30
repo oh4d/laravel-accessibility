@@ -6,8 +6,6 @@ use Oh4d\Accessibility\Services\AssetService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Str;
- 
 
 class LaravelAccessibility
 {
@@ -38,12 +36,12 @@ class LaravelAccessibility
     /**
      * @param Application $app
      */
-    public function __construct(Request $request, $app = null)
+    public function __construct($app = null)
     {
         $this->app = ($app) ?: app();
         $this->basePath = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
 
-        $this->registerBaseConfig($request);
+        $this->registerBaseConfig();
     }
 
     /**
@@ -111,15 +109,9 @@ class LaravelAccessibility
     /**
      *
      */
-    protected function registerBaseConfig(Request $request)
+    protected function registerBaseConfig()
     {
-        $url = $request->url();
-        $contains = Str::contains($url, ['/admin']);
-        if($contains) {
-            $this->enabled = false;
-        } else {
-            $this->enabled = config('accessibility.enabled', true);
-        }
+        $this->enabled = config('accessibility.enabled', true);
     }
 
     /**
