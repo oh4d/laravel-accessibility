@@ -49,16 +49,9 @@ class LaravelAccessibility
      *
      * @return boolean
      */
-    public function isEnabled(Request $request)
+    public function isEnabled()
     {
-        
-        $segment = $request->url();
-        
-        if((strpos($segment, "/admin") !== false)) {
-            return false;
-        } else {
-            return $this->enabled;
-        }
+        return $this->enabled;
     }
 
     /**
@@ -116,9 +109,15 @@ class LaravelAccessibility
     /**
      *
      */
-    protected function registerBaseConfig()
+    protected function registerBaseConfig(Request $request)
     {
-        $this->enabled = config('accessibility.enabled', true);
+        $segment = $request->url();
+        
+        if((strpos($segment, "/admin") !== false)) {
+            $this->enabled = false;
+        } else {
+            $this->enabled = config('accessibility.enabled', true);
+        }
     }
 
     /**
