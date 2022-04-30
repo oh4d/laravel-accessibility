@@ -76,12 +76,12 @@ class InjectMenu
                 $except = trim($except, '/');
             }
             $url = $request->url();
-            if(strpos($$url, $except)) {
+            if(strpos($url, $except)) {
                 return true;
             } else {
                 return false;
             }
-            
+
             /*if ($request->is($except)) {
                 return true;
             }*/
