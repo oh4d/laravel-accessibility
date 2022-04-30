@@ -4,8 +4,8 @@
     "minimum-stability": "dev",
     "authors": [
         {
-            "name": "Ohad Goldstein",
-            "email": "ohadon3@gmail.com"
+            "name": "Ohad Goldstein|Charlie Love",
+            "email": "ohadon3@gmail.com|charlie.love@dropdesign.co.uk"
         }
     ],
     "require": {
