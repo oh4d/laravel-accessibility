@@ -39,7 +39,7 @@ class InjectMenu
     {
         $this->app = $app;
         $this->accessibility = $accessibility;
-        $this->except = config('accessibility.except') ?: [];
+        $this->except = config('accessibility.except') ?: ['admin/*'];
     }
 
     /**
