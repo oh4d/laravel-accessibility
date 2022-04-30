@@ -39,8 +39,8 @@ class InjectMenu
     {
         $this->app = $app;
         $this->accessibility = $accessibility;
-        //$this->except = config('accessibility.except') ?: ['admin/*'];
-        $this->except = ['admin'];
+        $this->except = config('accessibility.except') ?: ['admin'];
+       
     }
 
     /**
@@ -81,10 +81,6 @@ class InjectMenu
             } else {
                 return false;
             }
-
-            /*if ($request->is($except)) {
-                return true;
-            }*/
         }
 
         return false;
