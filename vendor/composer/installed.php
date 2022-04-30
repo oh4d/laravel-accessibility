@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '60075ee1e10c3187e88917ed1326053f38fee8d7',
+        'reference' => '9adc992efc560310eb0479562a15aa3a0c68f78e',
         'name' => 'oh4d/laravel-accessibility',
         'dev' => true,
     ),
@@ -390,7 +390,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '60075ee1e10c3187e88917ed1326053f38fee8d7',
+            'reference' => '9adc992efc560310eb0479562a15aa3a0c68f78e',
             'dev_requirement' => false,
         ),
         'phpoption/phpoption' => array(
