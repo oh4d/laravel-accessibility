@@ -49,9 +49,15 @@ class LaravelAccessibility
      *
      * @return boolean
      */
-    public function isEnabled()
+    public function isEnabled(Request $request)
     {
-        return $this->enabled;
+        
+        $segment = $request->url();
+        if(str_contains($segment,'/admin/')) {
+            return false;
+        } else {
+            return $this->enabled;
+        }
     }
 
     /**
