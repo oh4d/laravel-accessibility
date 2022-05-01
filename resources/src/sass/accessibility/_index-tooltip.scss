@@ -21,10 +21,11 @@ html > body {
     border-radius: 5px;
     background: rgba(0,0,0,.8);
     box-shadow: 0 0 2px #fff;
+    left:75px;
+  
 
     &:after {
-      left: 0;
-      right: 0;
+      left: 10px;
       content: '';
       width: 0;
       height: 0;
