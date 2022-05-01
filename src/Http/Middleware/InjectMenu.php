@@ -39,7 +39,9 @@ class InjectMenu
     {
         $this->app = $app;
         $this->accessibility = $accessibility;
-        $this->except = config('accessibility.except') ?: [];
+        //$this->except = config('accessibility.except') ?: ['admin'];
+        $this->except = ['admin'];
+       
     }
 
     /**
@@ -70,12 +72,15 @@ class InjectMenu
     protected function inExceptArray($request)
     {
         foreach ($this->except as $except) {
+            
             if ($except !== '/') {
                 $except = trim($except, '/');
             }
-
-            if ($request->is($except)) {
+            $url = $request->url();
+            if(strpos($url, $except)) {
                 return true;
+            } else {
+                return false;
             }
         }
 

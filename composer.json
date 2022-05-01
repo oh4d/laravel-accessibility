@@ -4,13 +4,13 @@
     "minimum-stability": "dev",
     "authors": [
         {
-            "name": "Ohad Goldstein",
-            "email": "ohadon3@gmail.com"
+            "name": "Ohad Goldstein|Charlie Love",
+            "email": "ohadon3@gmail.com|charlie.love@dropdesign.co.uk"
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "laravel/framework": "^5.2"
+        "php": "^8.0",
+        "laravel/framework": "^8.0|^9.0"
     },
     "autoload": {
         "psr-4": {
